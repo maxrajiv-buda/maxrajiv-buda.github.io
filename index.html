@@ -271,9 +271,9 @@
       }
     
       /* Storytelling experience */
-      .story-hero{min-height:calc(100vh - 64px);display:grid;align-items:center;position:relative;overflow:hidden;padding:100px 0}
+      .story-hero{min-height:calc(100vh - 64px);display:grid;align-items:center;position:relative;overflow:hidden;padding:72px 0 84px}.hero-layout{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(360px,.98fr);gap:54px;align-items:center}.hero-copy{position:relative;z-index:2}.hero-portrait{position:relative;z-index:1;min-height:590px;border:1px solid #2a2d35;border-radius:24px;overflow:hidden;background:#111318;box-shadow:0 30px 80px #0008}.hero-portrait img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover;object-position:center 35%;filter:saturate(.92) contrast(1.04)}.hero-portrait:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#0a0b0d 0%,transparent 18%),linear-gradient(0deg,#0a0b0d99 0%,transparent 35%);pointer-events:none}.hero-note{position:absolute;left:24px;bottom:22px;z-index:2;padding:10px 13px;border:1px solid #ffffff24;background:#090a0cbb;backdrop-filter:blur(10px);border-radius:99px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#d9ff62}
       .story-hero:after{content:"";position:absolute;width:520px;height:520px;right:-180px;top:80px;border:1px solid #ffffff0a;border-radius:50%;box-shadow:0 0 0 90px #ffffff03,0 0 0 180px #ffffff02;pointer-events:none}
-      .story-hero h1{font-family:var(--display);font-size:clamp(4rem,11vw,8rem);line-height:.86;letter-spacing:-.05em;margin:22px 0 30px;max-width:950px}
+      .story-hero h1{font-family:var(--display);font-size:clamp(4rem,8vw,7rem);line-height:.88;letter-spacing:-.05em;margin:22px 0 30px;max-width:720px}
       .story-hero h1 em{font-weight:400;color:#d9ff62}
       .story-hero .lede{font-size:clamp(1.25rem,2.4vw,1.7rem);max-width:48rem;color:#c7c9cf;line-height:1.65}
       .story-kicker{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#d9ff62}
@@ -299,7 +299,7 @@
       .intersection{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}.paths>div{padding:20px 0;border-top:1px solid var(--border)}.paths h3{font-family:var(--display);font-size:29px;margin:0 0 7px;color:#f4f2ec}.paths p{margin:0;color:#b9bbc2;font-size:15px;line-height:1.6}
       .venn{height:390px;position:relative;display:grid;place-items:center}.vc{position:absolute;width:220px;height:220px;border:1px solid #555861;border-radius:50%;display:grid;place-items:center;font-size:11px;letter-spacing:.1em}.v1{transform:translate(-70px,-55px)}.v2{transform:translate(70px,-55px)}.v3{transform:translate(0,70px)}.vcore{z-index:2;width:100px;height:100px;border-radius:50%;display:grid;place-items:center;text-align:center;background:#d9ff62;color:#090a0c;font-size:11px;font-weight:600}
       .reveal{opacity:0;transform:translateY(20px);transition:opacity .75s var(--ease),transform .75s var(--ease)}.reveal.in{opacity:1;transform:none}
-      @media(max-width:900px){.chapter,.build-grid,.intersection{grid-template-columns:1fr;gap:24px}.journey-row{grid-template-columns:1fr;gap:8px}.story-hero{min-height:auto}.venn{margin-top:20px}}
+      @media(max-width:900px){.hero-layout,.chapter,.build-grid,.intersection{grid-template-columns:1fr;gap:24px}.hero-portrait{min-height:520px;max-width:620px;width:100%;margin-top:18px}.journey-row{grid-template-columns:1fr;gap:8px}.story-hero{min-height:auto}.venn{margin-top:20px}}
       @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
     </style>
   </head>
@@ -327,12 +327,16 @@
 
     <main id="top">
       <section class="story-hero" style="border-top:0">
-        <div class="wrap">
-          <p class="story-kicker">Customer × Technology × AI</p>
-          <h1>I'm building the <em>next</em> chapter.</h1>
-          <p class="lede">14+ years understanding enterprise customers, business, technology and people. Now I'm turning that experience into products with AI.</p>
-          <div class="actions"><a class="btn btn-solid" href="#story">Enter the story ↓</a><a class="btn btn-ghost" href="./Rajiv-Buda-Resume.pdf">Resume</a><a class="btn btn-ghost" href="https://www.linkedin.com/in/rajivbuda-692410b0" target="_blank" rel="noreferrer">LinkedIn</a></div>
-          <div class="scroll-cue">Scroll to explore ↓</div>
+        <div class="wrap hero-layout">
+          <div class="hero-copy">
+            <p class="story-kicker">Customer leader × AI builder × problem solver</p>
+            <h1>I'm building the <em>next</em> chapter.</h1>
+            <p class="lede">14+ years in enterprise customer leadership, operations and customer success. Now I'm building AI products that help people grow.</p>
+            <div class="actions"><a class="btn btn-solid" href="#story">Explore my journey ↓</a><a class="btn btn-ghost" href="https://hireonai.in" target="_blank" rel="noreferrer">View HireOnAI ↗</a><a class="btn btn-ghost" href="./Rajiv-Buda-Resume.pdf">Resume</a></div>
+            <div class="big-quote" style="font-size:clamp(1.35rem,2vw,1.8rem);margin-top:48px">“I don't want AI to be a line on my resume.<br><em>I want it to be something I can ship.</em>”</div>
+            <div class="scroll-cue">Scroll to explore ↓</div>
+          </div>
+          <div class="hero-portrait"><img src="./assets/rajiv-hero.jpg" alt="Rajiv Buda in a professional workspace" width="480" height="480" fetchpriority="high"><div class="hero-note">Build · Learn · Grow · Repeat</div></div>
         </div>
       </section>
       <section id="story"><div class="wrap chapter reveal"><div class="chapter-no"><b>01</b><br><br>The foundation</div><div>
