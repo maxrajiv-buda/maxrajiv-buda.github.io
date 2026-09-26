@@ -17,40 +17,44 @@ jobs:
         with:
           ref: main
       - name: Add Study 02 to homepage
-        shell: python
         run: |
+          python - <<'PY'
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
-          if 'CASE STUDY 02 · FROM MODEL TO SPECIALIST' not in s:
-              marker = '''        <div class="big-quote">I don't want AI to be a line on my resume.<br><span class="accent-text">I want it to be something I can ship.</span></div>'''
-              study = '''        <div class="case-label">CASE STUDY 02 · FROM MODEL TO SPECIALIST</div>
-        <div class="build-grid">
-          <div class="product-story">
-            <span class="live">● AI MODEL PROJECT</span>
-            <h3>Ira-Dolphin</h3>
-            <p>A hands-on LLM fine-tuning project exploring how a general-purpose language model can be adapted into a focused specialist through dataset preparation, parameter-efficient training and reproducible experimentation.</p>
-            <div class="case-proof">
-              <div><small>QUESTION</small><strong>How do you turn a capable base model into a useful domain-focused assistant?</strong></div>
-              <div><small>EXPERIMENT</small><strong>Fine-tune, evaluate and document the complete model adaptation workflow.</strong></div>
-              <div><small>MY ROLE</small><strong>Model experimentation · dataset workflow · fine-tuning · evaluation · documentation</strong></div>
+          marker = '''        <div class="big-quote">I don't want AI to be a line on my resume.<br><span class="accent-text">I want it to be something I can ship.</span></div>'''
+          study = '''        <div class="case-label">CASE STUDY 02 · FROM MODEL TO SPECIALIST</div>
+          <div class="build-grid">
+            <div class="product-story">
+              <span class="live">● AI MODEL PROJECT</span>
+              <h3>Ira-Dolphin</h3>
+              <p>A hands-on LLM fine-tuning project exploring how a general-purpose language model can be adapted into a focused specialist through dataset preparation, parameter-efficient training and reproducible experimentation.</p>
+              <div class="case-proof">
+                <div><small>QUESTION</small><strong>How do you turn a capable base model into a useful domain-focused assistant?</strong></div>
+                <div><small>EXPERIMENT</small><strong>Fine-tune, evaluate and document the complete model adaptation workflow.</strong></div>
+                <div><small>MY ROLE</small><strong>Model experimentation · dataset workflow · fine-tuning · evaluation · documentation</strong></div>
+              </div>
+              <a class="case-link" href="/projects/ira-dolphin/">Explore the Ira-Dolphin case study <span>→</span></a>
+              <div class="chips"><span class="chip">LLM Fine-tuning</span><span class="chip">LoRA</span><span class="chip">Qwen</span><span class="chip">Unsloth</span><span class="chip">Hugging Face</span><span class="chip">Python</span></div>
             </div>
-            <a class="case-link" href="/projects/ira-dolphin/">Explore the Ira-Dolphin case study <span>→</span></a>
-            <div class="chips"><span class="chip">LLM Fine-tuning</span><span class="chip">LoRA</span><span class="chip">Qwen</span><span class="chip">Unsloth</span><span class="chip">Hugging Face</span><span class="chip">Python</span></div>
+            <div class="terminal"><b>$</b> project --ira-dolphin<br><br><strong>select</strong>&nbsp;&nbsp;&nbsp;base model<br><strong>prepare</strong>&nbsp;&nbsp;training data<br><strong>fine-tune</strong>&nbsp;with LoRA<br><strong>evaluate</strong>&nbsp;&nbsp;model behavior<br><strong>document</strong>&nbsp;&nbsp;reproduction path<br><strong>publish</strong>&nbsp;&nbsp;&nbsp;case study<br><br><b>$</b> status<br><b>learning AI by building it ✓</b></div>
           </div>
-          <div class="terminal"><b>$</b> project --ira-dolphin<br><br><strong>select</strong>&nbsp;&nbsp;&nbsp;base model<br><strong>prepare</strong>&nbsp;&nbsp;training data<br><strong>fine-tune</strong>&nbsp;with LoRA<br><strong>evaluate</strong>&nbsp;&nbsp;model behavior<br><strong>document</strong>&nbsp;&nbsp;reproduction path<br><strong>publish</strong>&nbsp;&nbsp;&nbsp;case study<br><br><b>$</b> status<br><b>learning AI by building it ✓</b></div>
-        </div>
 '''
+          if 'CASE STUDY 02 · FROM MODEL TO SPECIALIST' not in s:
               if marker not in s:
-                  raise SystemExit('Insertion marker not found; homepage left unchanged')
+                  raise SystemExit('Insertion marker not found')
               s = s.replace(marker, study + marker, 1)
           s = s.replace('<div><b>1</b><span>AI product shipped</span></div>', '<div><b>2</b><span>AI projects built</span></div>', 1)
           p.write_text(s, encoding='utf-8')
+          PY
       - name: Commit homepage integration
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git diff --cached --quiet && exit 0
+          if git diff --cached --quiet; then
+            echo "No homepage change needed"
+            exit 0
+          fi
           git commit -m "Add Ira-Dolphin as homepage Study 02"
           git push origin main
