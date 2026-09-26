@@ -34,3 +34,4 @@ jobs:
           git add index.html
           git commit -m "Integrate Ira-Dolphin as Study 02 on homepage"
           git push
+# trigger: 2
