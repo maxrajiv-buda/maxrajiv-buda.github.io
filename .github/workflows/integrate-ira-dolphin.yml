@@ -1,37 +1,19 @@
-name: Integrate Ira-Dolphin homepage case study
+name: Patch Homepage
 on:
   push:
-    paths:
-      - '.github/workflows/integrate-ira-dolphin.yml'
+    branches:
+      - main
 permissions:
   contents: write
 jobs:
-  integrate:
+  patch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Add Study 02 to homepage
-        run: |
-          python3 <<'PY'
-          from pathlib import Path
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
-          if 'CASE STUDY 02 · IRA-DOLPHIN' not in s:
-              anchor = '''        <div class="big-quote">I don't want AI to be a line on my resume.<br><span class="accent-text">I want it to be something I can ship.</span></div>'''
-              study = '''        <div class="case-label">CASE STUDY 02 · IRA-DOLPHIN · FROM MODEL TO REPRODUCIBLE EXPERIMENT</div>
-        <div class="build-grid"><div class="product-story"><span class="live">● AI MODEL PROJECT</span><h3>Ira-Dolphin</h3><p>A hands-on LLM fine-tuning project exploring how an open model can be adapted, tested and documented as a reproducible AI engineering workflow.</p><div class="case-proof"><div><small>QUESTION</small><strong>How do I move beyond consuming LLM APIs and understand model adaptation firsthand?</strong></div><div><small>BUILD</small><strong>Fine-tune, evaluate and document the model workflow so the experiment can be reproduced.</strong></div><div><small>WHY IT MATTERS</small><strong>It expands my AI journey from product integration into the model layer itself.</strong></div></div><a class="case-link" href="/projects/ira-dolphin/">Explore Ira-Dolphin case study <span>↗</span></a><div class="chips"><span class="chip">LLM Fine-tuning</span><span class="chip">LoRA</span><span class="chip">Qwen</span><span class="chip">Unsloth</span><span class="chip">Hugging Face</span><span class="chip">Reproducible AI</span></div></div><div class="terminal"><b>STUDY 02</b><br><br><strong>learn</strong>&nbsp;&nbsp;&nbsp;&nbsp;the model layer<br><strong>adapt</strong>&nbsp;&nbsp;&nbsp;&nbsp;an open LLM<br><strong>fine-tune</strong>&nbsp;with LoRA<br><strong>evaluate</strong>&nbsp;&nbsp;the result<br><strong>document</strong>&nbsp;&nbsp;the workflow<br><strong>share</strong>&nbsp;&nbsp;&nbsp;&nbsp;for reproduction<br><br><b>AI journey:</b><br>API integration → model experimentation ✓</div></div>
-'''
-              if anchor not in s:
-                  raise SystemExit('Homepage anchor not found; refusing unsafe edit')
-              s = s.replace(anchor, study + anchor, 1)
-              s = s.replace('<div><b>1</b><span>AI product shipped</span></div>', '<div><b>2</b><span>AI projects built</span></div>', 1)
-              p.write_text(s, encoding='utf-8')
-          PY
-      - name: Commit homepage integration
-        run: |
-          if git diff --quiet; then exit 0; fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - run: echo 'ZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCnA9UGF0aCgnaW5kZXguaHRtbCcpCnM9cC5yZWFkX3RleHQoZW5jb2Rpbmc9J3V0Zi04JykKYW5jaG9yPScnJyAgICAgICAgPGRpdiBjbGFzcz0iYmlnLXF1b3RlIj5JIGRvbid0IHdhbnQgQUkgdG8gYmUgYSBsaW5lIG9uIG15IHJlc3VtZS48YnI+PHNwYW4gY2xhc3M9ImFjY2VudC10ZXh0Ij5JIHdhbnQgaXQgdG8gYmUgc29tZXRoaW5nIEkgY2FuIHNoaXAuPC9zcGFuPjwvZGl2PicnJwpzdHVkeT0nJycgICAgICAgIDxkaXYgY2xhc3M9ImNhc2UtbGFiZWwiPkNBU0UgU1RVRFkgMDIgwrcgSVJBLURPTFBISU4gwrcgRlJPTSBNT0RFTCBUTyBSRVBST0RVQ0lCTEUgRVhQRVJJTUVOVDwvZGl2PgogICAgICAgIDxkaXYgY2xhc3M9ImJ1aWxkLWdyaWQiPjxkaXYgY2xhc3M9InByb2R1Y3Qtc3RvcnkiPjxzcGFuIGNsYXNzPSJsaXZlIj7il48gQUkgTU9ERUwgUFJPSkVDVDwvc3Bhbj48aDM+SXJhLURvbHBoaW48L2gzPjxwPkEgaGFuZHMtb24gTExNIGZpbmUtdHVuaW5nIHByb2plY3QgZXhwbG9yaW5nIGhvdyBhbiBvcGVuIG1vZGVsIGNhbiBiZSBhZGFwdGVkLCB0ZXN0ZWQgYW5kIGRvY3VtZW50ZWQgYXMgYSByZXByb2R1Y2libGUgQUkgZW5naW5lZXJpbmcgd29ya2Zsb3cuPC9wPjxkaXYgY2xhc3M9ImNhc2UtcHJvb2YiPjxkaXY+PHNtYWxsPlFVRVNUSU9OPC9zbWFsbD48c3Ryb25nPkhvdyBkbyBJIG1vdmUgYmV5b25kIGNvbnN1bWluZyBMTE0gQVBJcyBhbmQgdW5kZXJzdGFuZCBtb2RlbCBhZGFwdGF0aW9uIGZpcnN0aGFuZD88L3N0cm9uZz48L2Rpdj48ZGl2PjxzbWFsbD5CVUlMRDwvc21hbGw+PHN0cm9uZz5GaW5lLXR1bmUsIGV2YWx1YXRlIGFuZCBkb2N1bWVudCB0aGUgbW9kZWwgd29ya2Zsb3cgc28gdGhlIGV4cGVyaW1lbnQgY2FuIGJlIHJlcHJvZHVjZWQuPC9zdHJvbmc+PC9kaXY+PGRpdj48c21hbGw+V0hZIElUIE1BVFRFUlM8L3NtYWxsPjxzdHJvbmc+SXQgZXhwYW5kcyBteSBBSSBqb3VybmV5IGZyb20gcHJvZHVjdCBpbnRlZ3JhdGlvbiBpbnRvIHRoZSBtb2RlbCBsYXllciBpdHNlbGYuPC9zdHJvbmc+PC9kaXY+PC9kaXY+PGEgY2xhc3M9ImNhc2UtbGluayIgaHJlZj0iL3Byb2plY3RzL2lyYS1kb2xwaGluLyI+RXhwbG9yZSBJcmEtRG9scGhpbiBjYXNlIHN0dWR5IDxzcGFuPuKGlzwvc3Bhbj48L2E+PGRpdiBjbGFzcz0iY2hpcHMiPjxzcGFuIGNsYXNzPSJjaGlwIj5MTE0gRmluZS10dW5pbmc8L3NwYW4+PHNwYW4gY2xhc3M9ImNoaXAiPkxvUkE8L3NwYW4+PHNwYW4gY2xhc3M9ImNoaXAiPlF3ZW48L3NwYW4+PHNwYW4gY2xhc3M9ImNoaXAiPlVuc2xvdGg8L3NwYW4+PHNwYW4gY2xhc3M9ImNoaXAiPkh1Z2dpbmcgRmFjZTwvc3Bhbj48c3BhbiBjbGFzcz0iY2hpcCI+UmVwcm9kdWNpYmxlIEFJPC9zcGFuPjwvZGl2PjwvZGl2PjxkaXYgY2xhc3M9InRlcm1pbmFsIj48Yj5TVFVEWSAwMjwvYj48YnI+PGJyPjxzdHJvbmc+bGVhcm48L3N0cm9uZz4mbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDt0aGUgbW9kZWwgbGF5ZXI8YnI+PHN0cm9uZz5hZGFwdDwvc3Ryb25nPiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO2FuIG9wZW4gTExNPGJyPjxzdHJvbmc+ZmluZS10dW5lPC9zdHJvbmc+Jm5ic3A7d2l0aCBMb1JBPGJyPjxzdHJvbmc+ZXZhbHVhdGU8L3N0cm9uZz4mbmJzcDsmbmJzcDt0aGUgcmVzdWx0PGJyPjxzdHJvbmc+ZG9jdW1lbnQ8L3N0cm9uZz4mbmJzcDsmbmJzcDt0aGUgd29ya2Zsb3c8YnI+PHN0cm9uZz5zaGFyZTwvc3Ryb25nPiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO2ZvciByZXByb2R1Y3Rpb248YnI+PGJyPjxiPkFJIGpvdXJuZXk6PC9iPjxicj5BUEkgaW50ZWdyYXRpb24g4oaSIG1vZGVsIGV4cGVyaW1lbnRhdGlvbiDinJM8L2Rpdj48L2Rpdj4KJycnCmlmICdDQVNFIFNUVURZIDAyIMK3IElSQS1ET0xQSElOJyBub3QgaW4gczoKICAgIGlmIGFuY2hvciBub3QgaW4gczogcmFpc2UgU3lzdGVtRXhpdCgnYW5jaG9yIG1pc3NpbmcnKQogICAgcz1zLnJlcGxhY2UoYW5jaG9yLHN0dWR5K2FuY2hvciwxKQpzPXMucmVwbGFjZSgnPGRpdj48Yj4xPC9iPjxzcGFuPkFJIHByb2R1Y3Qgc2hpcHBlZDwvc3Bhbj48L2Rpdj4nLCc8ZGl2PjxiPjI8L2I+PHNwYW4+QUkgcHJvamVjdHMgYnVpbHQ8L3NwYW4+PC9kaXY+JywxKQpwLndyaXRlX3RleHQocyxlbmNvZGluZz0ndXRmLTgnKQo=' | base64 -d | python3
+      - run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add index.html
-          git commit -m "Integrate Ira-Dolphin as Study 02 on homepage"
-          git push
+          git diff --cached --quiet || git commit -m 'Add Ira-Dolphin as homepage Study 02'
+          git diff HEAD^ --quiet || git push origin main
