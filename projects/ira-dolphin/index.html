@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ira-Dolphin — Fine-Tuned LLM | Rajiv Buda</title>
-<meta name="description" content="Ira-Dolphin: a fine-tuned Qwen-4B business-strategy LLM built on free-tier Colab using LoRA + Unsloth. Fully reproducible, published on Hugging Face.">
+<meta name="description" content="Ira-Dolphin: a fine-tuned Qwen3-4B business-strategy LLM built on free-tier Google Colab using LoRA + Unsloth. A hands-on model-adaptation experiment published on Hugging Face.">
 <style>
   :root{
     --bg:#0b0f14; --card:#121821; --accent:#38bdf8; --accent2:#a78bfa;
@@ -81,6 +81,8 @@
   .proof-note{margin-top:14px;font-size:.85rem;color:var(--green)}
   .proof-note::before{content:"✓ ";font-weight:800}
 
+  .project-context{margin:0 auto 18px;max-width:760px;color:var(--muted);font-size:.95rem}
+  .project-context strong{color:var(--text)}
   footer{border-top:1px solid var(--border);padding:36px 0;text-align:center;color:var(--muted);font-size:.85rem}
   @media(max-width:640px){.pipe-arrow{transform:rotate(90deg);width:100%;text-align:center}.site-links a:not(.site-cta){display:none}.site-nav-inner{padding:0 18px}.site-brand span:last-child{font-size:.95rem}}
 </style>
@@ -105,7 +107,7 @@
   <p class="subtitle">A fine-tuned business-strategy LLM built on <strong>free-tier Google Colab</strong> — trained in under a minute, published to Hugging Face, and reproducible by anyone with two lines of code.</p>
   <div class="cta-row">
     <a class="btn btn-primary" href="https://huggingface.co/maxrajiv-buda/ira-dolphin" target="_blank" rel="noopener">View on Hugging Face ↗</a>
-    <a class="btn btn-ghost" href="#reproduce">Reproduce it</a>
+    <a class="btn btn-ghost" href="#reproduce">View reproduction code</a>
   </div>
 </header>
 
@@ -175,8 +177,7 @@
 <span class="cmt"># Load the fine-tuned model straight from the Hugging Face Hub</span>
 model, tokenizer = FastLanguageModel.<span class="fn">from_pretrained</span>(
     model_name=<span class="str">"maxrajiv-buda/ira-dolphin"</span>,
-    max_seq_length=<span class="num">2048
-    max_seq_length=2048,
+    max_seq_length=<span class="num">2048</span>,
     load_in_4bit=True,
 )
 FastLanguageModel.for_inference(model)
@@ -186,13 +187,15 @@ messages = [{"role": "user", "content": "Give strategic advice for a small fitne
 text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 inputs = tokenizer(text, return_tensors="pt").to("cuda")
 out = model.generate(**inputs, max_new_tokens=200)
-print(tokenizer.decode(out[0], skip_special_tokens=True))
+print(tokenizer.decode(out[0], skip_special_tokens=True))</code></pre>
   </div>
 </section>
 
 <footer>
   <div class="container">
-    Built by <a href="https://rajivbuda.com">Rajiv Buda</a> · Model: <a href="https://huggingface.co/maxrajiv-buda/ira-dolphin" target="_blank" rel="noopener">maxrajiv-buda/ira-dolphin</a> · Stack: Qwen3-4B · LoRA · Unsloth · 4-bit · Google Colab
+    <p class="project-context"><strong>Why this project matters:</strong> HireOnAI taught me to build with LLM APIs in a production product. Ira-Dolphin takes the next step into the model layer: adapting, evaluating and publishing an open model.</p>
+    <a class="btn btn-ghost" href="/">← Back to Rajiv Buda portfolio</a>
+    <div style="margin-top:22px">Built by <a href="https://rajivbuda.com">Rajiv Buda</a> · Model: <a href="https://huggingface.co/maxrajiv-buda/ira-dolphin" target="_blank" rel="noopener">maxrajiv-buda/ira-dolphin</a> · Stack: Qwen3-4B · LoRA · Unsloth · 4-bit · Google Colab</div>
   </div>
 </footer>
 
