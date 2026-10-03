@@ -1,188 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ira-Dolphin — Fine-Tuned LLM | Rajiv Buda</title>
-<meta name="description" content="Ira-Dolphin: a fine-tuned Qwen3-4B business-strategy LLM built on free-tier Google Colab using LoRA + Unsloth. A hands-on model-adaptation experiment published on Hugging Face.">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ira-Dolphin — Fine-tuned LLM | Rajiv Buda</title>
+<meta name="description" content="Ira-Dolphin is a LoRA fine-tune of Qwen3-4B for business-strategy advice. Trained on a free Colab T4, published on Hugging Face, and documented with its limits." />
+<link rel="canonical" href="https://rajivbuda.com/projects/ira-dolphin/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Ira-Dolphin — a reproducible LoRA fine-tune" />
+<meta property="og:description" content="Qwen3-4B adapted with LoRA and Unsloth on a free T4. The model card states what was tested, and what was not." />
+<meta property="og:url" content="https://rajivbuda.com/projects/ira-dolphin/" />
+<meta property="og:image" content="https://rajivbuda.com/assets/og.jpg" />
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet" />
 <style>
-  :root{
-    --bg:#0b0f14; --card:#121821; --accent:#38bdf8; --accent2:#a78bfa;
-    --text:#e5e9f0; --muted:#8b95a5; --green:#34d399; --border:#1f2937;
+  :root { --bg:#fff; --ink:#1d1d1f; --muted:#6e6e73; --line:#e5e5e7; --soft:#f5f5f7; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: Figtree, ui-sans-serif, system-ui, sans-serif; line-height: 1.55; }
+  a { color: inherit; }
+  h1, h2 { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; margin: 0; }
+  .nav { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; height: 64px; padding: 0 22px; background: rgba(255,255,255,.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; }
+  .mark { width: 34px; height: 34px; display: grid; place-items: center; background: #111; color: #fff; border-radius: 8px; font-family: "Instrument Serif", Georgia, serif; }
+  .nav a.quiet { color: var(--muted); text-decoration: none; font-size: 14px; }
+  .wrap { width: min(920px, calc(100% - 40px)); margin: 0 auto; }
+  header.hero { padding: 72px 0 28px; }
+  .kicker { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
+  h1 { font-size: clamp(3rem, 8vw, 5.2rem); line-height: .95; }
+  h1 span { color: var(--muted); }
+  .lede { font-size: 1.15rem; color: #3a3a3c; max-width: 40rem; margin: 18px 0 0; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .btn { display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 980px; text-decoration: none; font-size: 14px; font-weight: 600; }
+  .btn-solid { background: #1d1d1f; color: #fff; }
+  .btn-ghost { background: #fff; color: #1d1d1f; border: 1px solid #c7c7cc; }
+  .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; margin: 36px 0 10px; }
+  .stat { background: #fff; padding: 18px 14px; }
+  .stat b { display: block; font-family: "Instrument Serif", Georgia, serif; font-size: 1.55rem; font-weight: 400; }
+  .stat span { display: block; margin-top: 6px; color: var(--muted); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+  section { padding: 56px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 18px; }
+  h2 span { color: var(--muted); }
+  .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .step { background: var(--soft); border-radius: 16px; padding: 16px; }
+  .step small { color: var(--muted); letter-spacing: .12em; font-size: 11px; }
+  .step strong { display: block; margin: 8px 0 6px; }
+  .step p { margin: 0; color: #3a3a3c; font-size: 14px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .card { border: 1px solid var(--line); border-radius: 16px; padding: 18px 18px 8px; }
+  .card h3 { margin: 0 0 8px; font-size: 16px; }
+  .card p { margin: 0 0 12px; color: #3a3a3c; font-size: 15px; }
+  .chat { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+  .chat header { padding: 12px 16px; background: var(--soft); color: var(--muted); font-size: 13px; }
+  .msg { margin: 14px 16px; padding: 12px 14px; border-radius: 14px; max-width: 42rem; }
+  .you { margin-left: auto; background: #1d1d1f; color: #fff; }
+  .bot { background: var(--soft); }
+  .role { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 6px; opacity: .7; }
+  .note { margin: 0 16px 16px; color: var(--muted); font-size: 14px; }
+  pre { background: #17191c; color: #f5f5f3; border-radius: 16px; padding: 18px; overflow-x: auto; font-size: 13px; line-height: 1.6; }
+  .limit { background: #f5f5f7; border-radius: 16px; padding: 18px; margin-top: 16px; }
+  .limit strong { display: block; margin-bottom: 6px; }
+  footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
+  footer a { color: #1d1d1f; }
+  @media (max-width: 800px) {
+    .stats, .steps, .grid { grid-template-columns: 1fr 1fr; }
+    .nav a.quiet { display: none; }
   }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth;scroll-padding-top:82px}
-  body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6}
-  .container{max-width:1000px;margin:0 auto;padding:0 24px}
-  a{color:var(--accent);text-decoration:none}
-  a:hover{text-decoration:underline}
-
-  /* SITE NAV */
-  .site-nav{position:sticky;top:0;z-index:1000;background:rgba(11,15,20,.86);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.08)}
-  .site-nav-inner{max-width:1152px;height:68px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-  .site-brand{display:flex;align-items:center;gap:12px;color:var(--text);font-weight:600}
-  .site-brand:hover{text-decoration:none}
-  .site-mark{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;background:#f5f5f7;color:#111;font-family:Georgia,serif;font-size:18px}
-  .site-links{display:flex;align-items:center;gap:24px}
-  .site-links a{color:var(--muted);font-size:.9rem}
-  .site-links a:hover{color:var(--text);text-decoration:none}
-  .site-links .site-cta{padding:9px 16px;border-radius:999px;background:#f5f5f7;color:#111;font-weight:600}
-  #reproduce{scroll-margin-top:82px}
-
-  /* HERO */
-  header{padding:90px 0 60px;text-align:center;background:radial-gradient(ellipse at top,rgba(56,189,248,.12),transparent 60%)}
-  .badge{display:inline-block;background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.3);padding:6px 16px;border-radius:999px;font-size:.85rem;font-weight:600;margin-bottom:24px}
-  h1{font-size:clamp(2.4rem,6vw,4rem);font-weight:800;letter-spacing:-.03em}
-  h1 span{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .subtitle{color:var(--muted);font-size:1.15rem;max-width:640px;margin:18px auto 32px}
-  .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-  .btn{padding:13px 26px;border-radius:10px;font-weight:600;font-size:.95rem;transition:.2s}
-  .btn-primary{background:var(--accent);color:#0b0f14}
-  .btn-primary:hover{filter:brightness(1.1);text-decoration:none}
-  .btn-ghost{border:1px solid var(--border);color:var(--text)}
-  .btn-ghost:hover{border-color:var(--accent);text-decoration:none}
-
-  /* STATS */
-  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:-30px auto 60px;max-width:900px;padding:0 24px}
-  .stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center}
-  .stat .num{font-size:1.7rem;font-weight:800;color:var(--accent)}
-  .stat .label{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
-
-  /* SECTIONS */
-  section{padding:60px 0}
-  h2{font-size:1.8rem;font-weight:700;margin-bottom:28px;letter-spacing:-.02em}
-  h2 em{color:var(--accent);font-style:normal}
-
-  /* PIPELINE */
-  .pipeline{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center}
-  .pipe-step{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;min-width:150px;flex:1;text-align:center}
-  .pipe-step .icon{font-size:1.5rem}
-  .pipe-step .title{font-weight:700;margin-top:8px}
-  .pipe-step .desc{font-size:.82rem;color:var(--muted);margin-top:4px}
-  .pipe-arrow{color:var(--accent);font-size:1.3rem;font-weight:700}
-
-  /* TECH GRID */
-  .tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-  .tech-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px}
-  .tech-card h3{font-size:1.05rem;margin-bottom:8px}
-  .tech-card p{color:var(--muted);font-size:.92rem}
-
-  /* CODE + CHAT */
-  pre{background:#0d1117;border:1px solid var(--border);border-radius:12px;padding:20px;overflow-x:auto;font-size:.85rem;font-family:'JetBrains Mono','Fira Code',monospace;line-height:1.6}
-  .cmt{color:#7d8590}.kw{color:#ff7b72}.str{color:#a5d6ff}.fn{color:#d2a8ff}.num{color:#79c0ff}
-  .chat{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
-  .chat-header{padding:12px 20px;border-bottom:1px solid var(--border);font-size:.85rem;color:var(--muted)}
-  .chat-body{padding:20px;display:flex;flex-direction:column;gap:14px}
-  .msg{max-width:85%;padding:12px 16px;border-radius:12px;font-size:.92rem}
-  .msg.user{align-self:flex-end;background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.25)}
-  .msg.bot{align-self:flex-start;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25)}
-  .msg .role{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;display:block}
-  .msg.user .role{color:var(--accent)}.msg.bot .role{color:var(--accent2)}
-  .proof-note{margin-top:14px;font-size:.85rem;color:var(--green)}
-  .proof-note::before{content:"✓ ";font-weight:800}
-
-  .project-context{margin:0 auto 18px;max-width:760px;color:var(--muted);font-size:.95rem}
-  .project-context strong{color:var(--text)}
-  footer{border-top:1px solid var(--border);padding:36px 0;text-align:center;color:var(--muted);font-size:.85rem}
-  @media(max-width:640px){.pipe-arrow{transform:rotate(90deg);width:100%;text-align:center}.site-links a:not(.site-cta){display:none}.site-nav-inner{padding:0 18px}.site-brand span:last-child{font-size:.95rem}}
+  @media (max-width: 560px) {
+    .stats, .steps { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
-
-<nav class="site-nav" aria-label="Main navigation">
-  <div class="site-nav-inner">
-    <a class="site-brand" href="/"><span class="site-mark">RB</span><span>Rajiv Buda</span></a>
-    <div class="site-links">
-      <a href="/#story">Journey</a>
-      <a href="/#ai">Building with AI</a>
-      <a href="/#experience">Experience</a>
-      <a class="site-cta" href="/#contact">Connect</a>
-    </div>
-  </div>
+<nav class="nav">
+  <a class="brand" href="/"><span class="mark">RB</span> Rajiv Buda</a>
+  <a class="quiet" href="/#ai">Back to projects</a>
 </nav>
-
-<header>
-  <div class="badge">🐬 PROJECT — SHIPPED &amp; LIVE</div>
-  <h1>Ira-<span>Dolphin</span></h1>
-  <p class="subtitle">A fine-tuned business-strategy LLM built on <strong>free-tier Google Colab</strong> — trained in under a minute, published to Hugging Face, and reproducible by anyone with two lines of code.</p>
-  <div class="cta-row">
-    <a class="btn btn-primary" href="https://huggingface.co/maxrajiv-buda/ira-dolphin" target="_blank" rel="noopener">View on Hugging Face ↗</a>
-    <a class="btn btn-ghost" href="#reproduce">View reproduction code</a>
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Project 02 · Model layer · Shipped</p>
+    <h1>Ira-<span>Dolphin</span></h1>
+    <p class="lede">A LoRA fine-tune of Qwen3-4B for short business-strategy advice. Trained on a free Colab T4, published as a 120&nbsp;MB adapter, and written up with the limit in plain sight: one held-out prompt, not a benchmark.</p>
+    <div class="actions">
+      <a class="btn btn-solid" href="https://huggingface.co/maxrajiv-buda/ira-dolphin" target="_blank" rel="noopener">Hugging Face model</a>
+      <a class="btn btn-ghost" href="https://github.com/maxrajiv-buda/ira-dolphin" target="_blank" rel="noopener">Model card on GitHub</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>Qwen3-4B</b><span>Base model</span></div>
+      <div class="stat"><b>120 MB</b><span>LoRA adapter</span></div>
+      <div class="stat"><b><1 min</b><span>Train time, T4</span></div>
+      <div class="stat"><b>$0</b><span>Compute cost</span></div>
+      <div class="stat"><b><1%</b><span>Weights trained</span></div>
+    </div>
   </div>
 </header>
 
-<!-- STATS -->
-<div class="stats">
-  <div class="stat"><div class="num">Qwen3-4B</div><div class="label">Base Model</div></div>
-  <div class="stat"><div class="num">120 MB</div><div class="label">Adapter Size (vs ~2 GB full)</div></div>
-  <div class="stat"><div class="num">&lt;1 min</div><div class="label">Training Time (T4 GPU)</div></div>
-  <div class="stat"><div class="num">$0</div><div class="label">Total Compute Cost</div></div>
-  <div class="stat"><div class="num">&lt;1%</div><div class="label">Weights Trained (LoRA)</div></div>
-</div>
-
-<!-- PIPELINE -->
 <section>
-  <div class="container">
-    <h2>The <em>Full Lifecycle</em></h2>
-    <div class="pipeline">
-      <div class="pipe-step"><div class="icon">🧹</div><div class="title">Data</div><div class="desc">Curated instruction set via seeded generation + manual review</div></div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step"><div class="icon">⚡</div><div class="title">Train</div><div class="desc">LoRA + Unsloth on 4-bit Qwen3-4B (T4, 15 GB VRAM)</div></div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step"><div class="icon">🧪</div><div class="title">Evaluate</div><div class="desc">Novel-scenario test to verify generalization, not memorization</div></div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step"><div class="icon">📤</div><div class="title">Publish</div><div class="desc">Adapters pushed to Hugging Face Hub</div></div>
-      <div class="pipe-arrow">→</div>
-      <div class="pipe-step"><div class="icon">🔁</div><div class="title">Reproduce</div><div class="desc">Reloaded from scratch via URL — zero local files</div></div>
+  <div class="wrap">
+    <h2>What I actually <span>ran.</span></h2>
+    <div class="steps">
+      <div class="step"><small>01</small><strong>Data</strong><p>A small instruction set, seeded and then reviewed by hand. Not a scraped corpus.</p></div>
+      <div class="step"><small>02</small><strong>Train</strong><p>Unsloth LoRA on 4-bit Qwen3-4B. Free T4, about 15&nbsp;GB VRAM.</p></div>
+      <div class="step"><small>03</small><strong>Check</strong><p>One prompt kept out of training, to see if the model only recited the set.</p></div>
+      <div class="step"><small>04</small><strong>Publish</strong><p>Adapters pushed to the Hugging Face Hub. The URL is the artifact.</p></div>
+      <div class="step"><small>05</small><strong>Reload</strong><p>The same model loads again from the Hub with no local checkpoint.</p></div>
     </div>
   </div>
 </section>
 
-<!-- TECH -->
-<section style="padding-top:20px">
-  <div class="container">
-    <h2>Technical <em>Decisions</em></h2>
-    <div class="tech-grid">
-      <div class="tech-card"><h3>Why Qwen3-4B?</h3><p>Strong instruction-following at 4B params — small enough to quantize to 4-bit and train on a free T4 (15 GB VRAM), capable enough for coherent domain output.</p></div>
-      <div class="tech-card"><h3>Why LoRA?</h3><p>Frozen base weights + trainable low-rank adapters. Result: a 120 MB artifact instead of a 2 GB model, faster training, and dramatically lower hardware requirements.</p></div>
-      <div class="tech-card"><h3>Why Unsloth?</h3><p>Custom Triton kernels deliver ~2× faster training with lower VRAM usage — the difference between fitting on free-tier Colab and not.</p></div>
-      <div class="tech-card"><h3>Why 4-bit Quantization?</h3><p>load_in_4bit (NF4) shrinks memory footprint ~4× with negligible quality loss, making consumer-GPU fine-tuning viable.</p></div>
-      <div class="tech-card"><h3>Generalization Proof</h3><p>Evaluated on a scenario absent from training data (fitness-studio competitive strategy). The model produced coherent, differentiated strategic advice — evidence of learned behavior, not memorization.</p></div>
-      <div class="tech-card"><h3>Reproducibility</h3><p>The full model reloads from huggingface.co alone — no local checkpoints. The Hub URL is the single source of truth for the entire artifact.</p></div>
+<section>
+  <div class="wrap">
+    <h2>Decisions, and <span>why.</span></h2>
+    <div class="grid">
+      <article class="card"><h3>Why Qwen3-4B</h3><p>Small enough to quantize to 4-bit and train on a free T4, and still coherent on short strategic answers.</p></article>
+      <article class="card"><h3>Why LoRA</h3><p>The base stays frozen. The trainable piece is a low-rank adapter, about 120&nbsp;MB instead of a full ~2&nbsp;GB model.</p></article>
+      <article class="card"><h3>Why Unsloth</h3><p>Its kernels cut memory and time enough that the run fits the free Colab tier instead of a rented GPU.</p></article>
+      <article class="card"><h3>Why 4-bit</h3><p>NF4 shrinks the footprint enough to load and train on 15&nbsp;GB. That is a hardware choice, not a quality claim.</p></article>
     </div>
   </div>
 </section>
 
-<!-- DEMO -->
-<section style="padding-top:20px">
-  <div class="container">
-    <h2>Live <em>Output</em></h2>
+<section>
+  <div class="wrap">
+    <h2>The check I <span>can show.</span></h2>
     <div class="chat">
-      <div class="chat-header">ira-dolphin · reloaded from Hugging Face Hub · max_new_tokens=200</div>
-      <div class="chat-body">
-        <div class="msg user"><span class="role">You</span>Give strategic advice for a small fitness studio facing competition from a big gym chain.</div>
-        <div class="msg bot"><span class="role">Ira-Dolphin</span>Understand your local market deeply and tailor your services to meet specific needs. Offer personalized coaching or unique classes that can't be replicated. Focus on building community relationships that a big chain can't match…</div>
-        <div class="proof-note">This prompt was never seen during training — the model generalized.</div>
-      </div>
+      <header>Held-out prompt · reloaded from the Hub · max_new_tokens=200</header>
+      <div class="msg you"><span class="role">Prompt</span>Give strategic advice for a small fitness studio facing competition from a big gym chain.</div>
+      <div class="msg bot"><span class="role">Ira-Dolphin</span>Understand your local market deeply and tailor your services to meet specific needs. Offer personalized coaching or unique classes that can't be replicated. Focus on building community relationships that a big chain can't match…</div>
+      <p class="note">This prompt was not in the training set. The answer is coherent and on-domain. That is a smoke test of generalization, not a scored evaluation.</p>
+    </div>
+    <div class="limit">
+      <strong>What this does not prove</strong>
+      There is no held-out test set, no win-rate against the base model, and no claim that Ira-Dolphin outperforms Qwen3-4B in general. A one-minute LoRA on a small instruction set can pick up a voice. It can also overfit. I am publishing the workflow because I ran it, not because a single paragraph is evidence of a better model.
     </div>
   </div>
 </section>
 
-<!-- REPRODUCE -->
-<section id="reproduce" style="padding-top:20px">
-  <div class="container">
-    <h2>Reproduce It in <em>Two Lines</em></h2>
-    <pre><code><span class="kw">from</span> unsloth <span class="kw">import</span> FastLanguageModel
+<section id="reproduce">
+  <div class="wrap">
+    <h2>Load it from <span>the Hub.</span></h2>
+    <pre><code>from unsloth import FastLanguageModel
 
-<span class="cmt"># Load the fine-tuned model straight from the Hugging Face Hub</span>
-model, tokenizer = FastLanguageModel.<span class="fn">from_pretrained</span>(
-    model_name=<span class="str">"maxrajiv-buda/ira-dolphin"</span>,
-    max_seq_length=<span class="num">2048</span>,
+model, tokenizer = FastLanguageModel.from_pretrained(
+    model_name="maxrajiv-buda/ira-dolphin",
+    max_seq_length=2048,
     load_in_4bit=True,
 )
 FastLanguageModel.for_inference(model)
 
-# Ask it a novel business question
 messages = [{"role": "user", "content": "Give strategic advice for a small fitness studio facing competition from a big gym chain."}]
 text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
 inputs = tokenizer(text, return_tensors="pt").to("cuda")
@@ -192,12 +159,10 @@ print(tokenizer.decode(out[0], skip_special_tokens=True))</code></pre>
 </section>
 
 <footer>
-  <div class="container">
-    <p class="project-context"><strong>Why this project matters:</strong> HireOnAI taught me to build with LLM APIs in a production product. Ira-Dolphin takes the next step into the model layer: adapting, evaluating and publishing an open model.</p>
-    <a class="btn btn-ghost" href="/">← Back to Rajiv Buda portfolio</a>
-    <div style="margin-top:22px">Built by <a href="https://rajivbuda.com">Rajiv Buda</a> · Model: <a href="https://huggingface.co/maxrajiv-buda/ira-dolphin" target="_blank" rel="noopener">maxrajiv-buda/ira-dolphin</a> · Stack: Qwen3-4B · LoRA · Unsloth · 4-bit · Google Colab</div>
+  <div class="wrap">
+    <p>HireOnAI is the production product: LLM APIs, jobs, and a resume loop. Ira-Dolphin is the model-layer experiment next to it.</p>
+    <p><a href="/">← Rajiv Buda</a> · <a href="https://huggingface.co/maxrajiv-buda/ira-dolphin">maxrajiv-buda/ira-dolphin</a></p>
   </div>
 </footer>
-
 </body>
 </html>
