@@ -161,8 +161,6 @@
       .line:nth-child(2) > span { animation-delay: .14s; color: var(--signal); }
       .lede { margin: 22px 0 0; max-width: 38rem; color: var(--muted); font-size: clamp(1.05rem, 1.6vw, 1.22rem); }
       .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
-      .resume { display: inline-block; margin-top: 16px; color: var(--dim); font-size: 14px; border-bottom: 1px solid transparent; }
-      .resume:hover { color: var(--fg); border-color: var(--dim); }
       .layer { transform: translate3d(0, var(--py, 0px), 0); will-change: transform; }
       .portrait-wrap {
         position: relative; transform-style: preserve-3d; touch-action: none; cursor: grab;
@@ -360,7 +358,7 @@
         .hero-copy { display: contents; }
         .kicker, h1 { order: 1; }
         .portrait-wrap { order: 2; width: 100%; }
-        .lede, .actions, .resume { order: 3; }
+        .lede, .actions { order: 3; }
         .lede { margin-top: 0; font-size: 1.02rem; }
         .portrait { min-height: 0; aspect-ratio: 16/10; }
         .actions { margin-top: 4px; }
@@ -434,7 +432,6 @@
               <a class="btn btn-solid" href="#ai">See the work <span>→</span></a>
               <a class="btn btn-ghost" href="https://hireonai.in" target="_blank" rel="noreferrer">HireOnAI ↗</a>
             </div>
-            <a class="resume" href="./Rajiv-Buda-Resume.pdf">View résumé →</a>
           </div>
           <div class="portrait-wrap" data-depth="-32">
             <span class="ring" aria-hidden="true"></span>
