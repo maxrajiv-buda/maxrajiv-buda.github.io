@@ -85,8 +85,12 @@
       .glow {
         position: fixed; inset: 0; z-index: 0; pointer-events: none;
         background:
-          radial-gradient(520px circle at var(--x, 80%) var(--y, 12%), rgba(226, 255, 87, 0.09), transparent 42%),
-          radial-gradient(700px circle at 10% 80%, rgba(226, 255, 87, 0.04), transparent 40%);
+          radial-gradient(460px circle at var(--x, 72%) var(--y, 18%), rgba(226, 255, 87, 0.18), transparent 46%),
+          radial-gradient(640px circle at 12% 88%, rgba(226, 255, 87, 0.06), transparent 42%);
+      }
+      .veil {
+        position: fixed; inset: 0; z-index: 70; pointer-events: none; background: #08090c;
+        animation: veil 1.05s var(--ease) .08s forwards;
       }
       header, main, footer, .rail { position: relative; z-index: 1; }
       header {
@@ -133,6 +137,12 @@
       .menu-icon:after { top: 5px; }
       .site-menu { display: none; }
       .hero { position: relative; padding: 42px 0 28px; min-height: calc(100vh - 68px); display: grid; align-items: center; perspective: 1400px; }
+      .hero::before {
+        content: ""; position: absolute; width: min(58vw, 640px); height: min(58vw, 640px);
+        right: -6%; top: -18%; pointer-events: none;
+        background: radial-gradient(circle, rgba(226, 255, 87, 0.2), transparent 68%);
+        filter: blur(2px); animation: aurora 8s ease-in-out infinite alternate;
+      }
       .floor-clip { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
       .hero-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.92fr); gap: 56px; align-items: center; position: relative; z-index: 1; }
       .holo-floor {
@@ -145,7 +155,7 @@
         transform-origin: center top;
         -webkit-mask-image: linear-gradient(to top, #000 20%, transparent 78%);
         mask-image: linear-gradient(to top, #000 20%, transparent 78%);
-        opacity: 0.55; pointer-events: none; animation: floor 14s linear infinite;
+        opacity: 0.22; pointer-events: none; animation: floor 18s linear infinite;
       }
       .kicker {
         display: flex; align-items: center; gap: 10px; margin: 0;
@@ -158,13 +168,20 @@
       }
       .line { display: block; overflow: hidden; }
       .line > span { display: block; transform: translateY(110%); animation: lift 1s var(--ease) forwards; }
-      .line:nth-child(2) > span { animation-delay: .14s; color: var(--signal); }
+      .line:nth-child(2) > span {
+        animation: lift 1.05s var(--ease) .16s forwards, sheen 3.6s linear 1s infinite;
+        background-image: linear-gradient(105deg, #e2ff57 0 38%, #fffce6 50%, #e2ff57 62% 100%);
+        background-size: 220% 100%;
+        background-position: 100% 0;
+        -webkit-background-clip: text; background-clip: text;
+        color: transparent; -webkit-text-fill-color: transparent;
+      }
       .lede { margin: 22px 0 0; max-width: 38rem; color: var(--muted); font-size: clamp(1.05rem, 1.6vw, 1.22rem); }
       .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
       .layer { transform: translate3d(0, var(--py, 0px), 0); will-change: transform; }
       .portrait-wrap {
         position: relative; transform-style: preserve-3d; touch-action: none; cursor: grab;
-        animation: drift 4.6s ease-in-out infinite alternate;
+        animation: drift 1.15s var(--ease) forwards, floaty 5.2s ease-in-out 1.15s infinite alternate;
         transform: translate3d(0, var(--py, 0px), 24px) rotateX(var(--rx, 0deg)) rotateY(calc(var(--ry, 0deg) + var(--idle, 0deg)));
       }
       .portrait-wrap.held { animation: none; cursor: grabbing; transition: transform .08s linear; }
@@ -190,10 +207,19 @@
         font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--signal);
       }
       .ring {
-        position: absolute; inset: 0; border-radius: 28px; pointer-events: none;
-        box-shadow: inset 0 0 0 1px rgba(244, 241, 234, 0.16);
+        position: absolute; inset: -9px; border-radius: 36px; padding: 1.5px; pointer-events: none;
+        background: conic-gradient(from var(--angle), transparent 0 68%, var(--signal) 84%, transparent 100%);
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        mask-composite: exclude;
+        animation: angle 4.8s linear infinite;
       }
-      .marquee { border-block: 1px solid var(--line); overflow: hidden; padding: 16px 0; margin-top: 18px; }
+      .marquee {
+        border-block: 1px solid var(--line); overflow: hidden; padding: 16px 0; margin-top: 18px;
+        -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+        mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+      }
       .track { display: flex; gap: 42px; width: max-content; animation: ticker 28s linear infinite; }
       .track span { font-family: var(--mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); white-space: nowrap; }
       .track span em { color: var(--signal); font-style: normal; }
@@ -341,7 +367,10 @@
       @keyframes sheen { to { background-position: -220% 0; } }
       @keyframes scan { from { top: -24%; } to { top: 108%; } }
       @keyframes floor { to { background-position: 0 56px; } }
-      @keyframes drift { from { --idle: -3deg; } to { --idle: 3deg; } }
+      @keyframes drift { from { --idle: -18deg; } to { --idle: 0deg; } }
+      @keyframes floaty { from { --idle: -5deg; } to { --idle: 6deg; } }
+      @keyframes veil { to { transform: translateY(-105%); } }
+      @keyframes aurora { to { transform: translate3d(-10%, 14%, 0) scale(1.18); } }
       @media (hover: hover) and (pointer: fine) {
         .proof-grid, .cards, .metrics, .case { perspective: 1100px; }
         .tilt { transition: transform .18s var(--ease), border-color .25s; transform-style: preserve-3d; }
@@ -377,7 +406,9 @@
       }
       @media (prefers-reduced-motion: reduce) {
         *, *::before, *::after { animation: none !important; transition: none !important; }
-        .line > span, .reveal, .flow div { opacity: 1 !important; transform: none !important; color: inherit; }
+        .line > span, .reveal, .flow div { opacity: 1 !important; transform: none !important; }
+        .line > span { color: inherit !important; -webkit-text-fill-color: currentColor !important; background: none !important; }
+        .veil { display: none !important; }
         .layer, .portrait-wrap, .holo-floor { transform: none !important; }
         html { scroll-behavior: auto; }
       }
@@ -385,6 +416,7 @@
   </head>
   <body>
     <div class="progress" aria-hidden="true"></div>
+    <div class="veil" aria-hidden="true"></div>
     <div class="glow" aria-hidden="true"></div>
     <header>
       <div class="wrap nav">
@@ -437,7 +469,7 @@
             <span class="ring" aria-hidden="true"></span>
             <span class="chroma" aria-hidden="true"></span>
             <figure class="portrait">
-              <img src="./assets/rajiv-hero.jpg" alt="Rajiv Buda in a professional workspace" width="480" height="640" fetchpriority="high" />
+              <img src="./assets/rajiv-hero.jpg" alt="Rajiv Buda, studio portrait" width="480" height="640" fetchpriority="high" />
               <span class="scan" aria-hidden="true"></span>
               <span class="glint" aria-hidden="true"></span>
             </figure>
@@ -770,6 +802,12 @@
         portrait.addEventListener("pointermove", (e) => { if (holding) aim(e.clientX, e.clientY); });
         portrait.addEventListener("pointerup", release);
         portrait.addEventListener("pointercancel", release);
+        addEventListener("touchmove", (e) => {
+          const t = e.touches && e.touches[0];
+          if (!t) return;
+          glow.style.setProperty("--x", t.clientX + "px");
+          glow.style.setProperty("--y", t.clientY + "px");
+        }, { passive: true });
         if (fine.matches) {
           addEventListener("pointermove", (e) => {
             glow.style.setProperty("--x", e.clientX + "px");
