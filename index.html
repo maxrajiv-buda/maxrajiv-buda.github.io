@@ -95,7 +95,7 @@
       header, main, footer, .rail { position: relative; z-index: 1; }
       header {
         position: sticky; top: 0; z-index: 30;
-        background: rgba(8, 9, 12, 0.72);
+        background: rgba(8, 9, 12, 0.94);
         backdrop-filter: blur(16px);
         border-bottom: 1px solid transparent;
       }
@@ -166,27 +166,33 @@
         font-family: var(--serif); font-size: clamp(3.4rem, 8vw, 7.4rem);
         line-height: 0.88; letter-spacing: -0.04em; margin: 18px 0 0;
       }
-      .line { display: block; overflow: hidden; }
-      .line > span { display: block; transform: translateY(110%); animation: lift 1s var(--ease) forwards; }
-      .line:nth-child(2) > span {
-        animation: lift 1.05s var(--ease) .16s forwards, sheen 3.6s linear 1s infinite;
+      .line { display: block; overflow: hidden; padding-bottom: 0.08em; }
+      .line > span { display: block; }
+      .w { display: inline-block; transform: translateY(120%); animation: lift .85s var(--ease) forwards; }
+      .line:nth-child(1) .w:nth-child(1) { animation-delay: .04s; }
+      .line:nth-child(1) .w:nth-child(2) { animation-delay: .12s; }
+      .line:nth-child(1) .w:nth-child(3) { animation-delay: .2s; }
+      .line:nth-child(2) .w {
+        animation: lift .85s var(--ease) forwards, sheen 3.4s linear 1.05s infinite;
         background-image: linear-gradient(105deg, #e2ff57 0 38%, #fffce6 50%, #e2ff57 62% 100%);
-        background-size: 220% 100%;
-        background-position: 100% 0;
+        background-size: 220% 100%; background-position: 100% 0;
         -webkit-background-clip: text; background-clip: text;
         color: transparent; -webkit-text-fill-color: transparent;
       }
+      .line:nth-child(2) .w:nth-child(1) { animation-delay: .28s, 1.05s; }
+      .line:nth-child(2) .w:nth-child(2) { animation-delay: .36s, 1.05s; }
+      .line:nth-child(2) .w:nth-child(3) { animation-delay: .44s, 1.05s; }
       .lede { margin: 22px 0 0; max-width: 38rem; color: var(--muted); font-size: clamp(1.05rem, 1.6vw, 1.22rem); }
       .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
       .layer { transform: translate3d(0, var(--py, 0px), 0); will-change: transform; }
       .portrait-wrap {
         position: relative; transform-style: preserve-3d; touch-action: none; cursor: grab;
         animation: drift 1.15s var(--ease) forwards, floaty 5.2s ease-in-out 1.15s infinite alternate;
-        transform: translate3d(0, var(--py, 0px), 24px) rotateX(var(--rx, 0deg)) rotateY(calc(var(--ry, 0deg) + var(--idle, 0deg)));
+        transform: translate3d(0, calc(var(--py, 0px) - var(--p, 0) * 36px), 24px) rotateX(var(--rx, 0deg)) rotateY(calc(var(--ry, 0deg) + var(--idle, 0deg))) scale(calc(1 - var(--p, 0) * 0.07));
       }
       .portrait-wrap.held { animation: none; cursor: grabbing; transition: transform .08s linear; }
       .portrait {
-        position: relative; z-index: 1; border-radius: 28px; overflow: hidden; min-height: 560px;
+        position: relative; z-index: 1; border-radius: 32px; overflow: hidden; min-height: 74vh;
         background: #16181e; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 255, 220, 0.18);
       }
       .portrait::before, .portrait::after { content: none; }
@@ -381,15 +387,16 @@
         .site-menu.open { display: flex; flex-direction: column; padding: 4px 22px 16px; border-bottom: 1px solid var(--line); background: rgba(8, 9, 12, 0.96); }
         .site-menu a { padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 17px; }
         .site-menu a:last-child { border: 0; }
-        .hero { min-height: 0; padding-top: 12px; align-items: start; }
-        h1 { font-size: clamp(2.55rem, 11vw, 3.4rem); margin-top: 10px; }
-        .hero-grid { display: flex; flex-direction: column; gap: 14px; }
+        .hero { min-height: 0; padding-top: 6px; padding-bottom: 0; align-items: start; }
+        h1 { font-size: clamp(3.15rem, 13vw, 4.15rem); margin-top: 8px; }
+        .hero-grid { display: flex; flex-direction: column; gap: 16px; }
         .hero-copy { display: contents; }
         .kicker, h1 { order: 1; }
-        .portrait-wrap { order: 2; width: 100%; }
+        .portrait-wrap { order: 2; width: 100vw; max-width: 100vw; margin-left: calc(50% - 50vw); }
         .lede, .actions { order: 3; }
-        .lede { margin-top: 0; font-size: 1.02rem; }
-        .portrait { min-height: 0; aspect-ratio: 16/10; }
+        .lede { margin-top: 2px; font-size: 1.02rem; padding-inline: 0; }
+        .portrait { min-height: 0; aspect-ratio: 4/5; border-radius: 0; }
+        .ring { inset: 10px; border-radius: 22px; }
         .actions { margin-top: 4px; }
         .hero-grid, .case, .split, .proof-grid, .cards, .metrics, .skills { grid-template-columns: 1fr; }
         .orbit { height: 300px; }
@@ -406,8 +413,8 @@
       }
       @media (prefers-reduced-motion: reduce) {
         *, *::before, *::after { animation: none !important; transition: none !important; }
-        .line > span, .reveal, .flow div { opacity: 1 !important; transform: none !important; }
-        .line > span { color: inherit !important; -webkit-text-fill-color: currentColor !important; background: none !important; }
+        .line > span, .w, .reveal, .flow div { opacity: 1 !important; transform: none !important; }
+        .w { color: inherit !important; -webkit-text-fill-color: currentColor !important; background: none !important; }
         .veil { display: none !important; }
         .layer, .portrait-wrap, .holo-floor { transform: none !important; }
         html { scroll-behavior: auto; }
@@ -456,8 +463,8 @@
           <div class="layer hero-copy" data-depth="18">
             <p class="kicker"><b></b> Enterprise leader · AI builder</p>
             <h1>
-              <span class="line"><span>Lead the room.</span></span>
-              <span class="line"><span>Ship the product.</span></span>
+              <span class="line"><span><span class="w">Lead</span> <span class="w">the</span> <span class="w">room.</span></span></span>
+              <span class="line"><span><span class="w">Ship</span> <span class="w">the</span> <span class="w">product.</span></span></span>
             </h1>
             <p class="lede">Customers, teams and the operating rhythm. Then I started building the AI, not only talking about it.</p>
             <div class="actions">
@@ -840,6 +847,9 @@
             el.style.setProperty("--py", shift.toFixed(1) + "px");
           });
           if (!holding) portrait.style.setProperty("--rx", Math.min(3, sy / 500).toFixed(2) + "deg");
+          const hero = document.querySelector(".hero");
+          const passed = Math.max(0, -hero.getBoundingClientRect().top);
+          hero.style.setProperty("--p", Math.min(1, passed / (vh * 0.85)).toFixed(3));
         };
         const queue = () => {
           latest = window.scrollY;
