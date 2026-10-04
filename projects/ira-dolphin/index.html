@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet" />
 <style>
-  :root { --bg:#08090c; --ink:#f7f3ea; --muted:#d4cdc2; --line:rgba(247,243,234,.16); --soft:#12141a; --signal:#f4f0e8; }
+  :root { --bg:#14110e; --ink:#f6f0e8; --muted:#d2c6b8; --line:rgba(246,240,232,.14); --soft:#1e1a16; --signal:#e07a5f; }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body { margin: 0; background: var(--bg); color: var(--ink); font-family: Figtree, ui-sans-serif, system-ui, sans-serif; line-height: 1.55; }
@@ -36,7 +36,7 @@
   .lede { font-size: 1.12rem; color: var(--muted); max-width: 40rem; margin: 18px 0 0; }
   .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
   .btn { display: inline-flex; align-items: center; height: 46px; padding: 0 18px; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 600; transition: transform .3s cubic-bezier(.22,1,.36,1); }
-  .btn-solid { background: var(--signal); color: #14160a; }
+  .btn-solid { background: var(--signal); color: #1a100c; }
   .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
   .btn:hover { transform: translateY(-2px); }
   .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 36px 0 10px; }
@@ -60,7 +60,7 @@
   .chat { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: #0c0d11; }
   .chat header { padding: 12px 16px; background: var(--soft); color: var(--muted); font-size: 13px; font-family: ui-monospace, monospace; }
   .msg { margin: 14px 16px; padding: 12px 14px; border-radius: 14px; max-width: 42rem; }
-  .you { margin-left: auto; background: var(--signal); color: #14160a; }
+  .you { margin-left: auto; background: var(--signal); color: #1a100c; }
   .bot { background: var(--soft); border: 1px solid var(--line); }
   .role { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 6px; opacity: .7; }
   .note { margin: 0 16px 16px; color: var(--muted); font-size: 14px; }
@@ -70,7 +70,7 @@
   footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
   footer a { color: var(--signal); }
   @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
-  @keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(244, 240, 232, 0); } }
+  @keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(224, 122, 95, 0); } }
   @media (max-width: 800px) {
     .stats, .steps, .grid { grid-template-columns: 1fr 1fr; }
     .nav a.quiet { display: none; }
