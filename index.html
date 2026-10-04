@@ -64,7 +64,8 @@
         --ease: cubic-bezier(0.22, 1, 0.36, 1);
       }
       * { box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
+      html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+      section[id], main[id] { scroll-margin-top: 84px; }
       body {
         margin: 0;
         background: var(--bg);
@@ -948,6 +949,18 @@
         menuBtn.setAttribute("aria-expanded", "false");
         menuBtn.setAttribute("aria-label", "Open menu");
       }));
+
+      document.addEventListener("click", (event) => {
+        const link = event.target.closest("a[href^='#']");
+        if (!link) return;
+        const id = link.getAttribute("href").slice(1);
+        const target = id && document.getElementById(id);
+        if (!target) return;
+        event.preventDefault();
+        const top = target.getBoundingClientRect().top + window.scrollY - (header.offsetHeight + 16);
+        window.scrollTo({ top: Math.max(0, top), behavior: reduce ? "auto" : "smooth" });
+        history.pushState(null, "", "#" + id);
+      });
     </script>
   </body>
 </html>
