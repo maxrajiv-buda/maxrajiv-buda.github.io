@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet" />
 <style>
-  :root { --bg:#14110e; --ink:#f6f0e8; --muted:#d2c6b8; --line:rgba(246,240,232,.14); --soft:#1e1a16; --signal:#e07a5f; }
+  :root { --bg:#0e1116; --ink:#f3f0ea; --muted:#c5c1b8; --line:rgba(243,240,234,.14); --soft:#171b22; --signal:#1e4a73; }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body { margin: 0; background: var(--bg); color: var(--ink); font-family: Figtree, ui-sans-serif, system-ui, sans-serif; line-height: 1.55; }
@@ -27,30 +27,30 @@
   .mark { width: 34px; height: 34px; display: grid; place-items: center; background: #0e0f13; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; font-family: "Instrument Serif", Georgia, serif; position: relative; }
   .mark:after { content: ""; position: absolute; top: -3px; right: -3px; width: 8px; height: 8px; border-radius: 99px; background: var(--signal); animation: pulse 2.4s ease-out infinite; }
   .nav a.quiet { color: var(--muted); text-decoration: none; font-size: 14px; }
-  .nav a.quiet:hover { color: var(--signal); }
+  .nav a.quiet:hover { color: var(--ink); }
   .wrap { width: min(920px, calc(100% - 40px)); margin: 0 auto; }
   header.hero { padding: 72px 0 28px; animation: rise .9s cubic-bezier(.22,1,.36,1) both; }
-  .kicker { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--signal); margin: 0 0 14px; }
+  .kicker { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
   h1 { font-size: clamp(3.2rem, 9vw, 5.6rem); line-height: .9; }
-  h1 span { color: var(--signal); font-style: normal; }
+  h1 span { color: var(--ink); font-style: normal; }
   .lede { font-size: 1.12rem; color: var(--muted); max-width: 40rem; margin: 18px 0 0; }
   .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
   .btn { display: inline-flex; align-items: center; height: 46px; padding: 0 18px; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 600; transition: transform .3s cubic-bezier(.22,1,.36,1); }
-  .btn-solid { background: var(--signal); color: #1a100c; }
+  .btn-solid { background: var(--signal); color: #f3f0ea; }
   .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
   .btn:hover { transform: translateY(-2px); }
   .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 36px 0 10px; }
   .stat { background: var(--soft); border: 1px solid var(--line); border-radius: 18px; padding: 18px 14px; animation: rise .8s cubic-bezier(.22,1,.36,1) both; }
   .stat:nth-child(2) { animation-delay: .06s; } .stat:nth-child(3) { animation-delay: .12s; }
   .stat:nth-child(4) { animation-delay: .18s; } .stat:nth-child(5) { animation-delay: .24s; }
-  .stat b { display: block; font-family: "Instrument Serif", Georgia, serif; font-size: 1.7rem; font-weight: 400; color: var(--signal); }
+  .stat b { display: block; font-family: "Instrument Serif", Georgia, serif; font-size: 1.7rem; font-weight: 400; color: var(--ink); }
   .stat span { display: block; margin-top: 6px; color: var(--muted); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
   section { padding: 56px 0; border-top: 1px solid var(--line); }
   h2 { font-size: clamp(2.1rem, 4.5vw, 3.1rem); margin-bottom: 18px; line-height: 1; }
   h2 span { color: var(--muted); font-style: normal; }
   .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
   .step { background: var(--soft); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
-  .step small { color: var(--signal); letter-spacing: .12em; font-size: 11px; }
+  .step small { color: var(--muted); letter-spacing: .12em; font-size: 11px; }
   .step strong { display: block; margin: 8px 0 6px; }
   .step p { margin: 0; color: var(--muted); font-size: 14px; }
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -60,7 +60,7 @@
   .chat { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: #0c0d11; }
   .chat header { padding: 12px 16px; background: var(--soft); color: var(--muted); font-size: 13px; font-family: ui-monospace, monospace; }
   .msg { margin: 14px 16px; padding: 12px 14px; border-radius: 14px; max-width: 42rem; }
-  .you { margin-left: auto; background: var(--signal); color: #1a100c; }
+  .you { margin-left: auto; background: var(--signal); color: #f3f0ea; }
   .bot { background: var(--soft); border: 1px solid var(--line); }
   .role { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 6px; opacity: .7; }
   .note { margin: 0 16px 16px; color: var(--muted); font-size: 14px; }
@@ -68,9 +68,9 @@
   .limit { background: var(--soft); border: 1px solid var(--line); border-left: 2px solid var(--signal); border-radius: 16px; padding: 18px; margin-top: 16px; color: var(--muted); }
   .limit strong { display: block; margin-bottom: 6px; color: var(--ink); }
   footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
-  footer a { color: var(--signal); }
+  footer a { color: var(--ink); }
   @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
-  @keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(224, 122, 95, 0); } }
+  @keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(30, 74, 115, 0); } }
   @media (max-width: 800px) {
     .stats, .steps, .grid { grid-template-columns: 1fr 1fr; }
     .nav a.quiet { display: none; }
