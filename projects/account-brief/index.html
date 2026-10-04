@@ -62,8 +62,7 @@
   section { padding: 64px 0; border-top: 1px solid var(--line); }
   h2 { font-size: clamp(2rem, 4vw, 3.1rem); line-height: 1.05; margin-bottom: 14px; }
   .sub { color: var(--muted); max-width: 40rem; }
-  .demo-grid { display: grid; grid-template-columns: 280px 1fr; gap: 16px; margin-top: 28px; align-items: start; }
-  .accounts { display: grid; gap: 8px; }
+  .accounts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 28px; }
   .account {
     text-align: left; width: 100%; padding: 14px 14px 12px; border-radius: 8px;
     border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; font: inherit;
@@ -71,18 +70,42 @@
   .account.on { border-color: rgba(243, 240, 234, 0.55); background: #1e242d; }
   .account b { display: block; font-weight: 500; }
   .account span { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; }
-  .brief {
-    background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 22px 22px 8px;
+  .work { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 16px; margin-top: 16px; align-items: start; }
+  .pack, .brief { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+  .pack { padding: 16px; }
+  .pack-head, .brief-top { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .pack-head { margin-bottom: 12px; }
+  .pack-head button, .row { background: none; border: 0; color: inherit; font: inherit; cursor: pointer; text-align: left; }
+  .pack-head button { color: var(--muted); font-size: 13px; }
+  .pack-head button:hover { color: var(--fg); }
+  .fact {
+    display: grid; grid-template-columns: 18px 1fr; gap: 10px; width: 100%;
+    padding: 10px 8px; border-radius: 6px; border: 1px solid transparent;
+    background: none; color: inherit; font: inherit; text-align: left; cursor: pointer;
   }
-  .brief-top { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; margin-bottom: 18px; }
+  .fact.on { background: rgba(243, 240, 234, 0.04); }
+  .fact.lit { border-color: rgba(243, 240, 234, 0.45); }
+  .box { width: 16px; height: 16px; margin-top: 2px; border: 1px solid var(--dim); border-radius: 3px; }
+  .fact.on .box { background: var(--fg); border-color: var(--fg); }
+  .fact.on .box::after {
+    content: ""; display: block; width: 8px; height: 4px; margin: 3px 0 0 3px;
+    border-left: 2px solid var(--bg); border-bottom: 2px solid var(--bg); transform: rotate(-45deg);
+  }
+  .fact b { display: block; font-weight: 500; }
+  .fact small, .src { color: var(--dim); font-size: 12px; }
+  .fact.off b, .fact.off small { color: var(--dim); }
+  .fact.bad { margin-top: 8px; border-top: 1px solid var(--line); border-radius: 0; padding-top: 14px; }
+  .hint { margin: 10px 8px 0; color: var(--dim); font-size: 13px; }
+  .brief { padding: 22px 22px 8px; }
+  .brief-top { margin-bottom: 18px; }
   .brief-top strong { font-weight: 500; }
   .tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); }
   .block { padding: 14px 0; border-top: 1px solid var(--line); }
   .block h3 { font-family: var(--sans); font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
   .decision { font-family: var(--serif); font-size: clamp(1.45rem, 2vw, 1.85rem); line-height: 1.2; }
-  .evidence { display: grid; gap: 10px; }
-  .row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: baseline; }
-  .src { color: var(--dim); font-size: 12px; white-space: nowrap; }
+  .evidence { display: grid; gap: 4px; }
+  .row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: baseline; width: 100%; padding: 6px 4px; border-radius: 6px; }
+  .row.lit { background: rgba(243, 240, 234, 0.06); }
   .flagged { color: var(--muted); }
   .flagged em { font-style: normal; color: var(--fg); }
   .four, .ops { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
@@ -94,7 +117,7 @@
   footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--muted); font-size: 14px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
   footer a { color: var(--fg); }
   @media (max-width: 800px) {
-    .demo-grid, .four, .ops { grid-template-columns: 1fr; }
+    .accounts, .work, .four, .ops { grid-template-columns: 1fr; }
     .row { grid-template-columns: 1fr; gap: 2px; }
     .nav a.quiet { display: none; }
   }
@@ -122,13 +145,14 @@
 <section id="demo">
   <div class="wrap">
     <h2>Three accounts. One rule.</h2>
-    <p class="sub">Composites, written for this sample. Pick one. The brief only uses what is in that pack.</p>
-    <div class="demo-grid">
-      <div class="accounts" role="tablist" aria-label="Sample accounts">
-        <button class="account on" type="button" role="tab" aria-selected="true" data-id="helios"><b>Helios Retail</b><span>Renewal in 46 days. Usage down.</span></button>
-        <button class="account" type="button" role="tab" aria-selected="false" data-id="northline"><b>Northline Logistics</b><span>Usage up. They asked about a module.</span></button>
-        <button class="account" type="button" role="tab" aria-selected="false" data-id="kestrel"><b>Kestrel Health</b><span>Tickets up. Usage flat.</span></button>
-      </div>
+    <p class="sub">Turn a line off. The decision follows the pack. A claim with no source never enters it.</p>
+    <div class="accounts" role="tablist" aria-label="Sample accounts">
+      <button class="account on" type="button" role="tab" aria-selected="true" data-id="helios"><b>Helios Retail</b><span>Renewal in 46 days. Usage down.</span></button>
+      <button class="account" type="button" role="tab" aria-selected="false" data-id="northline"><b>Northline Logistics</b><span>Usage up. They asked about a module.</span></button>
+      <button class="account" type="button" role="tab" aria-selected="false" data-id="kestrel"><b>Kestrel Health</b><span>Tickets up. Usage flat.</span></button>
+    </div>
+    <div class="work">
+      <div class="pack"></div>
       <article class="brief" aria-live="polite"></article>
     </div>
   </div>
@@ -141,7 +165,7 @@
     <div class="four">
       <article class="card"><h3>The customer problem</h3><p>A leader walks into a renewal or an expansion with a pack of exports and no single view of what to do this week.</p></article>
       <article class="card"><h3>The decision it forces</h3><p>Review, expand, or stay in the operating rhythm. Not a summary of every chart.</p></article>
-      <article class="card"><h3>What was built</h3><p>A sample that reads a fixed pack and writes the decision, the evidence, the risk of waiting, and the next conversation.</p></article>
+      <article class="card"><h3>What was built</h3><p>A sample that recomputes the brief when a line leaves the pack, and refuses a claim that has no source.</p></article>
       <article class="card"><h3>How it is checked</h3><p>Every line cites a row in the pack. If the field is missing, the sentence is flagged and left out of the decision.</p></article>
     </div>
   </div>
@@ -172,77 +196,208 @@
     helios: {
       name: "Helios Retail",
       meta: "Sample · Renewal in 46 days",
-      decision: "Do not open an expansion conversation. Book an executive review this week.",
-      evidence: [
-        ["Usage is down 18% against the prior 90 days.", "Usage export, row 4"],
-        ["Three escalations are open. Two are severity 1.", "Queue export, rows 11–13"],
-        ["The sponsor left. The new sponsor started on 12 March.", "QBR note, 12 Mar"]
-      ],
-      flagged: "“NPS fell 12 points.”",
-      why: "There is no NPS field in the pack.",
-      risk: "Waiting for the quarterly review means the renewal meeting is with a new sponsor and two open severity-1 issues.",
-      next: "Thirty minutes with the new sponsor. The agenda is the two issues, the usage drop, and whether 46 days is still the right date."
+      unsupported: { quote: "“NPS fell 12 points.”", why: "There is no NPS field in the pack." },
+      facts: [
+        { id: "usage", text: "Usage is down 18% against the prior 90 days.", src: "Usage export, row 4" },
+        { id: "sev", text: "Three escalations are open. Two are severity 1.", src: "Queue export, rows 11–13" },
+        { id: "sponsor", text: "The sponsor left. The new sponsor started on 12 March.", src: "QBR note, 12 Mar" }
+      ]
     },
     northline: {
       name: "Northline Logistics",
       meta: "Sample · Expansion pull",
-      decision: "Take the expansion conversation. Do not build a save plan.",
-      evidence: [
-        ["Usage is up 22%, and two new teams are active.", "Usage export, rows 2–3"],
-        ["No severity-1 issue in 90 days.", "Queue export, summary"],
-        ["The operations lead asked about the adjacent workflow module.", "Call note, 2 Sep"]
-      ],
-      flagged: "“The budget is approved.”",
-      why: "No budget line is in the pack.",
-      risk: "Waiting turns a pull from the customer into a cold conversation later in the year.",
-      next: "A working session on the module they asked about, with the operations lead and the commercial owner. No claim about budget."
+      unsupported: { quote: "“The budget is approved.”", why: "No budget line is in the pack." },
+      facts: [
+        { id: "usage", text: "Usage is up 22%, and two new teams are active.", src: "Usage export, rows 2–3" },
+        { id: "clean", text: "No severity-1 issue in 90 days.", src: "Queue export, summary" },
+        { id: "asked", text: "The operations lead asked about the adjacent workflow module.", src: "Call note, 2 Sep" }
+      ]
     },
     kestrel: {
       name: "Kestrel Health",
       meta: "Sample · Noisy, not unstable",
-      decision: "Do not take this to the CXO. Fix the repeated incident, and report it in the operating review.",
-      evidence: [
-        ["Ticket volume is up 40%.", "Queue export, row 1"],
-        ["Usage is flat, within 3%.", "Usage export, row 6"],
-        ["Eleven of fourteen new tickets are the same integration timeout.", "Queue export, cause column"],
-        ["Renewal is seven months out.", "Contract record, renewal date"]
-      ],
-      flagged: "“The account is about to churn.”",
-      why: "Usage is flat and the renewal is not near. The pack does not support it.",
-      risk: "An executive escalation for a repeated incident teaches the customer to skip the operating rhythm.",
-      next: "Name an engineering owner, set a date for the timeout fix, and send the account team one line on what changed."
+      unsupported: { quote: "“The account is about to churn.”", why: "The pack does not support it." },
+      facts: [
+        { id: "tickets", text: "Ticket volume is up 40%.", src: "Queue export, row 1" },
+        { id: "flat", text: "Usage is flat, within 3%.", src: "Usage export, row 6" },
+        { id: "timeout", text: "Eleven of fourteen new tickets are the same integration timeout.", src: "Queue export, cause column" },
+        { id: "renewal", text: "Renewal is seven months out.", src: "Contract record, renewal date" }
+      ]
     }
   };
 
-  const brief = document.querySelector(".brief");
-  const buttons = [...document.querySelectorAll(".account")];
-
-  function draw(id) {
-    const pack = packs[id];
-    const rows = pack.evidence.map(([text, src]) =>
-      `<div class="row"><span>${text}</span><span class="src">${src}</span></div>`
-    ).join("");
-    brief.innerHTML = `
-      <div class="brief-top"><strong>${pack.name}</strong><span class="tag">${pack.meta}</span></div>
-      <div class="block"><h3>Decision</h3><p class="decision">${pack.decision}</p></div>
-      <div class="block"><h3>Evidence</h3><div class="evidence">${rows}</div></div>
-      <div class="block"><h3>Flagged, not written</h3><p class="flagged"><em>${pack.flagged}</em> ${pack.why}</p></div>
-      <div class="block"><h3>Risk of waiting</h3><p>${pack.risk}</p></div>
-      <div class="block"><h3>Next conversation</h3><p>${pack.next}</p></div>`;
+  function judge(id, on) {
+    const has = (key) => on.has(key);
+    if (id === "helios") {
+      if (has("usage") && (has("sev") || has("sponsor"))) return {
+        decision: "Do not open an expansion conversation. Book an executive review this week.",
+        risk: "Waiting for the quarterly review means the renewal meeting still has open severity-1 issues or a new sponsor.",
+        next: "Thirty minutes with the sponsor. The agenda is only the lines still in the pack, and whether 46 days is still the right date."
+      };
+      if (has("sev")) return {
+        decision: "Take the severity-1 issues to the owner this week. Do not call an executive review on an escalation alone.",
+        risk: "An executive meeting without a usage drop or a sponsor change spends the relationship on a queue item.",
+        next: "Name an owner for the two severity-1 issues and a date. Keep it out of the sponsor meeting."
+      };
+      if (has("usage")) return {
+        decision: "Usage is down. Put it on the operating review. Do not book an executive meeting yet.",
+        risk: "Treating a usage line as a crisis, with no severity-1 and no sponsor change, trains the account to ignore the next one.",
+        next: "One agenda line in the operating review: the 18% drop, and what changed in the last 90 days."
+      };
+      if (has("sponsor")) return {
+        decision: "Make the introduction. This is a sponsor change, not an escalation.",
+        risk: "Skipping the introduction leaves the renewal with someone who has not met the team.",
+        next: "A short introduction with the new sponsor. No review deck."
+      };
+      return {
+        decision: "The pack no longer supports a change in plan. Stay on the current rhythm.",
+        risk: "Acting without a line in the pack is how an unsupported story starts.",
+        next: "No new meeting. Wait until the pack changes."
+      };
+    }
+    if (id === "northline") {
+      if (has("usage") && has("asked")) return {
+        decision: "Take the expansion conversation. Do not build a save plan.",
+        risk: "Waiting turns a pull from the customer into a cold conversation later in the year.",
+        next: "A working session on the module they asked about, with the operations lead and the commercial owner."
+      };
+      if (has("asked")) return {
+        decision: "Answer the question they asked. Do not widen it into an expansion.",
+        risk: "A broader pitch, without the usage line, is a conversation they did not request.",
+        next: "Reply on the module. Leave the expansion story out."
+      };
+      if (has("usage")) return {
+        decision: "Usage is up. Nobody asked for more. Do not open an expansion on a chart.",
+        risk: "Leading with a chart, before a pull from the customer, makes the next real ask harder.",
+        next: "Note the rise. Wait for a question, or ask one narrow question in the next operating review."
+      };
+      return {
+        decision: "Stay on the operating rhythm. The pack supports neither a save plan nor an expansion.",
+        risk: "A meeting with nothing in the pack wastes the commercial owner.",
+        next: "No new conversation this week."
+      };
+    }
+    if (has("tickets") && has("flat") && has("timeout")) return {
+      decision: "Do not take this to the CXO. Fix the repeated incident, and report it in the operating review.",
+      risk: "An executive escalation for a repeated incident teaches the customer to skip the operating rhythm.",
+      next: "Name an engineering owner, set a date for the timeout fix, and send the account team one line on what changed."
+    };
+    if (has("tickets") && !has("renewal")) return {
+      decision: "The renewal date is not in the pack. Treat the queue as a renewal risk until that date is known.",
+      risk: "A noisy queue close to renewal is a different meeting from a noisy queue seven months out.",
+      next: "Confirm the renewal date before anyone decides this is only an engineering item."
+    };
+    if (has("tickets")) return {
+      decision: "Do not take this to the CXO. The pack does not show one cause and stable usage together.",
+      risk: "Escalating a volume number, without the cause, produces a meeting nobody can close.",
+      next: "Find whether the new tickets are one incident. Then decide."
+    };
+    return {
+      decision: "The volume spike is not in the pack. Do not open an escalation narrative.",
+      risk: "A churn story with no queue line and no usage line is the unsupported claim.",
+      next: "No CXO meeting. Put the account back on its normal review."
+    };
   }
+
+  const packEl = document.querySelector(".pack");
+  const briefEl = document.querySelector(".brief");
+  const buttons = [...document.querySelectorAll(".account")];
+  const chosen = {};
+  let current = "helios";
+
+  function selection(id) {
+    if (!chosen[id]) chosen[id] = { on: new Set(packs[id].facts.map((fact) => fact.id)), force: false };
+    return chosen[id];
+  }
+
+  function renderPack() {
+    const pack = packs[current];
+    const sel = selection(current);
+    const facts = pack.facts.map((fact) => {
+      const on = sel.on.has(fact.id);
+      return `<button class="fact${on ? " on" : " off"}" type="button" data-fact="${fact.id}" aria-pressed="${on}"><span class="box" aria-hidden="true"></span><span><b>${fact.text}</b><small>${fact.src}</small></span></button>`;
+    }).join("");
+    packEl.innerHTML = `
+      <div class="pack-head"><strong>In the pack</strong><button type="button" data-reset>Restore</button></div>
+      ${facts}
+      <button class="fact bad${sel.force ? " on" : " off"}" type="button" data-force aria-pressed="${sel.force}"><span class="box" aria-hidden="true"></span><span><b>Try to add ${pack.unsupported.quote}</b><small>No source. It cannot become evidence.</small></span></button>
+      <p class="hint">Click a line to remove it. Click a line in the brief to find it here.</p>`;
+  }
+
+  function renderBrief() {
+    const pack = packs[current];
+    const sel = selection(current);
+    const view = judge(current, sel.on);
+    const rows = pack.facts.filter((fact) => sel.on.has(fact.id)).map((fact) =>
+      `<button class="row" type="button" data-jump="${fact.id}"><span>${fact.text}</span><span class="src">${fact.src}</span></button>`
+    ).join("") || `<p class="flagged">No sourced lines are in the pack.</p>`;
+    const flagged = sel.force
+      ? `<p class="flagged"><em>${pack.unsupported.quote}</em> ${pack.unsupported.why} Left out of the decision.</p>`
+      : `<p class="flagged">Nothing unsupported has been added.</p>`;
+    briefEl.innerHTML = `
+      <div class="brief-top"><strong>${pack.name}</strong><span class="tag">${pack.meta}</span></div>
+      <div class="block"><h3>Decision</h3><p class="decision">${view.decision}</p></div>
+      <div class="block"><h3>Evidence</h3><div class="evidence">${rows}</div></div>
+      <div class="block"><h3>Flagged, not written</h3>${flagged}</div>
+      <div class="block"><h3>Risk of waiting</h3><p>${view.risk}</p></div>
+      <div class="block"><h3>Next conversation</h3><p>${view.next}</p></div>`;
+  }
+
+  function light(id) {
+    document.querySelectorAll(".lit").forEach((el) => el.classList.remove("lit"));
+    const fact = document.querySelector(`.fact[data-fact="${id}"]`);
+    const row = document.querySelector(`.row[data-jump="${id}"]`);
+    if (fact) fact.classList.add("lit");
+    if (row) row.classList.add("lit");
+  }
+
+  packEl.addEventListener("click", (event) => {
+    const reset = event.target.closest("[data-reset]");
+    const force = event.target.closest("[data-force]");
+    const fact = event.target.closest("[data-fact]");
+    const sel = selection(current);
+    if (reset) {
+      sel.on = new Set(packs[current].facts.map((item) => item.id));
+      sel.force = false;
+      renderPack();
+      renderBrief();
+      return;
+    }
+    if (force) {
+      sel.force = !sel.force;
+      renderPack();
+      renderBrief();
+      return;
+    }
+    if (!fact) return;
+    const id = fact.dataset.fact;
+    if (sel.on.has(id)) sel.on.delete(id);
+    else sel.on.add(id);
+    renderPack();
+    renderBrief();
+    light(id);
+  });
+
+  briefEl.addEventListener("click", (event) => {
+    const row = event.target.closest("[data-jump]");
+    if (row) light(row.dataset.jump);
+  });
 
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
+      current = button.dataset.id;
       buttons.forEach((item) => {
         const on = item === button;
         item.classList.toggle("on", on);
         item.setAttribute("aria-selected", on ? "true" : "false");
       });
-      draw(button.dataset.id);
+      renderPack();
+      renderBrief();
     });
   });
 
-  draw("helios");
+  renderPack();
+  renderBrief();
 </script>
 </body>
 </html>
