@@ -52,11 +52,12 @@
       :root {
         --bg: #08090c;
         --surface: #12141a;
-        --fg: #f4f1ea;
-        --muted: #b7b2a8;
-        --dim: #8a847a;
-        --line: rgba(244, 241, 234, 0.14);
-        --signal: #e2ff57;
+        --fg: #f7f3ea;
+        --muted: #d4cdc2;
+        --dim: #b7b1a6;
+        --line: rgba(247, 243, 234, 0.16);
+        --signal: #d6f25c;
+        --sand: #e7d7a6;
         --serif: "Instrument Serif", Georgia, serif;
         --sans: Figtree, ui-sans-serif, system-ui, sans-serif;
         --mono: "IBM Plex Mono", ui-monospace, monospace;
@@ -191,16 +192,9 @@
       .line:nth-child(1) .w:nth-child(1) { animation-delay: .04s; }
       .line:nth-child(1) .w:nth-child(2) { animation-delay: .12s; }
       .line:nth-child(1) .w:nth-child(3) { animation-delay: .2s; }
-      .line:nth-child(2) .w {
-        animation: lift .85s var(--ease) forwards, sheen 3.4s linear 1.05s infinite;
-        background-image: linear-gradient(105deg, #e2ff57 0 38%, #fffce6 50%, #e2ff57 62% 100%);
-        background-size: 220% 100%; background-position: 100% 0;
-        -webkit-background-clip: text; background-clip: text;
-        color: transparent; -webkit-text-fill-color: transparent;
-      }
-      .line:nth-child(2) .w:nth-child(1) { animation-delay: .28s, 1.05s; }
-      .line:nth-child(2) .w:nth-child(2) { animation-delay: .36s, 1.05s; }
-      .line:nth-child(2) .w:nth-child(3) { animation-delay: .44s, 1.05s; }
+      .line:nth-child(2) .w { color: var(--signal); animation-delay: .28s; }
+      .line:nth-child(2) .w:nth-child(2) { animation-delay: .36s; }
+      .line:nth-child(2) .w:nth-child(3) { animation-delay: .44s; }
       .lede { margin: 22px 0 0; max-width: 38rem; color: var(--muted); font-size: clamp(1.05rem, 1.6vw, 1.22rem); }
       .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
       .layer { transform: translate3d(0, var(--py, 0px), 0); will-change: transform; }
@@ -254,7 +248,7 @@
         content: ""; display: block; width: 72px; height: 1px; margin-top: 12px; background: var(--signal); transform-origin: left;
       }
       .display { font-family: var(--serif); font-size: clamp(2.4rem, 5.4vw, 4.6rem); line-height: 0.98; letter-spacing: -0.03em; }
-      .display em, .muted { color: var(--muted); font-style: normal; }
+      .display em, .muted { color: var(--sand); font-style: normal; }
       em { font-style: normal; }
       .copy { color: var(--muted); font-size: 1.08rem; max-width: 42rem; }
       .reveal { }
