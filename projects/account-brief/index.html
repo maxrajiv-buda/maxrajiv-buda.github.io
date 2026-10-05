@@ -17,8 +17,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg: #0e1116; --surface: #171b22; --fg: #f3f0ea; --muted: #c5c1b8; --dim: #8f8c86;
-    --signal: #ffe14d; --line: rgba(243, 240, 234, 0.14);
+    --bg: #f4eee6; --surface: #faf6f1; --fg: #2a171b; --muted: #6e534e; --dim: #8d736c;
+    --signal: #7c303a; --line: rgba(92, 36, 48, 0.16);
     --serif: "Instrument Serif", Georgia, serif;
     --sans: Figtree, ui-sans-serif, system-ui, sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, monospace;
@@ -32,13 +32,13 @@
   p { margin: 0; text-wrap: pretty; }
   .nav {
     position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between;
-    height: 64px; padding: 0 22px; background: rgba(14, 17, 22, 0.94); backdrop-filter: blur(16px);
+    height: 64px; padding: 0 22px; background: rgba(244, 238, 230, 0.94); backdrop-filter: blur(16px);
     border-bottom: 1px solid transparent;
   }
   .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; }
   .mark {
     width: 34px; height: 34px; display: grid; place-items: center; border-radius: 8px;
-    background: #141820; border: 1px solid var(--line); font-family: var(--serif); font-size: 17px;
+    background: transparent; border: 1px solid var(--line); font-family: var(--serif); font-size: 17px;
   }
   .nav a.quiet { color: var(--muted); font-size: 14px; }
   .nav a.quiet:hover { color: var(--fg); }
@@ -53,10 +53,10 @@
     border-radius: 6px; border: 1px solid transparent; font-size: 14px; font-weight: 500;
     transition: background .22s var(--ease), border-color .22s;
   }
-  .btn-solid { background: var(--signal); color: #1c1608; font-weight: 600; }
+  .btn-solid { background: var(--signal); color: #f6efe6; font-weight: 600; }
   .btn-ghost { background: transparent; color: var(--fg); border-color: var(--line); }
   @media (hover: hover) {
-    .btn-solid:hover { background: #fff1a8; }
+    .btn-solid:hover { background: #5e242c; }
     .btn-ghost:hover { border-color: var(--fg); background: rgba(243, 240, 234, 0.05); }
   }
   section { padding: 64px 0; border-top: 1px solid var(--line); }
@@ -67,7 +67,7 @@
     text-align: left; width: 100%; padding: 14px 14px 12px; border-radius: 8px;
     border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; font: inherit;
   }
-  .account.on { border-color: var(--signal); background: #1e242d; }
+  .account.on { border-color: var(--signal); background: #efe6dc; }
   .account b { display: block; font-weight: 500; }
   .account span { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; }
   .work { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 16px; margin-top: 16px; align-items: start; }
