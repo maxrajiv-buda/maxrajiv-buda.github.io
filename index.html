@@ -24,7 +24,7 @@
     <meta name="twitter:description" content="Enterprise leader who ships the AI, not only the advice. Customer ownership, HireOnAI in production, and hands-on model work." />
     <meta name="twitter:image" content="https://rajivbuda.com/assets/og.jpg" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <link rel="preload" as="image" href="./assets/rajiv-hero.jpg" />
+    <link rel="preload" as="image" href="./assets/rajiv-cut.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -370,47 +370,65 @@
       section.poster {
         position: relative;
         height: calc(100svh - 68px);
+        display: grid;
+        grid-template-columns: minmax(0, 1.12fr) minmax(280px, 0.88fr);
         background: #ffe500;
         color: #000;
         padding: 0;
         border: 0;
         overflow: hidden;
+        transition: background .7s ease;
       }
-      .poster-line {
-        position: absolute;
-        left: 0;
-        right: 0;
-        margin: 0;
-        z-index: 1;
-        line-height: 0;
-      }
-      .poster-line:first-child { top: 0; }
-      h1.poster-line { bottom: 0; }
-      .poster-line svg { display: block; width: 100%; height: auto; }
-      .poster-line text {
-        font-family: Anton, Impact, sans-serif;
-        font-size: 168px;
-        fill: #000;
-      }
-      .poster-photo {
-        position: absolute;
+      section.poster[data-i="1"] { background: #2ad4ff; }
+      .poster-copy {
+        position: relative;
         z-index: 2;
-        left: 50%;
-        top: 47%;
-        transform: translate(-50%, -50%);
-        height: 62%;
-        width: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 6vh 3vw 7vh 4.5vw;
+      }
+      .poster-words {
+        position: relative;
         margin: 0;
-        background: #111;
+        min-height: 1.7em;
+        font-family: var(--poster);
+        font-weight: 400;
+        font-size: clamp(4.6rem, 8.2vw, 8.8rem);
+        line-height: 0.82;
+        letter-spacing: 0;
+        text-transform: uppercase;
       }
-      .poster-photo img {
-        height: 100%;
-        width: auto;
-        aspect-ratio: 4 / 5;
-        object-fit: cover;
-        object-position: center 16%;
+      .pw {
         display: block;
+        margin: 0;
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity .55s ease, transform .7s var(--ease);
       }
+      .pw.on { opacity: 1; transform: none; }
+      .pw:not(.on) { position: absolute; left: 0; top: 0; pointer-events: none; }
+      .poster-dots { display: flex; gap: 8px; margin-top: 28px; }
+      .poster-dots button {
+        width: 42px; height: 4px; padding: 0; border: 0; border-radius: 99px;
+        background: rgba(0, 0, 0, .22); position: relative; overflow: hidden; cursor: pointer;
+      }
+      .poster-dots button.on::after {
+        content: ""; position: absolute; inset: 0; background: #000; transform-origin: left;
+        animation: dotfill 4.6s linear;
+      }
+      @keyframes dotfill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+      .poster-figure { position: relative; height: 100%; min-width: 0; }
+      .poster-figure img {
+        position: absolute; right: 0; bottom: 0;
+        height: 96%; width: auto; max-width: 100%;
+        object-fit: contain; object-position: right bottom;
+        opacity: 0;
+        transform: translate3d(10%, 0, 0);
+        transition: opacity .75s ease, transform .9s var(--ease);
+        pointer-events: none;
+      }
+      .poster-figure img.on { opacity: 1; transform: none; }
       .sr {
         position: absolute;
         width: 1px;
@@ -428,11 +446,21 @@
       .chapters b { display: block; font-family: var(--poster); font-weight: 400; font-size: 2.2rem; color: #ffe500; line-height: 1; }
       .chapters a span, .chapters a { font-size: 14px; }
       @media (max-width: 800px) {
-        section.poster { height: calc(100svh - 68px); }
-        .poster-line:first-child { top: 8px; }
-        h1.poster-line { bottom: 12px; }
-        .poster-photo { height: 44%; top: 50%; }
+        section.poster {
+          height: auto;
+          min-height: calc(100svh - 68px);
+          grid-template-columns: 1fr;
+          grid-template-rows: auto minmax(320px, 54vh);
+        }
+        .poster-copy { padding: 22px 18px 8px; }
+        .poster-words { font-size: 17vw; min-height: 1.7em; }
+        .poster-figure { height: 62vh; }
+        .poster-figure img { height: 112%; max-width: none; right: -6%; }
         .chapters { grid-template-columns: 1fr 1fr; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .poster-dots button.on::after { animation: none; transform: none; }
+        .pw, .poster-figure img, section.poster { transition: none; }
       }
       .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
       .footer-links a:hover { color: var(--fg); }
@@ -559,21 +587,21 @@
     </nav>
 
     <main id="top">
-      <section class="poster">
-        <p class="poster-line">
-          <svg viewBox="0 0 1200 188" role="img" aria-label="Lead the room.">
-            <text x="0" y="168" textLength="1200" lengthAdjust="spacingAndGlyphs">LEAD THE ROOM.</text>
-          </svg>
-        </p>
-        <figure class="poster-photo">
-          <img src="./assets/rajiv-hero.jpg" alt="Rajiv Buda, studio portrait" width="480" height="640" fetchpriority="high" />
-        </figure>
-        <h1 class="poster-line">
-          <svg viewBox="0 0 1200 188" role="img" aria-hidden="true">
-            <text x="0" y="168" textLength="1200" lengthAdjust="spacingAndGlyphs">SHIP THE PRODUCT.</text>
-          </svg>
-          <span class="sr">Lead the room. Ship the product.</span>
-        </h1>
+      <section class="poster" id="poster" data-i="0" aria-label="Lead the room. Ship the product.">
+        <div class="poster-copy">
+          <h1 class="poster-words">
+            <span class="pw on">Lead the<br>room.</span>
+            <span class="pw">Ship the<br>product.</span>
+          </h1>
+          <div class="poster-dots" role="tablist" aria-label="Poster frames">
+            <button type="button" class="on" role="tab" aria-selected="true" aria-label="Lead the room"></button>
+            <button type="button" role="tab" aria-selected="false" aria-label="Ship the product"></button>
+          </div>
+        </div>
+        <div class="poster-figure">
+          <img class="on" src="./assets/rajiv-cut.png" alt="Rajiv Buda" width="799" height="1062" fetchpriority="high" />
+          <img src="./assets/rajiv-cut-close.png" alt="" width="543" height="658" />
+        </div>
       </section>
       <nav class="chapters" aria-label="Chapters">
         <a href="#story"><b>01</b> The foundation</a>
@@ -1055,6 +1083,44 @@
         window.scrollTo({ top: Math.max(0, top), behavior: reduce ? "auto" : "smooth" });
         history.pushState(null, "", "#" + id);
       });
+
+      const poster = document.getElementById("poster");
+      if (poster) {
+        const words = [...poster.querySelectorAll(".pw")];
+        const shots = [...poster.querySelectorAll(".poster-figure img")];
+        const dots = [...poster.querySelectorAll(".poster-dots button")];
+        let frame = 0;
+        let timer = 0;
+        const show = (n) => {
+          frame = (n + words.length) % words.length;
+          poster.dataset.i = String(frame);
+          words.forEach((el, i) => el.classList.toggle("on", i === frame));
+          shots.forEach((el, i) => {
+            const on = i === frame;
+            el.classList.toggle("on", on);
+            el.alt = on ? "Rajiv Buda" : "";
+          });
+          dots.forEach((el, i) => {
+            const on = i === frame;
+            el.classList.toggle("on", on);
+            el.setAttribute("aria-selected", on ? "true" : "false");
+          });
+          const live = dots[frame];
+          live.classList.remove("on");
+          void live.offsetWidth;
+          live.classList.add("on");
+        };
+        const arm = () => {
+          clearInterval(timer);
+          if (reduce) return;
+          timer = setInterval(() => show(frame + 1), 4600);
+        };
+        dots.forEach((el, i) => el.addEventListener("click", () => { show(i); arm(); }));
+        poster.addEventListener("mouseenter", () => clearInterval(timer));
+        poster.addEventListener("mouseleave", arm);
+        document.addEventListener("visibilitychange", () => { document.hidden ? clearInterval(timer) : arm(); });
+        arm();
+      }
     </script>
   </body>
 </html>
