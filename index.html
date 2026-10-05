@@ -420,8 +420,8 @@
       @keyframes dotfill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
       .poster-figure { position: relative; height: 100%; min-width: 0; }
       .poster-figure img {
-        position: absolute; right: 0; bottom: 0;
-        height: 96%; width: auto; max-width: 100%;
+        position: absolute; right: 0; bottom: -18%;
+        height: 122%; width: auto; max-width: none;
         object-fit: contain; object-position: right bottom;
         opacity: 0;
         transform: translate3d(10%, 0, 0);
@@ -429,6 +429,7 @@
         pointer-events: none;
       }
       .poster-figure img.on { opacity: 1; transform: none; }
+      .poster-figure img:nth-child(2) { height: 178%; bottom: auto; top: -2%; right: -4%; }
       .sr {
         position: absolute;
         width: 1px;
@@ -454,8 +455,9 @@
         }
         .poster-copy { padding: 22px 18px 8px; }
         .poster-words { font-size: 17vw; min-height: 1.7em; }
-        .poster-figure { height: 62vh; }
-        .poster-figure img { height: 112%; max-width: none; right: -6%; }
+        .poster-figure { height: 58vh; }
+        .poster-figure img { height: 128%; bottom: -20%; max-width: none; right: 0; }
+        .poster-figure img:nth-child(2) { height: 188%; top: -6%; bottom: auto; right: -10%; }
         .chapters { grid-template-columns: 1fr 1fr; }
       }
       @media (prefers-reduced-motion: reduce) {
@@ -599,8 +601,8 @@
           </div>
         </div>
         <div class="poster-figure">
-          <img class="on" src="./assets/rajiv-cut.png" alt="Rajiv Buda" width="799" height="1062" fetchpriority="high" />
-          <img src="./assets/rajiv-cut-close.png" alt="" width="543" height="658" />
+          <img class="on" src="./assets/rajiv-cut.png" alt="Rajiv Buda" width="608" height="860" fetchpriority="high" />
+          <img src="./assets/rajiv-cut.png" alt="" width="608" height="860" />
         </div>
       </section>
       <nav class="chapters" aria-label="Chapters">
