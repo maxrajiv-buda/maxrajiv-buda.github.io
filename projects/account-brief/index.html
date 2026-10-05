@@ -18,7 +18,7 @@
 <style>
   :root {
     --bg: #0e1116; --surface: #171b22; --fg: #f3f0ea; --muted: #c5c1b8; --dim: #8f8c86;
-    --signal: #f0c14b; --line: rgba(243, 240, 234, 0.14);
+    --signal: #ffe14d; --line: rgba(243, 240, 234, 0.14);
     --serif: "Instrument Serif", Georgia, serif;
     --sans: Figtree, ui-sans-serif, system-ui, sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, monospace;
@@ -53,10 +53,10 @@
     border-radius: 6px; border: 1px solid transparent; font-size: 14px; font-weight: 500;
     transition: background .22s var(--ease), border-color .22s;
   }
-  .btn-solid { background: var(--signal); color: #1a160c; }
+  .btn-solid { background: var(--signal); color: #1c1608; font-weight: 600; }
   .btn-ghost { background: transparent; color: var(--fg); border-color: var(--line); }
   @media (hover: hover) {
-    .btn-solid:hover { background: #f6d56a; }
+    .btn-solid:hover { background: #fff1a8; }
     .btn-ghost:hover { border-color: var(--fg); background: rgba(243, 240, 234, 0.05); }
   }
   section { padding: 64px 0; border-top: 1px solid var(--line); }
@@ -67,7 +67,7 @@
     text-align: left; width: 100%; padding: 14px 14px 12px; border-radius: 8px;
     border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; font: inherit;
   }
-  .account.on { border-color: rgba(243, 240, 234, 0.55); background: #1e242d; }
+  .account.on { border-color: var(--signal); background: #1e242d; }
   .account b { display: block; font-weight: 500; }
   .account span { display: block; margin-top: 4px; color: var(--muted); font-size: 13px; }
   .work { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 16px; margin-top: 16px; align-items: start; }
