@@ -418,18 +418,18 @@
         animation: dotfill 4.6s linear;
       }
       @keyframes dotfill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-      .poster-figure { position: relative; height: 100%; min-width: 0; }
+      .poster-figure { position: relative; height: 100%; min-width: 0; overflow: hidden; }
       .poster-figure img {
-        position: absolute; right: 0; bottom: -18%;
-        height: 122%; width: auto; max-width: none;
+        position: absolute; right: 0; bottom: 0; top: auto;
+        height: 100%; width: auto; max-width: 100%;
         object-fit: contain; object-position: right bottom;
         opacity: 0;
-        transform: translate3d(10%, 0, 0);
+        transform: translate3d(8%, 0, 0);
         transition: opacity .75s ease, transform .9s var(--ease);
         pointer-events: none;
       }
       .poster-figure img.on { opacity: 1; transform: none; }
-      .poster-figure img:nth-child(2) { height: 178%; bottom: auto; top: -2%; right: -4%; }
+      .poster-figure img:nth-child(2) { height: 116%; bottom: -8%; max-width: none; right: -2%; }
       .sr {
         position: absolute;
         width: 1px;
@@ -451,13 +451,17 @@
           height: auto;
           min-height: calc(100svh - 68px);
           grid-template-columns: 1fr;
-          grid-template-rows: auto minmax(320px, 54vh);
+          grid-template-rows: auto 42vh;
         }
-        .poster-copy { padding: 22px 18px 8px; }
-        .poster-words { font-size: 17vw; min-height: 1.7em; }
-        .poster-figure { height: 58vh; }
-        .poster-figure img { height: 128%; bottom: -20%; max-width: none; right: 0; }
-        .poster-figure img:nth-child(2) { height: 188%; top: -6%; bottom: auto; right: -10%; }
+        .poster-copy { padding: 28px 20px 0; }
+        .poster-words { font-size: 16vw; min-height: 1.7em; }
+        .poster-figure { height: 42vh; overflow: hidden; }
+        .poster-figure img,
+        .poster-figure img:nth-child(2) {
+          height: 100%; max-width: 70%; width: auto;
+          right: 0; bottom: 0; top: auto; left: auto;
+        }
+        .poster-figure img:nth-child(2) { height: 112%; max-width: 76%; bottom: -6%; }
         .chapters { grid-template-columns: 1fr 1fr; }
       }
       @media (prefers-reduced-motion: reduce) {
