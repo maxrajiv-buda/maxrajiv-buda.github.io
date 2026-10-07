@@ -24,7 +24,7 @@
     <meta name="twitter:description" content="Enterprise leader who ships the AI, not only the advice. Customer ownership, HireOnAI in production, and hands-on model work." />
     <meta name="twitter:image" content="https://rajivbuda.com/assets/og.jpg" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <link rel="preload" as="image" href="./assets/rajiv-full.jpg" />
+    <link rel="preload" as="image" href="./assets/hero-move.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -378,17 +378,11 @@
         overflow: hidden;
         color: #f4f1ea;
       }
-      .stage-photo {
-        position: absolute;
-        z-index: 1;
-        right: 2vw;
-        bottom: 0;
-        height: 94%;
-        width: auto;
-        max-width: 48%;
-        object-fit: contain;
-        object-position: right bottom;
-        pointer-events: none;
+      .stage-film {
+        position: absolute; inset: 0; z-index: 0;
+        width: 100%; height: 100%;
+        object-fit: cover; object-position: center center;
+        background: #070707;
       }
       .stage-copy {
         position: absolute; z-index: 2;
@@ -432,14 +426,7 @@
       .chapters a span, .chapters a { font-size: 14px; }
       @media (max-width: 800px) {
         .stage { height: auto; min-height: 0; display: flex; flex-direction: column; }
-        .stage-photo {
-          position: relative;
-          right: auto;
-          height: 46vh;
-          max-width: 78%;
-          margin: 8px auto 0;
-          display: block;
-        }
+        .stage-film { position: relative; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
         .stage-copy { position: relative; padding: 22px 20px 4px; max-width: none; }
         .stage h1 { font-size: 1.65rem; }
         .chapters { grid-template-columns: 1fr 1fr; }
@@ -575,7 +562,9 @@
 
     <main id="top">
       <section class="stage" id="poster" aria-label="Lead the room. Ship the product.">
-        <img class="stage-photo" src="./assets/rajiv-full.jpg" alt="Rajiv Buda" width="1152" height="1728" />
+        <video class="stage-film" autoplay muted loop playsinline preload="auto" poster="./assets/hero-move.jpg">
+          <source src="./assets/hero-move.mp4" type="video/mp4" />
+        </video>
         <div class="stage-copy">
           <p class="stage-kicker">Rajiv Buda</p>
           <h1>Lead the room.<br>Ship the product.</h1>
@@ -1069,6 +1058,8 @@
       });
 
       const poster = document.getElementById("poster");
+      const film = poster && poster.querySelector(".stage-film");
+      if (film && reduce) { film.removeAttribute("loop"); film.pause(); }
       if (poster && poster.querySelector(".pw")) {
         const words = [...poster.querySelectorAll(".pw")];
         const shots = [...poster.querySelectorAll(".poster-figure img")];
