@@ -421,7 +421,11 @@
         animation: dotfill 4.6s linear;
       }
       @keyframes dotfill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-      .poster-figure { position: relative; height: 100%; min-width: 0; overflow: hidden; }
+      .poster-figure { position: relative; z-index: 2; height: 100%; min-width: 0; overflow: hidden; }
+      .ink {
+        position: absolute; inset: -8%; z-index: 0; width: 116%; height: 116%;
+        pointer-events: none; display: block; filter: blur(18px);
+      }
       .poster-figure img {
         position: absolute; right: 0; bottom: 0; top: auto;
         height: 100%; width: auto; max-width: 100%;
@@ -467,7 +471,8 @@
       }
       @media (prefers-reduced-motion: reduce) {
         .poster-dots button.on::after { animation: none; transform: none; }
-        .pw, .poster-figure img, section.poster { transition: none; }
+        .pw, .poster-figure img, section.poster, .ink { transition: none; }
+        .ink { display: none; }
       }
       .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
       .footer-links a:hover { color: var(--fg); }
@@ -595,6 +600,7 @@
 
     <main id="top">
       <section class="poster" id="poster" data-i="0" aria-label="Lead the room. Ship the product.">
+        <canvas class="ink" aria-hidden="true"></canvas>
         <div class="poster-copy">
           <h1 class="poster-words">
             <span class="pw on">Lead the<br>room.</span>
@@ -1101,6 +1107,7 @@
         const words = [...poster.querySelectorAll(".pw")];
         const shots = [...poster.querySelectorAll(".poster-figure img")];
         const dots = [...poster.querySelectorAll(".poster-dots button")];
+        const ink = poster.querySelector(".ink");
         let frame = 0;
         let timer = 0;
         const show = (n) => {
@@ -1132,6 +1139,74 @@
         poster.addEventListener("mouseleave", arm);
         document.addEventListener("visibilitychange", () => { document.hidden ? clearInterval(timer) : arm(); });
         arm();
+
+        if (ink && !reduce) {
+          const ctx = ink.getContext("2d", { alpha: true });
+          let running = false;
+          let raf = 0;
+          const forms = [
+            { x: 0.78, y: 0.42, rx: 0.34, ry: 0.2, a: 0.62, sx: 0.09, sy: 0.07, sp: 0.22, ph: 0.4, rot: 0.5 },
+            { x: 0.64, y: 0.74, rx: 0.3, ry: 0.16, a: 0.5, sx: 0.07, sy: 0.08, sp: 0.17, ph: 1.6, rot: -0.7 },
+            { x: 0.92, y: 0.16, rx: 0.24, ry: 0.2, a: 0.42, sx: 0.05, sy: 0.09, sp: 0.26, ph: 2.4, rot: 0.15 },
+            { x: 0.52, y: 0.28, rx: 0.18, ry: 0.11, a: 0.26, sx: 0.06, sy: 0.04, sp: 0.2, ph: 3.2, rot: 1.05 },
+            { x: 0.7, y: 0.55, rx: 0.42, ry: 0.1, a: 0.38, sx: 0.04, sy: 0.06, sp: 0.13, ph: 0.9, rot: -0.25 }
+          ];
+          const resize = () => {
+            const r = poster.getBoundingClientRect();
+            const w = Math.max(320, Math.round(r.width));
+            const h = Math.max(200, Math.round(r.height));
+            if (ink.width !== w || ink.height !== h) { ink.width = w; ink.height = h; }
+          };
+          const blob = (x, y, rx, ry, rot, alpha) => {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(rot);
+            ctx.scale(1, ry / rx);
+            const g = ctx.createRadialGradient(0, 0, rx * 0.08, 0, 0, rx);
+            g.addColorStop(0, `rgba(8, 8, 8, ${alpha})`);
+            g.addColorStop(0.45, `rgba(14, 12, 10, ${alpha * 0.55})`);
+            g.addColorStop(1, "rgba(8, 8, 8, 0)");
+            ctx.fillStyle = g;
+            ctx.beginPath();
+            ctx.arc(0, 0, rx, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          };
+          const paint = (now) => {
+            if (!running) return;
+            const w = ink.width, h = ink.height;
+            const t = now * 0.001;
+            ctx.clearRect(0, 0, w, h);
+            forms.forEach((f) => {
+              const x = w * (f.x + Math.sin(t * f.sp + f.ph) * f.sx);
+              const y = h * (f.y + Math.cos(t * f.sp * 0.8 + f.ph) * f.sy);
+              const breathe = 1 + Math.sin(t * f.sp * 1.3 + f.ph) * 0.08;
+              blob(x, y, w * f.rx * breathe, h * f.ry * breathe, f.rot + Math.sin(t * f.sp) * 0.25, f.a);
+            });
+            const ribbons = [
+              { y0: 0.18, amp: 0.16, x0: 0.4, a: 0.34, ph: 0 },
+              { y0: 0.55, amp: 0.12, x0: 0.46, a: 0.28, ph: 1.8 }
+            ];
+            ribbons.forEach((rb) => {
+              for (let i = 0; i < 16; i++) {
+                const p = i / 15;
+                const x = w * (rb.x0 + p * 0.58);
+                const y = h * (rb.y0 + p * 0.42 + Math.sin(p * 4.2 + t * 0.35 + rb.ph) * rb.amp);
+                const rad = h * (0.16 + Math.sin(p * 5 + t * 0.3 + rb.ph) * 0.035);
+                blob(x, y, rad * 1.35, rad, 0.4, rb.a * (0.45 + p * 0.55));
+              }
+            });
+            raf = requestAnimationFrame(paint);
+          };
+          const start = () => { if (running) return; running = true; raf = requestAnimationFrame(paint); };
+          const stop = () => { running = false; cancelAnimationFrame(raf); };
+          resize();
+          new ResizeObserver(resize).observe(poster);
+          const io = new IntersectionObserver((entries) => { entries[0].isIntersecting && !document.hidden ? start() : stop(); });
+          io.observe(poster);
+          document.addEventListener("visibilitychange", () => { document.hidden ? stop() : start(); });
+          start();
+        }
       }
     </script>
   </body>
