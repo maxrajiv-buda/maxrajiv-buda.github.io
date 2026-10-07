@@ -24,7 +24,7 @@
     <meta name="twitter:description" content="Enterprise leader who ships the AI, not only the advice. Customer ownership, HireOnAI in production, and hands-on model work." />
     <meta name="twitter:image" content="https://rajivbuda.com/assets/og.jpg" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <link rel="preload" as="image" href="./assets/rajiv-cut.png" />
+    <link rel="preload" as="image" href="./assets/hero-poster.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -250,7 +250,7 @@
       section { padding: 88px 0; border-top: 1px solid var(--line); }
       .eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; }
       .eyebrow::after { content: none; }
-      .display { font-family: var(--poster); font-size: clamp(2.6rem, 6vw, 5.2rem); line-height: 0.88; letter-spacing: 0; text-transform: uppercase; }
+      .display { font-family: var(--sans); font-weight: 500; font-size: clamp(1.7rem, 2.7vw, 2.3rem); line-height: 1.28; letter-spacing: -0.02em; text-transform: none; max-width: 24em; }
       .display em, .muted { color: var(--type); font-style: normal; }
       em { font-style: normal; }
       .copy { color: var(--muted); font-size: 1.08rem; max-width: 42rem; }
@@ -280,8 +280,8 @@
       .step h3 { font-family: var(--serif); font-size: 1.8rem; margin-bottom: 6px; }
       .metrics { grid-template-columns: repeat(3, 1fr); }
       .big-quote {
-        font-family: var(--poster); font-size: clamp(2.8rem, 6vw, 5.5rem); line-height: 0.88;
-        letter-spacing: 0; text-transform: uppercase; margin: 42px 0 0; max-width: 16ch;
+        font-family: var(--sans); font-weight: 500; font-size: clamp(1.7rem, 2.8vw, 2.4rem); line-height: 1.28;
+        letter-spacing: -0.02em; text-transform: none; margin: 42px 0 0; max-width: 22em;
       }
       .accent-text { color: var(--fg); font-style: normal; }
       .case { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 18px; margin-top: 28px; align-items: start; }
@@ -292,7 +292,7 @@
         border: 1px solid var(--line); border-radius: 999px; padding: 5px 10px;
       }
       .live i { width: 7px; height: 7px; border-radius: 99px; background: var(--signal); }
-      .panel h3 { font-family: var(--serif); font-size: clamp(2.4rem, 4vw, 3.4rem); margin: 14px 0 8px; }
+      .panel h3 { font-family: var(--serif); font-size: clamp(1.7rem, 2.6vw, 2.2rem); margin: 14px 0 8px; }
       .panel p { color: var(--muted); margin: 0; }
       .case-label { margin: 48px 0 0; font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; color: var(--muted); }
       .facts { margin-top: 18px; }
@@ -368,74 +368,46 @@
       .mc { background: #c8102e; } .rel { background: #0b3d91; } .acc { background: #a100ff; font-family: Georgia, serif; }
       .skills { grid-template-columns: repeat(3, 1fr); }
       .skill h3 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); margin-bottom: 14px; }
-      .contact h2 { font-size: clamp(3rem, 8vw, 6.4rem); max-width: 12ch; }
+      .contact h2 { font-size: clamp(1.9rem, 3.4vw, 2.6rem); max-width: 16em; }
       .rail { display: none; }
-      section.poster {
+      .stage {
         position: relative;
         height: calc(100svh - 68px);
-        display: grid;
-        grid-template-columns: minmax(0, 1.12fr) minmax(280px, 0.88fr);
-        background: #ffe500;
-        color: #000;
-        padding: 0;
-        border: 0;
+        min-height: 520px;
+        background: #070707;
         overflow: hidden;
-        transition: background .7s ease;
+        color: #f4f1ea;
       }
-      section.poster[data-i="1"] { background: #2ad4ff; }
-      .poster-copy {
-        position: relative;
-        z-index: 2;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 6vh 3vw 7vh 4.5vw;
+      .stage-film {
+        position: absolute; inset: 0;
+        width: 100%; height: 100%;
+        object-fit: cover; object-position: center center;
+        background: #070707;
       }
-      .poster-words {
-        position: relative;
+      .stage-copy {
+        position: absolute; z-index: 2;
+        left: 0; bottom: 0;
+        padding: 7vh 6vw 6vh;
+        max-width: 38rem;
+      }
+      .stage-kicker {
         margin: 0;
-        min-height: 1.7em;
-        font-family: var(--poster);
-        font-weight: 400;
-        font-size: clamp(4.6rem, 8.2vw, 8.8rem);
-        line-height: 0.82;
-        letter-spacing: 0;
+        font-family: var(--mono);
+        font-size: 12px;
+        letter-spacing: 0.22em;
         text-transform: uppercase;
+        color: #d7c4a3;
       }
-      .pw {
-        display: block;
-        margin: 0;
-        opacity: 0;
-        transform: translateY(18px);
-        transition: opacity .55s ease, transform .7s var(--ease);
+      .stage h1 {
+        font-family: var(--sans);
+        font-weight: 500;
+        font-size: clamp(1.9rem, 3.1vw, 2.85rem);
+        line-height: 1.16;
+        letter-spacing: -0.03em;
+        margin: 10px 0 0;
+        text-transform: none;
       }
-      .pw.on { opacity: 1; transform: none; }
-      .pw:not(.on) { position: absolute; left: 0; top: 0; pointer-events: none; }
-      .poster-dots { display: flex; gap: 8px; margin-top: 28px; }
-      .poster-dots button {
-        width: 42px; height: 4px; padding: 0; border: 0; border-radius: 99px;
-        background: rgba(0, 0, 0, .22); position: relative; overflow: hidden; cursor: pointer;
-      }
-      .poster-dots button.on::after {
-        content: ""; position: absolute; inset: 0; background: #000; transform-origin: left;
-        animation: dotfill 4.6s linear;
-      }
-      @keyframes dotfill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-      .poster-figure { position: relative; z-index: 2; height: 100%; min-width: 0; overflow: hidden; }
-      .ink {
-        position: absolute; inset: -8%; z-index: 0; width: 116%; height: 116%;
-        pointer-events: none; display: block; filter: blur(18px);
-      }
-      .poster-figure img {
-        position: absolute; right: 0; bottom: 0; top: auto;
-        height: 100%; width: auto; max-width: 100%;
-        object-fit: contain; object-position: right bottom;
-        opacity: 0;
-        transform: translate3d(8%, 0, 0);
-        transition: opacity .75s ease, transform .9s var(--ease);
-        pointer-events: none;
-      }
-      .poster-figure img.on { opacity: 1; transform: none; }
+      .stage-line { margin: 14px 0 0; max-width: 28rem; color: #c8c2b8; font-size: 1.02rem; }
       .sr {
         position: absolute;
         width: 1px;
@@ -450,23 +422,13 @@
       .chapters { display: grid; grid-template-columns: repeat(4, 1fr); background: #000; border-bottom: 1px solid var(--line); }
       .chapters a { padding: 22px 20px; border-right: 1px solid var(--line); color: var(--fg); }
       .chapters a:last-child { border-right: 0; }
-      .chapters b { display: block; font-family: var(--poster); font-weight: 400; font-size: 2.2rem; color: #ffe500; line-height: 1; }
+      .chapters b { display: block; font-family: var(--mono); font-weight: 500; font-size: 11px; letter-spacing: 0.16em; color: var(--dim); line-height: 1; margin-bottom: 6px; }
       .chapters a span, .chapters a { font-size: 14px; }
       @media (max-width: 800px) {
-        section.poster {
-          height: auto;
-          min-height: calc(100svh - 68px);
-          grid-template-columns: 1fr;
-          grid-template-rows: auto 42vh;
-        }
-        .poster-copy { padding: 28px 20px 0; }
-        .poster-words { font-size: 16vw; min-height: 1.7em; }
-        .poster-figure { height: 42vh; overflow: hidden; }
-        .poster-figure img,
-        .poster-figure img:nth-child(2) {
-          height: 100%; max-width: 70%; width: auto;
-          right: 0; bottom: 0; top: auto; left: auto;
-        }
+        .stage { height: auto; min-height: 0; display: flex; flex-direction: column; }
+        .stage-film { position: relative; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: center center; }
+        .stage-copy { position: relative; padding: 22px 20px 4px; max-width: none; }
+        .stage h1 { font-size: 1.65rem; }
         .chapters { grid-template-columns: 1fr 1fr; }
       }
       @media (prefers-reduced-motion: reduce) {
@@ -599,21 +561,14 @@
     </nav>
 
     <main id="top">
-      <section class="poster" id="poster" data-i="0" aria-label="Lead the room. Ship the product.">
-        <canvas class="ink" aria-hidden="true"></canvas>
-        <div class="poster-copy">
-          <h1 class="poster-words">
-            <span class="pw on">Lead the<br>room.</span>
-            <span class="pw">Ship the<br>product.</span>
-          </h1>
-          <div class="poster-dots" role="tablist" aria-label="Poster frames">
-            <button type="button" class="on" role="tab" aria-selected="true" aria-label="Lead the room"></button>
-            <button type="button" role="tab" aria-selected="false" aria-label="Ship the product"></button>
-          </div>
-        </div>
-        <div class="poster-figure">
-          <img class="on" src="./assets/rajiv-cut.png" alt="Rajiv Buda" width="608" height="860" fetchpriority="high" />
-          <img src="./assets/rajiv-cut.png" alt="" width="608" height="860" />
+      <section class="stage" id="poster" aria-label="Lead the room. Ship the product.">
+        <video class="stage-film" autoplay muted playsinline preload="auto" poster="./assets/hero-poster.jpg">
+          <source src="./assets/hero-walk.mp4" type="video/mp4" />
+        </video>
+        <div class="stage-copy">
+          <p class="stage-kicker">Rajiv Buda</p>
+          <h1>Lead the room.<br>Ship the product.</h1>
+          <p class="stage-line">Enterprise leadership, and the work of shipping the AI.</p>
         </div>
       </section>
       <nav class="chapters" aria-label="Chapters">
@@ -1103,7 +1058,9 @@
       });
 
       const poster = document.getElementById("poster");
-      if (poster) {
+      const film = poster && poster.querySelector(".stage-film");
+      if (film && reduce) film.pause();
+      if (poster && poster.querySelector(".pw")) {
         const words = [...poster.querySelectorAll(".pw")];
         const shots = [...poster.querySelectorAll(".poster-figure img")];
         const dots = [...poster.querySelectorAll(".poster-dots button")];
