@@ -427,7 +427,15 @@
       .chapters a span, .chapters a { font-size: 14px; }
       @media (max-width: 800px) {
         .stage { height: auto; min-height: 0; aspect-ratio: 16 / 9; display: block; }
-        .stage-shift { transform: translate(-20%, 2%); }
+        .stage-shift {
+          left: -32%;
+          top: -14%;
+          right: auto;
+          bottom: auto;
+          width: 148%;
+          height: 136%;
+          transform: none;
+        }
         .stage-copy {
           position: absolute;
           left: auto;
