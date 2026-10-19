@@ -1,0 +1,7 @@
+{
+  "routes": [
+    { "path": "/", "title": "Rajiv Buda — AI Leadership" },
+    { "path": "/technology", "title": "Rajiv Buda — Technology" },
+    { "path": "/destination", "title": "Rajiv Buda — Destination" }
+  ]
+}
