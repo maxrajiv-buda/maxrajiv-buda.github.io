@@ -38,3 +38,7 @@
 .project-card:hover .project-art{filter:saturate(1.12) brightness(1.05)}
 @keyframes project-glint{0%,16%{transform:translateX(-110%) rotate(9deg)}36%,100%{transform:translateX(110%) rotate(9deg)}}
 @media(prefers-reduced-motion:reduce){.project-art:after{animation:none}.project-card{transition:none}}
+
+/* Hero visibility correction: reserve the navigation's 82px rather than covering the subject's face. */
+.site-shell>.hero-section{margin-top:82px}
+@media(max-width:720px){.site-shell>.hero-section{margin-top:82px}}
