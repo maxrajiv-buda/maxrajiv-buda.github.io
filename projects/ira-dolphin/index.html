@@ -4,11 +4,11 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ira-Dolphin — Fine-tuned LLM | Rajiv Buda</title>
-<meta name="description" content="Ira-Dolphin is a LoRA fine-tune of Qwen3-4B for business-strategy advice. Trained on a free Colab T4, published on Hugging Face, and documented with its limits." />
+<meta name="description" content="Ira-Dolphin is a LoRA fine-tune of Qwen2.5-3B for business-strategy advice. Trained on a free Colab T4, published on Hugging Face, and documented with its limits." />
 <link rel="canonical" href="https://rajivbuda.com/projects/ira-dolphin/" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="Ira-Dolphin — a reproducible LoRA fine-tune" />
-<meta property="og:description" content="Qwen3-4B adapted with LoRA and Unsloth on a free T4. The model card states what was tested, and what was not." />
+<meta property="og:description" content="Qwen2.5-3B adapted with LoRA and Unsloth on a free T4. The model card states what was tested, and what was not." />
 <meta property="og:url" content="https://rajivbuda.com/projects/ira-dolphin/" />
 <meta property="og:image" content="https://rajivbuda.com/assets/og.jpg" />
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
@@ -88,13 +88,13 @@
   <div class="wrap">
     <p class="kicker">Project 02 · Model layer · Shipped</p>
     <h1>Ira-<span>Dolphin</span></h1>
-    <p class="lede">A LoRA fine-tune of Qwen3-4B for short business-strategy advice. Trained on a free Colab T4, published as a 120&nbsp;MB adapter, and written up with the limit in plain sight: one held-out prompt, not a benchmark.</p>
+    <p class="lede">A LoRA fine-tune of Qwen2.5-3B for short business-strategy advice. Trained on a free Colab T4, published as a 120&nbsp;MB adapter, and written up with the limit in plain sight: one held-out prompt, not a benchmark.</p>
     <div class="actions">
       <a class="btn btn-solid" href="https://huggingface.co/maxrajiv-buda/ira-dolphin" target="_blank" rel="noopener">Hugging Face model</a>
       <a class="btn btn-ghost" href="https://github.com/maxrajiv-buda/ira-dolphin" target="_blank" rel="noopener">Model card on GitHub</a>
     </div>
     <div class="stats">
-      <div class="stat"><b>Qwen3-4B</b><span>Base model</span></div>
+      <div class="stat"><b>Qwen2.5-3B-Instruct</b><span>Base model</span></div>
       <div class="stat"><b>120 MB</b><span>LoRA adapter</span></div>
       <div class="stat"><b><1 min</b><span>Train time, T4</span></div>
       <div class="stat"><b>$0</b><span>Compute cost</span></div>
@@ -108,7 +108,7 @@
     <h2>What I actually <span>ran.</span></h2>
     <div class="steps">
       <div class="step"><small>01</small><strong>Data</strong><p>A small instruction set, seeded and then reviewed by hand. Not a scraped corpus.</p></div>
-      <div class="step"><small>02</small><strong>Train</strong><p>Unsloth LoRA on 4-bit Qwen3-4B. Free T4, about 15&nbsp;GB VRAM.</p></div>
+      <div class="step"><small>02</small><strong>Train</strong><p>Unsloth LoRA on 4-bit Qwen2.5-3B-Instruct (unsloth/Qwen2.5-3B-Instruct-bnb-4bit). Free T4, about 15&nbsp;GB VRAM.</p></div>
       <div class="step"><small>03</small><strong>Check</strong><p>One prompt kept out of training, to see if the model only recited the set.</p></div>
       <div class="step"><small>04</small><strong>Publish</strong><p>Adapters pushed to the Hugging Face Hub. The URL is the artifact.</p></div>
       <div class="step"><small>05</small><strong>Reload</strong><p>The same model loads again from the Hub with no local checkpoint.</p></div>
@@ -120,7 +120,7 @@
   <div class="wrap">
     <h2>Decisions, and <span>why.</span></h2>
     <div class="grid">
-      <article class="card"><h3>Why Qwen3-4B</h3><p>Small enough to quantize to 4-bit and train on a free T4, and still coherent on short strategic answers.</p></article>
+      <article class="card"><h3>Why Qwen2.5-3B</h3><p>Small enough to quantize to 4-bit and train on a free T4, and still coherent on short strategic answers.</p></article>
       <article class="card"><h3>Why LoRA</h3><p>The base stays frozen. The trainable piece is a low-rank adapter, about 120&nbsp;MB instead of a full ~2&nbsp;GB model.</p></article>
       <article class="card"><h3>Why Unsloth</h3><p>Its kernels cut memory and time enough that the run fits the free Colab tier instead of a rented GPU.</p></article>
       <article class="card"><h3>Why 4-bit</h3><p>NF4 shrinks the footprint enough to load and train on 15&nbsp;GB. That is a hardware choice, not a quality claim.</p></article>
@@ -139,7 +139,7 @@
     </div>
     <div class="limit">
       <strong>What this does not prove</strong>
-      There is no held-out test set, no win-rate against the base model, and no claim that Ira-Dolphin outperforms Qwen3-4B in general. A one-minute LoRA on a small instruction set can pick up a voice. It can also overfit. I am publishing the workflow because I ran it, not because a single paragraph is evidence of a better model.
+      There is no held-out test set, no win-rate against the base model, and no claim that Ira-Dolphin outperforms Qwen2.5-3B in general. A one-minute LoRA on a small instruction set can pick up a voice. It can also overfit. I am publishing the workflow because I ran it, not because a single paragraph is evidence of a better model.
     </div>
   </div>
 </section>
