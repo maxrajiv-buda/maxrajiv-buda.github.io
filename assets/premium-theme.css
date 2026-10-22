@@ -298,3 +298,10 @@ html.pt .project-card.pt-c3 .tag-row span{border-color:color-mix(in srgb,var(--p
 @keyframes pt3-rip{0%{transform:scale(.5);opacity:1}100%{transform:scale(1.6);opacity:0}}
 @media(prefers-reduced-motion:reduce){.pt-art3 *{animation:none!important}}
 @media(min-width:1000px){html.pt .project-card.sand{grid-column:span 2}html.pt .project-card.sand .project-art{max-height:none}}
+/* v4: mobile menu overlay — opaque full-screen panel */
+html.pt .site-nav:has(.mobile-menu){background:var(--pt-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;z-index:2147482001!important;transform:none!important}
+html.pt:has(.mobile-menu),html.pt:has(.mobile-menu) body{overflow:hidden!important}
+html.pt .mobile-menu{position:fixed!important;top:70px!important;left:0!important;right:0!important;bottom:0!important;height:auto!important;min-height:calc(100dvh - 70px);background:var(--pt-bg)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;z-index:2147482002!important;display:flex!important;flex-direction:column!important;gap:0!important;padding:20px 28px 40px!important;overflow-y:auto;opacity:1!important;border-top:1px solid var(--pt-line2)!important}
+html.pt .mobile-menu>*{display:block;padding:18px 0!important;font:500 15px/1.2 "Space Grotesk",sans-serif!important;letter-spacing:.14em!important;color:var(--pt-ivory)!important;border-bottom:1px solid var(--pt-line2)!important;background:none!important;text-decoration:none}
+html.pt .mobile-menu>*:active{color:var(--pt-gold)!important}
+html.pt .menu-button{position:relative;z-index:2147482003!important;color:var(--pt-ivory)!important}
