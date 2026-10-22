@@ -236,3 +236,19 @@
 (function(){var D=document;function fix(){var w=D.createTreeWalker(D.body,NodeFilter.SHOW_TEXT),n;while(n=w.nextNode())if(n.nodeValue.indexOf('Qwen3-4B')>-1)n.nodeValue=n.nodeValue.replace(/Qwen3-4B/g,'Qwen2.5-3B')}
 function go(){fix();var t;new MutationObserver(function(){clearTimeout(t);t=setTimeout(fix,100)}).observe(D.body,{childList:true,subtree:true,characterData:true})}
 if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',go);else go()})();
+/* language selector -> Google Website Translate (googtrans cookie, persists across pages) */
+(function(){var M={en:'',ja:'ja',zh:'zh-CN',fr:'fr',de:'de',ko:'ko'},D=location.hostname;
+function ck(){var m=document.cookie.match(/(?:^|;\s*)googtrans=\/en\/([^;]+)/);return m?decodeURIComponent(m[1]):''}
+function setC(v){var e=v?'':';expires=Thu, 01 Jan 1970 00:00:00 GMT',val=v?'/en/'+v:'';
+ document.cookie='googtrans='+val+';path=/'+e;document.cookie='googtrans='+val+';path=/;domain='+D+e;document.cookie='googtrans='+val+';path=/;domain=.'+D+e}
+var st=document.createElement('style');st.textContent='.goog-te-banner-frame,.skiptranslate>iframe,iframe.skiptranslate,#goog-gt-tt,.goog-te-balloon-frame,.VIpgJd-ZVi9od-ORHb-OEVmcd,.VIpgJd-ZVi9od-aZ2wEe-wOHMyf,.VIpgJd-yAWNEb-L7lbkb{display:none!important;visibility:hidden!important}body{top:0!important;position:static}#pt-gt{display:none!important}font{background:none!important;box-shadow:none!important}';document.head.appendChild(st);
+var cur=ck(),inv={};for(var k in M)inv[M[k]]=k;
+function sync(){document.querySelectorAll('.language-select select,select[aria-label=Language]').forEach(function(s){var w=inv[cur]||'en';if(s.value!==w)s.value=w;s.setAttribute('translate','no')})}
+document.addEventListener('change',function(e){var s=e.target;if(!s.matches||!s.matches('.language-select select,select[aria-label=Language]'))return;
+ e.stopImmediatePropagation();var v=M[s.value];if(v===undefined)return;setC(v);location.reload()},true);
+if(cur){var d=document.createElement('div');d.id='pt-gt';(document.body||document.documentElement).appendChild(d);
+ window.ptGT=function(){new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'pt-gt')};
+ var sc=document.createElement('script');sc.src='https://translate.google.com/translate_a/element.js?cb=ptGT';document.head.appendChild(sc)}
+sync();setTimeout(sync,800);setTimeout(sync,2500);
+new MutationObserver(function(){document.body.style.top&&(document.body.style.top='0px')}).observe(document.body,{attributes:true,attributeFilter:['style']});
+})();
