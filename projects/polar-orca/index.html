@@ -136,8 +136,8 @@
         <p class="po-mission">I'm Polar Orca, built by Rajiv Buda to turn knowledge into opportunity, for everyone, everywhere.</p>
         <p class="lede">A LoRA fine-tune of Qwen2.5-3B for short, practical advice. Trained on a free Colab T4, published as a 120&nbsp;MB adapter, and written up with the limit in plain sight: one held-out prompt, not a benchmark.</p>
         <div class="actions">
-          <a class="btn btn-solid" href="https://huggingface.co/maxrajiv-buda/ira-dolphin" target="_blank" rel="noopener">Hugging Face model</a>
-          <a class="btn btn-ghost" href="https://github.com/maxrajiv-buda/ira-dolphin" target="_blank" rel="noopener">Model card on GitHub</a>
+          <a class="btn btn-solid" href="https://huggingface.co/maxrajiv-buda/polar-orca" target="_blank" rel="noopener">Hugging Face model</a>
+          <a class="btn btn-ghost" href="https://github.com/maxrajiv-buda/polar-orca" target="_blank" rel="noopener">Model card on GitHub</a>
         </div>
       </div>
       <div class="po-logo" role="img" aria-label="Polar Orca logo">
@@ -213,11 +213,10 @@
 <section id="reproduce">
   <div class="wrap">
     <h2>Load it from <span>the Hub.</span></h2>
-    <p class="po-formerly">The Hugging Face repo keeps its original name, <code>maxrajiv-buda/ira-dolphin</code>, so existing links and notebooks keep working.</p>
     <pre><code>from unsloth import FastLanguageModel
 
 model, tokenizer = FastLanguageModel.from_pretrained(
-    model_name="maxrajiv-buda/ira-dolphin",
+    model_name="maxrajiv-buda/polar-orca",
     max_seq_length=2048,
     load_in_4bit=True,
 )
@@ -234,7 +233,7 @@ print(tokenizer.decode(out[0], skip_special_tokens=True))</code></pre>
 <footer>
   <div class="wrap">
     <p data-keep-name>HireOnAI is the production product: LLM APIs, jobs, and a resume loop. Polar Orca (formerly IRA Dolphine) is the model-layer experiment next to it, built by Rajiv Buda.</p>
-    <p><a href="/">← Rajiv Buda</a> · <a href="https://huggingface.co/maxrajiv-buda/ira-dolphin">maxrajiv-buda/ira-dolphin</a></p>
+    <p><a href="/">← Rajiv Buda</a> · <a href="https://huggingface.co/maxrajiv-buda/polar-orca">maxrajiv-buda/polar-orca</a></p>
   </div>
 </footer>
 </body>
