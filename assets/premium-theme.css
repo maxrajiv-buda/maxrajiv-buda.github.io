@@ -379,3 +379,23 @@ html[data-theme=aurora] .hero-section h1 em{background-size:200% 100%!important;
 html[data-theme=light] section:not(.hero-section) p,html[data-theme=light] section:not(.hero-section) li,html[data-theme=light] .timeline-copy p,html[data-theme=light] .card p{color:#4a4b52!important;opacity:1!important}
 html[data-theme=light] section:not(.hero-section) h2,html[data-theme=light] section:not(.hero-section) h3{color:#111114!important}
 @media(max-width:600px){html[data-theme=aurora] .hero-section h1,html[data-theme=neo] .hero-section h1{font-size:40px!important;line-height:1.02!important}html[data-theme] h2{font-size:clamp(32px,9vw,44px)!important}}
+/* ===== Polar Orca (formerly IRA Dolphine): icon art, card, formerly line ===== */
+.pt-orca{position:absolute;inset:0;overflow:hidden;z-index:2;display:block;background:radial-gradient(120% 100% at 78% 12%,#ffffff 0%,#f1f3ff 38%,#e2e8ff 72%,#d7dcff 100%)}
+.pt-orca .og{position:absolute;inset:-30%;background:radial-gradient(closest-side at 30% 70%,rgba(139,124,255,.30),transparent),radial-gradient(closest-side at 72% 30%,rgba(111,170,255,.32),transparent);animation:pt2-spin 24s linear infinite}
+.pt-orca img{position:absolute;left:50%;top:52%;height:84%;width:auto!important;max-width:none!important;transform:translate(-50%,-50%);filter:drop-shadow(0 12px 14px rgba(30,30,80,.20));animation:pt-orca-swim 5.6s ease-in-out infinite}
+.pt-orca .sp{position:absolute;left:0;right:0;bottom:0;height:26%;background:linear-gradient(180deg,transparent,rgba(111,124,255,.14))}
+@keyframes pt-orca-swim{0%,100%{transform:translate(-50%,-50%) rotate(-2deg)}50%{transform:translate(-50%,-57%) rotate(2.5deg)}}
+html:not([data-theme=light]) .pt-orca{background:radial-gradient(120% 100% at 78% 12%,#3d4596 0%,#1f2559 45%,#11142e 100%)}
+html:not([data-theme=light]) .pt-orca img{filter:drop-shadow(0 0 1.5px rgba(255,255,255,.6)) drop-shadow(0 0 22px rgba(150,160,255,.45))}
+html.pt .project-card.blue .project-art>.pt-orca{display:block!important}
+html.pt .project-card.blue .project-art>.pt-ira{display:none!important}
+html.pt .project-card.blue .project-art{border:1px solid rgba(111,124,255,.45)!important;box-shadow:0 18px 60px -24px rgba(111,124,255,.55)!important}
+html.pt .project-card.blue,html.pt .pt-orca-card{border-color:rgba(111,124,255,.32)!important}
+html.pt body .project-card.blue h3,html.pt body .pt-orca-card h3{background:linear-gradient(90deg,#5b6cff,#8f7bff 50%,#b07cff,#5b6cff)!important;background-size:200% 100%!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;color:transparent!important;filter:none!important;animation:pt2-txt 6s linear infinite}
+html.pt .project-card.blue h3 svg{color:#7b74ff!important;stroke:#7b74ff}
+html.pt .project-card.blue .tag-row span{border-color:rgba(111,124,255,.45)!important;color:#c3c8ff!important}
+html[data-theme=light] .project-card.blue .tag-row span{color:#4f55d8!important;background:rgba(111,124,255,.06)!important}
+.pt-formerly{display:block;margin:-4px 0 10px!important;font-size:12px!important;line-height:1.4!important;letter-spacing:.02em;color:var(--pt-mute,#8a8fa3)!important;-webkit-text-fill-color:currentColor!important;background:none!important;opacity:.95}
+.pt-plogo.orca{border-color:rgba(111,124,255,.45);box-shadow:0 18px 60px -24px rgba(111,124,255,.55)}
+.pt-plogo.orca:after{display:none}
+@media(prefers-reduced-motion:reduce){.pt-orca img,.pt-orca .og,html.pt body .project-card.blue h3,html.pt body .pt-orca-card h3{animation:none!important}}

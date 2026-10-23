@@ -7,7 +7,7 @@ Live: [https://rajivbuda.com](https://rajivbuda.com)
 ## On the site
 
 - [HireOnAI](https://hireonai.in) — live career product: explained job match, skill-gap coach, resume tailoring
-- [Ira-Dolphin](https://rajivbuda.com/projects/ira-dolphin/) — LoRA fine-tune of Qwen3-4B, with the evaluation limit stated
+- [Polar Orca](https://rajivbuda.com/projects/polar-orca/) (formerly IRA Dolphine) — LoRA fine-tune of Qwen2.5-3B, built by Rajiv Buda, with the evaluation limit stated
 
 ## Contact
 
