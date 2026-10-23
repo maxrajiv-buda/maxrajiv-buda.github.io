@@ -95,21 +95,22 @@
 /* ===== premium v2: brand colours, project artwork, living visuals ===== */
 (function(){
  var D=document,H=D.documentElement,RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
- var DOL='<svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="ptdg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bffcf5"/><stop offset=".45" stop-color="#3fe0d2"/><stop offset="1" stop-color="#7b6bff"/></linearGradient><linearGradient id="ptwg" x2="1"><stop offset="0" stop-color="#2ee6d6" stop-opacity=".0"/><stop offset=".5" stop-color="#2ee6d6" stop-opacity=".9"/><stop offset="1" stop-color="#8b5cff" stop-opacity=".0"/></linearGradient></defs>'
-  +'<g transform="translate(-34 -22) rotate(-10 238 140)"><g class="dol"><path fill="url(#ptdg)" d="M96 150L118 141Q124 122 148 116C186 100 214 96 236 98Q250 80 272 70Q264 86 276 106C298 112 314 122 330 138L346 118Q352 134 348 146Q366 150 380 160Q356 162 338 154C318 156 296 152 272 150C246 150 220 152 196 154Q182 170 160 182Q170 166 168 156C148 158 128 158 112 156Z"/><circle cx="136" cy="134" r="3" fill="#04121c"/><path d="M122 147C160 150 220 146 300 146" stroke="#e8fffc" stroke-opacity=".45" stroke-width="2" fill="none"/></g></g>'
-  +'<g class="wv"><path fill="none" stroke="url(#ptwg)" stroke-width="3" d="M0 168q25-14 50 0t50 0 50 0 50 0 50 0 50 0 50 0 50 0 50 0 50 0 50 0 50 0 50 0"/></g>'
-  +'<g class="wv b" opacity=".6"><path fill="none" stroke="#8b5cff" stroke-width="2" d="M0 184q25 10 50 0t50 0 50 0 50 0 50 0 50 0 50 0 50 0 50 0 50 0 50 0 50 0 50 0"/></g>'
-  +'<circle class="bub" cx="300" cy="150" r="3" fill="none" stroke="#bffcf5"/><circle class="bub" cx="316" cy="160" r="2" fill="none" stroke="#bffcf5"/><circle class="bub" cx="292" cy="170" r="2.5" fill="none" stroke="#c9b6ff"/></svg>';
+ var ORCA='/assets/polar-orca/polar-orca-icon.png?v=1';
  function mark(e){e.setAttribute('data-ptc','1');[].forEach.call(e.querySelectorAll('*'),function(x){x.setAttribute('data-ptc','1')});return e}
- function ira(){var e=D.createElement('span');e.className='pt-ira';e.innerHTML='<span class="ig"></span>'+DOL+'<span class="sh"></span>';return mark(e)}
+ function orca(){var e=D.createElement('span');e.className='pt-orca';e.innerHTML='<span class="og"></span><img src="'+ORCA+'" alt="" width="512" height="512" decoding="async"><span class="sp"></span>';return mark(e)}
+ function st(el,txt){if(!el)return;var done=false;[].forEach.call(el.childNodes,function(n){if(n.nodeType===3){if(!done&&n.nodeValue.trim()){n.nodeValue=txt;done=true}else if(done)n.nodeValue=''}});if(!done)el.insertBefore(D.createTextNode(txt),el.firstChild)}
  function projects(){
-  [].forEach.call(D.querySelectorAll('.project-card.blue .project-art'),function(a){if(!a.querySelector('.pt-ira'))a.appendChild(ira())});
+  /* home card: IRA Dolphine -> Polar Orca */
+  [].forEach.call(D.querySelectorAll('.project-card.blue'),function(c){var a=c.querySelector('.project-art'),h=c.querySelector('h3');
+   if(a&&!a.querySelector('.pt-orca')){[].forEach.call(a.querySelectorAll('.pt-ira'),function(x){x.remove()});a.appendChild(orca())}
+   c.classList.add('pt-orca-card');
+   if(h&&h.textContent.trim()!=='Polar Orca')st(h,'Polar Orca');
+   if(h&&!c.querySelector('.pt-formerly')){var f=D.createElement('p');f.className='pt-formerly';f.textContent='Formerly IRA Dolphine \u00b7 Built by Rajiv Buda';mark(f);h.parentNode.insertBefore(f,h.nextSibling)}
+   if(c.getAttribute('href')!=='/projects/polar-orca/'){c.setAttribute('href','/projects/polar-orca/');c.removeAttribute('target');c.removeAttribute('rel')}});
   [].forEach.call(D.querySelectorAll('article.card'),function(c){var h=c.querySelector('h3');if(!h||c.querySelector('.pt-plogo'))return;var t=h.textContent.trim(),el;
    if(/^HireOnAI$/i.test(t)){el=D.createElement('span');el.className='pt-plogo hire'}
-   else if(/^IRA[- ]Dolphin$/i.test(t)){el=D.createElement('span');el.className='pt-plogo ira';el.appendChild(ira());c.classList.add('pt-ira-card')}
+   else if(/^(Polar Orca|IRA[- ]Dolphine?)$/i.test(t)){el=D.createElement('span');el.className='pt-plogo orca';el.appendChild(orca());c.classList.add('pt-orca-card')}
    if(el)c.insertBefore(mark(el),c.firstChild)});
-  if(/\/projects\/ira-dolphin/.test(location.pathname)){H.classList.add('pt-ira-page');var w=D.querySelector('header.hero .wrap');
-   if(w&&!w.querySelector('.pt-ira-hero')){var x=D.createElement('div');x.className='pt-ira-hero';mark(x);x.appendChild(ira());var k=w.querySelector('h1');k&&k.nextElementSibling?w.insertBefore(x,k.nextElementSibling.nextElementSibling):w.appendChild(x)}}
  }
  /* brand colours */
  var BR=[[/^Microsoft/,'ms'],[/^McAfee/,'mc'],[/^Accenture|^accenture/,'ac'],[/^Reliance/,'rl'],[/^ByteDance/,'bd'],[/^Temu/,'tm'],[/^BHP/,'bh'],[/^Telstra/,'ts'],[/^ANZ\b/,'anz']];
@@ -218,7 +219,7 @@
  var COLAB='https://colab.research.google.com/github/maxrajiv-buda/maxrajiv-buda.github.io/blob/main/projects/AI-Projects.ipynb';
  var REP={lime:['03','CUSTOM ASSISTANT','Fishing Cat AI',"A small custom assistant named after the fishing cat, Odisha's state animal. Llama-3.2-1B-Instruct in 4-bit, LoRA-trained on a hand-written set of 219 instruction/answer pairs.",['Python','Unsloth','Llama-3.2-1B','TRL SFTTrainer','Google Drive'],COLAB],
   violet:['04','DATA UTILITY','VK Public Posts Fetcher','A data-collection utility that pulls recent public wall posts from a VK community through the official API, with the token kept in a Colab secret.',['Python','vk_api','requests','BeautifulSoup'],COLAB],
-  sand:['05','AI PROJECTS','View all AI projects','Five projects: a live career product, two LoRA fine-tunes, a data-collection tool and an account decision brief. The three notebook projects run from a single Colab notebook.',['HireOnAI','IRA Dolphin','Fishing Cat AI','VK Fetcher'],'/projects/']};
+  sand:['05','AI PROJECTS','View all AI projects','Five projects: a live career product, two LoRA fine-tunes, a data-collection tool and an account decision brief. The three notebook projects run from a single Colab notebook.',['HireOnAI','Polar Orca','Fishing Cat AI','VK Fetcher'],'/projects/']};
  function setText(el,txt){if(!el)return;var done=false;[].forEach.call(el.childNodes,function(n){if(n.nodeType===3){if(!done&&n.nodeValue.trim()){n.nodeValue=txt;done=true}else if(done)n.nodeValue=''}});if(!done)el.insertBefore(D.createTextNode(txt),el.firstChild)}
  function replaceHome(){for(var tone in REP){var c=D.querySelector('.project-card.'+tone);if(!c||c.dataset.pt3r)continue;var r=REP[tone];c.dataset.pt3r=1;
    var top=c.querySelectorAll('.project-top span');setText(top[0],r[0]);setText(top[1],r[1]);setText(c.querySelector('h3'),r[2]);setText(c.querySelector('.project-body p'),r[3]);
@@ -232,8 +233,11 @@
  var t;function go(){run();new MutationObserver(function(){clearTimeout(t);t=setTimeout(run,200)}).observe(D.body,{childList:true,subtree:true});setTimeout(run,1000);setTimeout(run,2700)}
  if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',go);else go();
 })();
-/* v3: model name correction */
-(function(){var D=document;function fix(){var w=D.createTreeWalker(D.body,NodeFilter.SHOW_TEXT),n;while(n=w.nextNode())if(n.nodeValue.indexOf('Qwen3-4B')>-1)n.nodeValue=n.nodeValue.replace(/Qwen3-4B/g,'Qwen2.5-3B')}
+/* v3: model name correction + Polar Orca rename (formerly IRA Dolphine) */
+(function(){var D=document,RX=/\b(?:IRA|Ira)[- ]Dolphine?\b/g;
+function keep(n){var p=n.parentNode;return !p||!p.closest||p.closest('.pt-formerly,code,pre,script,style,[data-keep-name]')}
+function fix(){var w=D.createTreeWalker(D.body,NodeFilter.SHOW_TEXT),n,v;while(n=w.nextNode()){v=n.nodeValue;if(v.indexOf('Qwen3-4B')>-1)v=v.replace(/Qwen3-4B/g,'Qwen2.5-3B');if(v.indexOf('Dolphin')>-1&&!/ormerly/i.test(v)&&!keep(n))v=v.replace(RX,'Polar Orca');if(v!==n.nodeValue)n.nodeValue=v}
+ [].forEach.call(D.querySelectorAll('a[href*="/projects/ira-dolphin"]'),function(a){a.setAttribute('href',a.getAttribute('href').replace(/\/projects\/ira-dolphin\/?/,'/projects/polar-orca/'))})}
 function go(){fix();var t;new MutationObserver(function(){clearTimeout(t);t=setTimeout(fix,100)}).observe(D.body,{childList:true,subtree:true,characterData:true})}
 if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',go);else go()})();
 /* language selector -> Google Website Translate (googtrans cookie, persists across pages) */
