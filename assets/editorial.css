@@ -1,0 +1,29 @@
+/* rajivbuda.com — editorial cleanup v1: principles list, no decorative icons/dead arrows, tighter spacing */
+/* How I work: numbered editorial list */
+.principles-list{list-style:none;margin:56px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 40px;border-top:1px solid var(--pt-line2,rgba(127,127,127,.25))}
+.principle-item{display:grid;grid-template-columns:auto 1fr;gap:0 18px;align-items:start;padding:28px 0 0;margin:0;background:none!important;border:0!important;box-shadow:none!important;opacity:1;transform:none}
+.principle-num{font:500 clamp(40px,4.4vw,56px)/.9 "Space Grotesk",Inter,sans-serif;letter-spacing:-.04em;color:var(--pt-dim,#86868b);opacity:.55;font-variant-numeric:tabular-nums;min-width:1.4em}
+.principle-body h3{margin:2px 0 10px;font-size:clamp(20px,1.7vw,24px);font-weight:600;line-height:1.15;letter-spacing:-.03em;color:var(--pt-ivory,#111114)!important}
+.principle-body p{margin:0;font-size:15px;line-height:1.55;color:var(--pt-mute,#55565e)!important;max-width:36ch}
+.principle-body .principle-proof{margin-top:14px;padding-top:12px;border-top:1px solid var(--pt-line2,rgba(127,127,127,.2));font:500 12.5px/1.45 "Space Grotesk",Inter,sans-serif;letter-spacing:.01em;color:var(--pt-ivory,#111114)!important;opacity:.85}
+html[data-theme=light] .principle-body .principle-proof{color:#0a4fc4!important;opacity:1}
+@media (max-width:820px){
+ .principles-list{grid-template-columns:1fr;margin-top:32px}
+ .principle-item{padding:22px 0;border-bottom:1px solid var(--pt-line2,rgba(127,127,127,.2))!important;gap:0 14px}
+ .principle-item:last-child{border-bottom:0!important}
+ .principle-num{font-size:38px}
+ .principle-body h3{font-size:20px}
+ .principle-body p{font-size:14.5px}
+}
+.principles-list~*,#thesis{min-height:0}
+/* Dead arrows in non-link talk rows */
+.talk-list>div>svg{display:none!important}
+/* Decorative quote glyph */
+.bento-quote>svg.lucide-quote{display:none!important}
+/* Contact info row: legible text on every theme */
+html.pt .contact-info-row strong{color:var(--pt-ivory)!important}
+html.pt .contact-info-row span{color:var(--pt-mute)!important}
+/* Thesis card: no huge empty band on mobile */
+@media (max-width:820px){
+ .about-section .bento-grid .bento-large,.bento-grid .bento-large{min-height:0!important;gap:20px}
+}
