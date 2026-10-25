@@ -41,13 +41,13 @@
  var LU={'lucide-network':'node','lucide-sparkles':'spark','lucide-check':'tick','lucide-quote':'quill','lucide-brain-circuit':'chip','lucide-workflow':'flow','lucide-database':'data','lucide-shield-check':'shield','lucide-cloud-cog':'cloud','lucide-braces':'braces','lucide-radio-tower':'signal','lucide-layers3':'layers','lucide-users':'people','lucide-radio':'signal','lucide-scan-line':'scan'};
  function swapLucide(root){ [].forEach.call(root.querySelectorAll('svg.lucide:not([data-pt])'),function(s){
    s.setAttribute('data-pt','1'); if(s.closest('.map-core')){s.setAttribute('viewBox','0 0 32 32');s.innerHTML=I.facet;s.classList.add('pt-ico');return} for(var k in LU){ if(s.classList.contains(k)){ s.setAttribute('viewBox','0 0 32 32'); s.innerHTML=I[LU[k]]; s.classList.add('pt-ico'); break; } } }); }
- var GROUPS=[['.principle-card',['compass','chip','rise']],['.capability-card',['chip','braces','flow','data','shield','cloud']],
+ var GROUPS=[['.capability-card',['chip','braces','flow','data','shield','cloud']],
   ['.playbook-card',['key','compass','people','flow','crown','target']],['.recruiter-points>*',['bridge','layers','spark']],['.talk-list>*',['globe','facet','people']],['.card',['spark','facet','orbit','chat','vault','node','target','layers']],['.step',['data','bolt','chip','scan','tick']]];
  function badges(){ GROUPS.forEach(function(g){ [].forEach.call(D.querySelectorAll(g[0]),function(el,i){ if(el.querySelector(':scope>.pt-badge'))return;
    if(el.matches('.talk-list>*,.recruiter-points>*,.step'))return; var b=D.createElement('span');b.className='pt-badge';b.innerHTML=svg(g[1][i%g[1].length]);el.insertBefore(b,el.firstChild);});});
   [].forEach.call(D.querySelectorAll('.project-art'),function(a,i){ if(a.querySelector('.pt-art'))return; var ART=['spark','orbit','node','layers','scan','target']; var w=D.createElement('span');w.className='pt-art';w.innerHTML=svg(ART[i%6]);a.appendChild(w); });
   var PI=['vault','globe','rise','shield','target','people'];
-  [].forEach.call(D.querySelectorAll('.proof-stat'),function(el,i){ if(el.querySelector('.pt-badge-sm'))return; var b=D.createElement('span');b.className='pt-badge-sm';b.innerHTML=svg(el.classList.contains('pt-feature')?'vault':PI[(i+1)%PI.length]);el.insertBefore(b,el.firstChild);}); }
+  if(0)[].forEach.call(D.querySelectorAll('.proof-stat'),function(el,i){ if(el.querySelector('.pt-badge-sm'))return; var b=D.createElement('span');b.className='pt-badge-sm';b.innerHTML=svg(el.classList.contains('pt-feature')?'vault':PI[(i+1)%PI.length]);el.insertBefore(b,el.firstChild);}); }
  /* --- content fixes (mutate text nodes in place so React keeps ownership) --- */
  function walk(root,fn){var w=D.createTreeWalker(root,NodeFilter.SHOW_TEXT),n;while(n=w.nextNode())fn(n)}
  function fixText(){
