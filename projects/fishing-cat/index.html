@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html data-theme-default="light" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Fishing Cat AI — a small assistant by Rajiv Buda</title>
+<meta name="description" content="Fishing Cat is a LoRA fine-tune of Llama-3.2-1B-Instruct, built by Rajiv Buda and named after Odisha's state animal. 201 hand-written pairs ship in the notebook. One is held out of training." />
+<link rel="canonical" href="https://rajivbuda.com/projects/fishing-cat/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Fishing Cat AI — built by Rajiv Buda" />
+<meta property="og:description" content="A small Llama-3.2-1B LoRA named after Odisha's fishing cat. The notebook ships 201 hand-written pairs and holds one out of training." />
+<meta property="og:url" content="https://rajivbuda.com/projects/fishing-cat/" />
+<meta property="og:image" content="https://rajivbuda.com/assets/og.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Fishing Cat AI — built by Rajiv Buda" />
+<meta name="twitter:description" content="A small Llama-3.2-1B LoRA named after Odisha's fishing cat. The notebook ships 201 hand-written pairs and holds one out of training." />
+<meta name="twitter:image" content="https://rajivbuda.com/assets/og.jpg" />
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet" />
+<style>
+  :root { --bg:#000; --ink:#f4f1ea; --muted:#c8c2b8; --line:rgba(244,241,234,.16); --soft:#141414; --signal:#ffe500; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: Figtree, ui-sans-serif, system-ui, sans-serif; line-height: 1.55; }
+  a { color: inherit; }
+  h1, h2 { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; margin: 0; }
+  .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; min-height: 64px; padding: 12px 22px; border-bottom: 1px solid var(--line); }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; }
+  .mark { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 8px; font-family: "Instrument Serif", Georgia, serif; }
+  .nav-links { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+  .nav a.quiet { color: var(--muted); text-decoration: none; font-size: 14px; }
+  .wrap { width: min(920px, calc(100% - 40px)); margin: 0 auto; }
+  header.hero { padding: 64px 0 20px; }
+  .kicker { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; }
+  h1 { font-size: clamp(3rem, 8vw, 5.2rem); line-height: .92; }
+  .lede { font-size: 1.12rem; color: var(--muted); max-width: 40rem; margin: 18px 0 0; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 8px 18px; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 600; }
+  .btn-solid { background: #fff; color: #000; }
+  .btn-ghost { border: 1px solid var(--line); }
+  .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 32px 0 8px; }
+  .fact { background: var(--soft); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+  .fact b { display: block; font-family: "Instrument Serif", Georgia, serif; font-size: 1.45rem; font-weight: 400; }
+  .fact span { display: block; margin-top: 6px; color: var(--muted); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+  section { padding: 52px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 16px; }
+  .steps, .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .step, .card { background: var(--soft); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+  .step p, .card p { margin: 8px 0 0; color: var(--muted); }
+  .limit { border-left: 2px solid var(--signal); padding: 8px 0 8px 14px; color: var(--muted); margin-top: 18px; }
+  .limit strong { display: block; color: var(--ink); margin-bottom: 4px; }
+  pre { background: #141414; border: 1px solid var(--line); border-radius: 16px; padding: 18px; overflow-x: auto; font-size: 13px; line-height: 1.6; }
+  footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
+  footer a { color: var(--ink); }
+  @media (max-width: 800px) { .facts, .steps, .grid { grid-template-columns: 1fr 1fr; } header.hero { padding-top: 32px; } }
+  @media (max-width: 560px) { .facts, .steps, .grid { grid-template-columns: 1fr; } }
+</style>
+<link rel="stylesheet" href="/assets/premium-theme.css?v=6" data-pt>
+<script defer src="/assets/premium-theme.js?v=8" data-pt></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/"><span class="mark">RB</span> Rajiv Buda</a>
+  <div class="nav-links">
+    <a class="quiet" href="/projects/">All projects</a>
+    <a class="quiet" href="/projects/polar-orca/">Polar Orca</a>
+  </div>
+</nav>
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Project · Custom assistant</p>
+    <h1>Fishing Cat</h1>
+    <p class="lede">A small assistant named after the fishing cat, Odisha’s state animal. It is a LoRA on Llama-3.2-1B-Instruct, trained in 4-bit on hand-written question and answer pairs about who built it, where it is from, and how it should talk.</p>
+    <div class="actions">
+      <a class="btn btn-solid" href="https://colab.research.google.com/github/maxrajiv-buda/maxrajiv-buda.github.io/blob/main/projects/AI-Projects.ipynb" target="_blank" rel="noopener">Open section 2 in Colab</a>
+      <a class="btn btn-ghost" href="https://github.com/maxrajiv-buda/maxrajiv-buda.github.io/blob/main/projects/AI-Projects.ipynb" target="_blank" rel="noopener">Notebook on GitHub</a>
+    </div>
+    <div class="facts">
+      <div class="fact"><b>Llama-3.2-1B</b><span>Base model</span></div>
+      <div class="fact"><b>201 pairs</b><span>Ship in the notebook</span></div>
+      <div class="fact"><b>1 held out</b><span>Not used to train</span></div>
+      <div class="fact"><b>4-bit LoRA</b><span>r=16, free T4</span></div>
+    </div>
+  </div>
+</header>
+<section>
+  <div class="wrap">
+    <h2>What the run does.</h2>
+    <div class="steps">
+      <div class="step"><strong>Restart first</strong><p>Section 2 of the notebook is a separate project. Restart the Colab runtime if Polar Orca was trained in the same session.</p></div>
+      <div class="step"><strong>Data</strong><p>The notebook writes 201 recovered pairs. Non-breaking spaces in the old export are normalized to ordinary spaces. A Drive file named train_data.json replaces that set when it is present.</p></div>
+      <div class="step"><strong>Holdout</strong><p>“Tell me a riddle.” is removed from training. After the run, the notebook prints the expected answer beside what the model says.</p></div>
+      <div class="step"><strong>Train</strong><p>Loss is masked to assistant replies, using the Llama 3 header markers. Three epochs on a few hundred short pairs will memorize a voice. That is the point of this one, and the limit of it.</p></div>
+    </div>
+    <p class="limit"><strong>What this does not prove</strong>There is no score against the base model, and the adapter is saved to Google Drive, not published as a general Hugging Face model. A friendly answer about Odisha is a smoke test. It is not evidence of a better Llama.</p>
+  </div>
+</section>
+<section>
+  <div class="wrap">
+    <h2>Decisions.</h2>
+    <div class="grid">
+      <article class="card"><h3>Why Llama-3.2-1B</h3><p>Small enough to fine-tune in 4-bit on a free T4, and already able to follow a short chat. Fishing Cat is a voice on top of that, not a new base model.</p></article>
+      <article class="card"><h3>Why hand-written pairs</h3><p>The answers name Rajiv Buda and Odisha on purpose. A scraped corpus would not teach that, and it would be harder to say what the model was shown.</p></article>
+      <article class="card"><h3>Why responses only</h3><p>The earlier trainer learned the user lines as well as the answers. Masking the user turns spends the loss on the reply.</p></article>
+      <article class="card"><h3>Why it stays local</h3><p>The adapter is saved to <code>MyDrive/fishing-cat-lora</code>. Publishing it would imply a model someone should rely on. This one is a reproducible exercise.</p></article>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="wrap">
+    <h2>Where it lives in the notebook.</h2>
+    <pre><code># Section 2. Restart the runtime before this if Section 1 has run.
+# Holds out "Tell me a riddle." then trains on the rest.
+SAVE_DIR = "/content/drive/MyDrive/fishing-cat-lora"</code></pre>
+  </div>
+</section>
+<footer><div class="wrap"><a href="/projects/">← All projects</a> · <a href="/projects/polar-orca/">Polar Orca</a> · <a href="/projects/vk-posts/">VK public posts</a></div></footer>
+</body>
+</html>

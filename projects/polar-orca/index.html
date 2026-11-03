@@ -86,7 +86,7 @@
   @keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(30, 74, 115, 0); } }
   @media (max-width: 800px) {
     .stats, .steps, .grid { grid-template-columns: 1fr 1fr; }
-    .nav a.quiet { display: none; }
+    .nav { height: auto; min-height: 64px; flex-wrap: wrap; gap: 8px 16px; padding: 12px 22px; }
   }
   @media (max-width: 560px) { .stats, .steps { grid-template-columns: 1fr; } }
 
@@ -119,12 +119,13 @@
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; } }
 </style>
 <link rel="stylesheet" href="/assets/premium-theme.css?v=6" data-pt>
-<script defer src="/assets/premium-theme.js?v=6" data-pt></script>
+<script defer src="/assets/premium-theme.js?v=8" data-pt></script>
 </head>
 <body>
 <nav class="nav">
   <a class="brand" href="/"><span class="mark">RB</span> Rajiv Buda</a>
-  <a class="quiet" href="/projects/">All AI projects</a>
+  <a class="quiet" href="/projects/">All projects</a>
+  <a class="quiet" href="/barsa-re-bhubaneswar/">Book</a>
 </nav>
 <header class="hero">
   <div class="wrap">
@@ -137,6 +138,7 @@
         <p class="lede">A LoRA fine-tune of Qwen2.5-3B for short, practical advice. Trained on a free Colab T4, published as a 120&nbsp;MB adapter, and written up with the limit in plain sight: one held-out prompt, not a benchmark.</p>
         <div class="actions">
           <a class="btn btn-solid" href="https://huggingface.co/maxrajiv-buda/polar-orca" target="_blank" rel="noopener">Hugging Face model</a>
+          <a class="btn btn-ghost" href="https://colab.research.google.com/github/maxrajiv-buda/maxrajiv-buda.github.io/blob/main/projects/AI-Projects.ipynb" target="_blank" rel="noopener">Open the notebook</a>
           <a class="btn btn-ghost" href="https://github.com/maxrajiv-buda/polar-orca" target="_blank" rel="noopener">Model card on GitHub</a>
         </div>
       </div>
@@ -233,7 +235,7 @@ print(tokenizer.decode(out[0], skip_special_tokens=True))</code></pre>
 <footer>
   <div class="wrap">
     <p data-keep-name>HireOnAI is the production product: LLM APIs, jobs, and a resume loop. Polar Orca (formerly IRA Dolphine) is the model-layer experiment next to it, built by Rajiv Buda.</p>
-    <p><a href="/">← Rajiv Buda</a> · <a href="https://huggingface.co/maxrajiv-buda/polar-orca">maxrajiv-buda/polar-orca</a></p>
+    <p><a href="/">← Rajiv Buda</a> · <a href="/projects/">All projects</a> · <a href="/projects/fishing-cat/">Fishing Cat</a> · <a href="https://huggingface.co/maxrajiv-buda/polar-orca">maxrajiv-buda/polar-orca</a></p>
   </div>
 </footer>
 </body>
