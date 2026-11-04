@@ -105,9 +105,11 @@
    if(a&&!a.querySelector('.pt-orca')){[].forEach.call(a.querySelectorAll('.pt-ira'),function(x){x.remove()});a.appendChild(orca())}
    c.classList.add('pt-orca-card');
    if(h&&h.textContent.trim()!=='Polar Orca')st(h,'Polar Orca');
-   var body=c.querySelector('.project-body p');
+   var body=c.querySelector('.project-body p:not(.pt-formerly)');
    if(body)st(body,'A LoRA fine-tune of Qwen2.5-3B for short, practical advice. Trained on a free Colab T4, published as a small adapter, and written up with the evaluation limit in plain sight.');
    if(h&&!c.querySelector('.pt-formerly')){var f=D.createElement('p');f.className='pt-formerly';f.textContent='Formerly IRA Dolphine \u00b7 Built by Rajiv Buda';mark(f);h.parentNode.insertBefore(f,h.nextSibling)}
+   var former=c.querySelector('.pt-formerly');
+   if(former&&former.textContent.indexOf('Formerly')!==0)st(former,'Formerly IRA Dolphine \u00b7 Built by Rajiv Buda');
    if(c.getAttribute('href')!=='/projects/polar-orca/'){c.setAttribute('href','/projects/polar-orca/');c.removeAttribute('target');c.removeAttribute('rel')}});
   [].forEach.call(D.querySelectorAll('article.card'),function(c){var h=c.querySelector('h3');if(!h||c.querySelector('.pt-plogo'))return;var t=h.textContent.trim(),el;
    if(/^HireOnAI$/i.test(t)){el=D.createElement('span');el.className='pt-plogo hire'}
@@ -215,7 +217,7 @@
   var id='g'+k+Math.random().toString(36).slice(2,6);
   e.innerHTML='<span class="ig" style="background:conic-gradient(from 0deg,'+p[4]+','+p[5]+','+p[4]+')"></span><svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="'+id+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+p[6]+'"/><stop offset="1" stop-color="'+p[7]+'"/></linearGradient></defs>'+p[8].replace(/url\(#G\)/g,'url(#'+id+')')+'</svg><span class="sh"></span>';
   e.setAttribute('data-ptc','1');[].forEach.call(e.querySelectorAll('*'),function(x){x.setAttribute('data-ptc','1')});return e}
- var HOME={violet:'cat',sand:'vk',ink:'next'},PG={'Account Decision Brief':'brief','Fishing Cat AI':'cat','VK Public Posts Fetcher':'vk','Barsa Re Bhubaneswar':'next'};
+ var HOME={lime:'brief',violet:'cat',sand:'vk',ink:'next'},PG={'Account Decision Brief':'brief','Fishing Cat AI':'cat','VK Public Posts Fetcher':'vk','Barsa Re Bhubaneswar':'next'};
  var BC={brief:'#34e6a0',loops:'#ff5fa8',pattern:'#6f7cff',next:'#f472b6',cat:'#fbbf24',vk:'#3b8cff'};
  
  var REP={violet:['04','CUSTOM ASSISTANT','Fishing Cat AI',"A small assistant named after Odisha's fishing cat. Llama-3.2-1B in 4-bit, LoRA-trained on the 201 hand-written pairs that ship in the notebook. A voice fit, not a benchmark.",['Python','Unsloth','Llama-3.2-1B','LoRA'],'/projects/fishing-cat/'],
@@ -256,4 +258,21 @@ if(cur){var d=document.createElement('div');d.id='pt-gt';(document.body||documen
  var sc=document.createElement('script');sc.src='https://translate.google.com/translate_a/element.js?cb=ptGT';document.head.appendChild(sc)}
 sync();setTimeout(sync,800);setTimeout(sync,2500);
 new MutationObserver(function(){document.body.style.top&&(document.body.style.top='0px')}).observe(document.body,{attributes:true,attributeFilter:['style']});
+})();
+/* homepage: a next step under the hero line */
+(function(){
+ var D=document;
+ function actions(){
+  var copy=D.querySelector('.hero-copy');
+  if(!copy||copy.querySelector('.hp-actions'))return;
+  var row=D.createElement('div');
+  row.className='hp-actions';
+  row.setAttribute('data-ptc','1');
+  row.innerHTML='<a class="hp-primary" href="#work">See the work</a><a class="hp-secondary" href="/projects/">All projects</a>';
+  copy.appendChild(row);
+ }
+ function go(){actions()}
+ if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',go);else go();
+ var t; new MutationObserver(function(){clearTimeout(t);t=setTimeout(actions,120)}).observe(D.documentElement,{childList:true,subtree:true});
+ setTimeout(actions,800); setTimeout(actions,2200);
 })();

@@ -1,0 +1,97 @@
+/* Homepage layout pass: even project row, readable proof, hero with a next step. */
+
+html.pt{scroll-padding-top:96px}
+
+html.pt .desktop-nav{
+  letter-spacing:.08em;
+  font-size:11px;
+  gap:clamp(16px,1.6vw,28px);
+}
+
+html.pt .hero-section .media-frame:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(5,7,10,.78) 0%,rgba(5,7,10,.42) 34%,rgba(5,7,10,.08) 62%,rgba(5,7,10,.18) 100%),
+    linear-gradient(180deg,rgba(5,7,10,.2) 0%,transparent 28%,rgba(5,7,10,.55) 100%);
+}
+html.pt .hero-copy{z-index:3}
+html.pt .hp-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:26px;
+}
+html.pt .hp-primary,
+html.pt .hp-secondary{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:46px;
+  padding:0 18px;
+  border-radius:999px;
+  font:600 14px/1 "Inter Tight",Inter,system-ui,sans-serif;
+  letter-spacing:0;
+  text-transform:none;
+  text-decoration:none;
+}
+html.pt .hp-primary{background:#fff;color:#111114}
+html.pt .hp-primary:hover{background:#e8f0ff}
+html.pt .hp-secondary{
+  background:transparent;
+  color:#fff;
+  border:1px solid rgba(255,255,255,.55);
+}
+html.pt .hp-secondary:hover{background:rgba(255,255,255,.1)}
+
+html.pt .work-section .section-heading-row{align-items:end}
+html.pt .work-section .project-grid{margin-top:40px}
+
+@media (min-width:1000px){
+  html.pt .project-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  html.pt .project-card.sand{grid-column:auto}
+  html.pt .project-card{min-height:0}
+  html.pt .project-card .project-art{height:190px;max-height:190px}
+}
+
+html[data-theme=light] .proof-stat,
+html[data-theme=light] .proof-stat strong,
+html[data-theme=light] .proof-stat strong span{
+  opacity:1;
+}
+html[data-theme=light] .proof-stat strong,
+html[data-theme=light] .proof-stat strong span{
+  background-image:none;
+  background-color:transparent;
+  -webkit-text-fill-color:#0052cc;
+  color:#0052cc;
+}
+html[data-theme=light] .proof-stat>span{
+  color:#3c3d44;
+}
+
+@media (max-width:760px){
+  html.pt .site-shell>.hero-section{
+    aspect-ratio:auto;
+    height:auto;
+    min-height:88svh;
+  }
+  html.pt .hero-copy{
+    max-width:none;
+    width:auto;
+    left:0;
+    right:0;
+    padding:0 22px 28px;
+  }
+  html.pt .hero-section h1{
+    font-size:clamp(36px,10vw,46px);
+    max-width:12ch;
+  }
+  html.pt .hero-section .media-frame:after{
+    background:linear-gradient(180deg,rgba(5,7,10,.18) 0%,rgba(5,7,10,.05) 42%,rgba(5,7,10,.82) 100%);
+  }
+  html.pt .project-card .project-art{height:168px;max-height:168px}
+}
