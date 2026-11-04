@@ -237,11 +237,6 @@
    * ======================================================================== */
   var HANDLE = '<span class="ui-drag-handle" role="button" tabindex="0" aria-label="Drag to reorder" data-ptc="1"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 5h8M4 8h8M4 11h8"/></svg></span>';
 
-  function isStaticPage() {
-    /* projects index + other non-React pages use html.pt-static */
-    return H.classList.contains('pt-static') || !!D.querySelector('article.card');
-  }
-
   function reorderList(sel, itemSel) {
     qsa(sel).forEach(function (list) {
       if (list.dataset.uiReorder) return;
