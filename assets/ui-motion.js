@@ -4,7 +4,8 @@
   var D = document, H = D.documentElement;
   var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var FINE = matchMedia('(hover: hover) and (pointer: fine)').matches;
-  var COARSE = matchMedia('(pointer: coarse)').matches;
+  /* iOS / some Android UAs report fine+coarse; treat any touch device as coarse for pull */
+  var COARSE = matchMedia('(pointer: coarse)').matches || (navigator.maxTouchPoints || 0) > 0;
   H.classList.add('ui-motion');
   H.setAttribute('data-ui-roll-own', '1');
 
@@ -157,6 +158,15 @@
     host.dataset.uiRoll = '1';
     host.classList.add('ui-roll-host');
 
+    /* sample color BEFORE we hide the real text (handles gradient / clipped fills) */
+    var cs = getComputedStyle(host);
+    var fill = cs.webkitTextFillColor || cs.color;
+    var clipped = (cs.webkitBackgroundClip === 'text' || cs.backgroundClip === 'text' ||
+      fill === 'rgba(0, 0, 0, 0)' || fill === 'transparent');
+    if (clipped) host.classList.add('ui-roll-grad');
+    else host.style.setProperty('--ui-roll-color', cs.color || '#2563eb');
+    if (cs.position === 'static') host.style.position = 'relative';
+
     var overlay = D.createElement('span');
     overlay.className = 'ui-roll ui-roll-overlay';
     overlay.setAttribute('aria-hidden', 'true');
@@ -196,12 +206,28 @@
       }
     }
 
-    /* host must be positioning context; hide live text visually while overlay shows */
-    var cs = getComputedStyle(host);
-    if (cs.position === 'static') host.style.position = 'relative';
     host.appendChild(overlay);
 
-    function play() {
+    function arm() {
+      /* only hide original text once overlay has real size — avoids blank stats on mobile */
+      var r = overlay.getBoundingClientRect();
+      if (r.width < 2 || r.height < 2) {
+        host.classList.remove('ui-roll-ready');
+        return false;
+      }
+      host.classList.add('ui-roll-ready');
+      return true;
+    }
+
+    var played = false;
+    function play(attempt) {
+      attempt = attempt || 0;
+      if (played && host.classList.contains('ui-roll-ready')) return;
+      if (!arm()) {
+        if (attempt < 12) setTimeout(function () { play(attempt + 1) }, 80);
+        return;
+      }
+      played = true;
       if (RM) { overlay.classList.add('ui-on'); return }
       overlay.classList.remove('ui-on');
       void overlay.offsetWidth;
@@ -209,19 +235,16 @@
     }
 
     if ('IntersectionObserver' in window && !RM) {
-      var played = false;
       var io = new IntersectionObserver(function (es) {
         es.forEach(function (x) {
-          if (x.isIntersecting && !played) { played = true; play(); io.disconnect() }
+          if (x.isIntersecting) { play(); io.disconnect() }
         });
-      }, { threshold: 0.2, rootMargin: '0px 0px -5% 0px' });
+      }, { threshold: 0.15, rootMargin: '40px 0px' });
       io.observe(host.closest('.proof-stat, .bento-card, .hero-stats') || host);
-      /* if already on screen, IO may not fire in time — kick after paint */
       setTimeout(function () {
-        if (played) return;
         var r = host.getBoundingClientRect();
-        if (r.top < innerHeight && r.bottom > 0) { played = true; play(); io.disconnect() }
-      }, 120);
+        if (r.top < innerHeight && r.bottom > 0) play();
+      }, 200);
     } else {
       play();
     }
@@ -258,6 +281,8 @@
   function wireItem(list, item) {
     if (item.dataset.uiDrag) return;
     item.dataset.uiDrag = '1';
+    var handle = item.querySelector(':scope > .ui-drag-handle');
+    if (!handle) return;
     var startY = 0, originTop = 0, originH = 0, active = false, pointerId = null;
     var slots = [], order = [];
 
@@ -271,13 +296,12 @@
 
     function onDown(e) {
       if (RM) return;
-      if (!e.target.closest('.ui-drag-handle')) return;
       if (e.button != null && e.button !== 0) return;
       e.preventDefault();
       e.stopPropagation();
       active = true;
       pointerId = e.pointerId;
-      try { item.setPointerCapture(pointerId) } catch (err) {}
+      try { handle.setPointerCapture(pointerId) } catch (err) {}
       measure();
       startY = e.clientY;
       var r = item.getBoundingClientRect();
@@ -290,6 +314,7 @@
 
     function onMove(e) {
       if (!active || e.pointerId !== pointerId) return;
+      e.preventDefault();
       var delta = e.clientY - startY;
       item.style.transform = 'translate3d(0,' + delta + 'px,0)';
       item.style.scale = '1.05';
@@ -317,7 +342,7 @@
     function onUp(e) {
       if (!active || (e && e.pointerId !== pointerId)) return;
       active = false;
-      try { item.releasePointerCapture(pointerId) } catch (err) {}
+      try { handle.releasePointerCapture(pointerId) } catch (err) {}
       var toIdx = item._uiTo, fromIdx = item._uiFrom;
       order.forEach(function (el) {
         el.style.transform = '';
@@ -338,10 +363,11 @@
       item._uiTo = item._uiFrom = null;
     }
 
-    on(item, 'pointerdown', onDown);
-    on(item, 'pointermove', onMove);
-    on(item, 'pointerup', onUp);
-    on(item, 'pointercancel', onUp);
+    /* listeners on the handle only — card body stays scrollable on mobile */
+    on(handle, 'pointerdown', onDown);
+    on(handle, 'pointermove', onMove);
+    on(handle, 'pointerup', onUp);
+    on(handle, 'pointercancel', onUp);
   }
 
   function dragReorder() {
