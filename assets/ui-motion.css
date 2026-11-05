@@ -5,12 +5,19 @@
   --ui-press-ms:90ms;
   --ui-spring-ms:420ms;
   --ui-expand-ms:250ms;
-  --ui-roll-ms:520ms;
+  --ui-roll-ms:560ms;
   --ui-roll-gap:100ms;
+  --ui-roll-solid:#2563eb;
 }
 
-/* 01 Button press — sink to 95%, spring back */
-/* Use CSS `scale` (not `transform`) so Framer Motion hover transforms can coexist */
+html[data-theme=light],html:not([data-theme]){
+  --ui-roll-solid:#2563eb;
+}
+html[data-theme=gold],html[data-theme=aurora],html[data-theme=neo]{
+  --ui-roll-solid:#e8c872;
+}
+
+/* 01 Button press — sink, spring back */
 html.pt .ui-press{
   -webkit-tap-highlight-color:transparent;
   scale:var(--ui-ps,1);
@@ -19,30 +26,30 @@ html.pt .ui-press{
   will-change:scale;
 }
 html.pt .ui-press.ui-down{
-  --ui-ps:.95;
+  --ui-ps:.92;
   transition-duration:var(--ui-press-ms);
   transition-timing-function:ease-out;
 }
 html.pt .ui-press.ui-down,html.pt a.ui-press.ui-down,html.pt button.ui-press.ui-down{
-  scale:.95;
+  scale:.92;
 }
 
 /* 02 Pull to refresh — resistance chrome */
 .ui-pull-root{overscroll-behavior-y:contain}
 .ui-pull-indicator{
   position:fixed;left:50%;top:0;z-index:2147483000;pointer-events:none;
-  width:48px;height:48px;margin-left:-24px;
+  width:52px;height:52px;margin-left:-26px;
   display:grid;place-items:center;
   opacity:0;transform:translate3d(0,-12px,0) scale(.85);
   transition:opacity .2s var(--ui-ease-out),transform .25s var(--ui-ease-out);
   color:var(--pt-gold2,#2563eb);
-  background:rgba(255,255,255,.92);
-  border:1px solid rgba(0,0,0,.08);
+  background:rgba(255,255,255,.96);
+  border:1px solid rgba(0,0,0,.1);
   border-radius:999px;
-  box-shadow:0 8px 24px rgba(0,0,0,.12);
+  box-shadow:0 10px 28px rgba(0,0,0,.14);
 }
 html.pt .ui-pull-indicator{
-  background:rgba(var(--pt-surf,14,13,12),.92);
+  background:rgba(var(--pt-surf,14,13,12),.94);
   border-color:var(--pt-line2,rgba(217,184,120,.14));
   color:var(--pt-gold2,#f1dcaa);
 }
@@ -53,44 +60,63 @@ html.pt .ui-pull-indicator{
 @keyframes ui-spin{to{transform:rotate(360deg)}}
 .ui-pull-shift{will-change:transform;transition:none}
 
-/* 03 Rolling number — overlay sits on React text */
+/* 03 Rolling number — solid fill (never background-clip:text; that breaks overflow clip) */
 .ui-roll-host{position:relative!important}
-.ui-roll-host.ui-roll-ready,:where(.ui-roll-host.ui-roll-ready)>:not(.ui-roll){
+/* beat html.pt .pt-gt gradient so the source figure stays invisible under the overlay */
+html.pt .ui-roll-host.ui-roll-ready,
+html.pt .ui-roll-host.ui-roll-ready.pt-gt,
+html[data-theme] .ui-roll-host.ui-roll-ready{
   color:transparent!important;-webkit-text-fill-color:transparent!important;
   background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;
+}
+html.pt .ui-roll-host.ui-roll-ready>:not(.ui-roll),
+html.pt .ui-roll-host.ui-roll-ready.pt-gt>:not(.ui-roll){
+  color:transparent!important;-webkit-text-fill-color:transparent!important;
+  background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;
+  opacity:0!important;visibility:hidden!important;
 }
 .ui-roll-host>.ui-roll-overlay{
   position:absolute;left:0;top:50%;
   transform:translateY(-50%);
-  display:inline-flex;align-items:baseline;gap:0;
+  display:inline-flex;align-items:center;gap:0;
   font:inherit;letter-spacing:inherit;font-weight:inherit;font-family:inherit;font-size:inherit;
-  line-height:1;pointer-events:none;z-index:1;
-  color:var(--ui-roll-color, currentColor)!important;
-  -webkit-text-fill-color:var(--ui-roll-color, currentColor)!important;
-}
-.ui-roll-host.ui-roll-grad>.ui-roll-overlay,
-.ui-roll-host.ui-roll-grad>.ui-roll-overlay *{
-  background:var(--pt-goldgrad,linear-gradient(100deg,#2563eb,#60a5fa))!important;
-  -webkit-background-clip:text!important;background-clip:text!important;
-  color:transparent!important;-webkit-text-fill-color:transparent!important;
+  line-height:1;pointer-events:none;z-index:2;
+  color:var(--ui-roll-solid)!important;
+  -webkit-text-fill-color:var(--ui-roll-solid)!important;
+  background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;
+  font-variant-numeric:tabular-nums;
 }
 .ui-roll-digit{
   display:inline-block;position:relative;
-  height:1.05em;overflow:hidden;
-  width:1ch;min-width:.62em;text-align:center;
+  height:1em;overflow:hidden;
+  width:0.62em;min-width:0.55em;
+  text-align:center;vertical-align:baseline;
+  /* isolate creates a real clip root; avoids WebKit painting the whole strip */
+  contain:paint;isolation:isolate;
+  color:var(--ui-roll-solid)!important;
+  -webkit-text-fill-color:var(--ui-roll-solid)!important;
+  background:none!important;
 }
 .ui-roll-digit>i{
   display:block;font-style:normal;
-  transform:translateY(var(--from,0));
+  transform:translate3d(0,var(--from,0),0);
   transition:transform var(--ui-roll-ms) var(--ui-ease-out) var(--delay,0ms);
   will-change:transform;
+  color:inherit!important;-webkit-text-fill-color:inherit!important;
+  background:none!important;
 }
 .ui-roll-digit>i b{
-  display:block;height:1.05em;line-height:1.05em;
-  font-weight:inherit;font-family:inherit;color:inherit;
+  display:block;height:1em;line-height:1em;
+  font-weight:inherit;font-family:inherit;
+  color:inherit!important;-webkit-text-fill-color:inherit!important;
+  background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;
 }
-.ui-roll-sym{display:inline-block;padding:0 .02em}
-.ui-roll.ui-on .ui-roll-digit>i{transform:translateY(var(--to,0))}
+.ui-roll-sym{
+  display:inline-block;padding:0 .01em;line-height:1;
+  color:var(--ui-roll-solid)!important;-webkit-text-fill-color:var(--ui-roll-solid)!important;
+  background:none!important;
+}
+.ui-roll.ui-on .ui-roll-digit>i{transform:translate3d(0,var(--to,0),0)}
 
 /* 04 Drag to reorder — touch-action ONLY on the handle so page scroll still works */
 .ui-reorder{position:relative}
@@ -109,18 +135,24 @@ html.pt .ui-pull-indicator{
 .ui-reorder[data-dragging="1"] .ui-reorder-item{cursor:grabbing}
 .ui-drag-handle{
   position:absolute;top:12px;right:12px;z-index:3;
-  width:36px;height:36px;border-radius:10px;
+  width:40px;height:40px;border-radius:12px;
   display:grid;place-items:center;
-  color:var(--pt-mute,#64748b);opacity:.9;
-  background:rgba(255,255,255,.92);
-  border:1px solid rgba(0,0,0,.1);
-  box-shadow:0 4px 14px rgba(0,0,0,.08);
+  color:var(--pt-mute,#64748b);opacity:1;
+  background:rgba(255,255,255,.96);
+  border:1px solid rgba(0,0,0,.12);
+  box-shadow:0 6px 18px rgba(0,0,0,.1);
   cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none;
 }
 html.pt .ui-drag-handle{
+  color:var(--pt-gold2,#2563eb);
+  background:rgba(var(--pt-surf,255,255,255),.96);
+  border-color:var(--pt-line2,rgba(37,99,235,.22));
+}
+html[data-theme=gold] .ui-drag-handle,
+html[data-theme=aurora] .ui-drag-handle,
+html[data-theme=neo] .ui-drag-handle{
   color:var(--pt-gold2,#f1dcaa);
-  background:rgba(var(--pt-surf,14,13,12),.88);
-  border-color:var(--pt-line2,rgba(217,184,120,.22));
+  background:rgba(var(--pt-surf,14,13,12),.92);
 }
 .ui-drag-handle:active{cursor:grabbing;scale:.96}
 .ui-drag-handle svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round}
@@ -128,7 +160,7 @@ html.pt .ui-drag-handle{
 /* 05 Card expand — ease-out 250ms */
 .ui-expand{cursor:pointer}
 .ui-expand.ui-open{
-  transform:scale(1.02);
+  transform:scale(1.015);
   padding-bottom:calc(1em + 8px)!important;
   box-shadow:0 32px 60px -36px rgba(0,0,0,.45),inset 0 1px 0 rgba(var(--pt-acc2,37,99,235),.1);
   border-color:var(--pt-line,rgba(37,99,235,.28))!important;
@@ -142,18 +174,25 @@ html.pt .ui-drag-handle{
     filter var(--ui-expand-ms) var(--ui-ease-out);
 }
 .ui-expand-cue{
-  display:inline-flex;align-items:center;gap:8px;margin-top:14px;
-  padding:10px 14px;border-radius:999px;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;
+  padding:11px 16px;border-radius:999px;
   font:600 11px/1 'Space Grotesk',sans-serif;
   letter-spacing:.14em;text-transform:uppercase;
   color:var(--pt-gold2,#2563eb);
-  background:rgba(37,99,235,.08);
-  border:1px solid rgba(37,99,235,.18);
+  background:rgba(37,99,235,.1);
+  border:1px solid rgba(37,99,235,.22);
   opacity:1;-webkit-tap-highlight-color:transparent;
 }
 html.pt .ui-expand-cue{
+  color:var(--pt-gold2,#2563eb);
+  background:rgba(37,99,235,.1);
+  border-color:rgba(37,99,235,.22);
+}
+html[data-theme=gold] .ui-expand-cue,
+html[data-theme=aurora] .ui-expand-cue,
+html[data-theme=neo] .ui-expand-cue{
   color:var(--pt-gold2,#f1dcaa);
-  background:rgba(var(--pt-acc,217,184,120),.1);
+  background:rgba(var(--pt-acc,217,184,120),.12);
   border-color:var(--pt-line,rgba(217,184,120,.22));
 }
 .ui-expand-cue i{
@@ -166,27 +205,58 @@ html.pt .ui-expand-cue{
 .ui-expand.ui-open .ui-expand-cue .ui-cue-open{display:none}
 .ui-expand:not(.ui-open) .ui-expand-cue .ui-cue-close{display:none}
 
+/* Mobile coach — short, dismissible, only on coarse pointers */
+.ui-coach{
+  position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  z-index:2147482900;
+  display:flex;align-items:flex-start;gap:12px;
+  padding:14px 14px 14px 16px;
+  border-radius:16px;
+  background:rgba(15,23,42,.94);
+  color:#f8fafc;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 18px 40px rgba(15,23,42,.35);
+  font:500 13px/1.45 'Space Grotesk',system-ui,sans-serif;
+  letter-spacing:.01em;
+  transform:translate3d(0,120%,0);opacity:0;
+  transition:transform .45s var(--ui-ease-out),opacity .35s ease;
+  pointer-events:auto;
+}
+.ui-coach.ui-show{transform:translate3d(0,0,0);opacity:1}
+.ui-coach p{margin:0;flex:1}
+.ui-coach strong{font-weight:700;color:#93c5fd}
+.ui-coach button{
+  flex:none;appearance:none;border:0;background:rgba(255,255,255,.12);
+  color:#fff;width:32px;height:32px;border-radius:999px;
+  font:700 16px/1 sans-serif;cursor:pointer;
+}
+@media (hover:hover) and (pointer:fine){
+  .ui-coach{display:none!important}
+}
+
 @media (prefers-reduced-motion:reduce){
-  html.pt .ui-press,html.pt .ui-press.ui-down,.ui-expand,.ui-expand.ui-open,.ui-roll-digit>i,.ui-reorder-item,.ui-pull-indicator{
+  html.pt .ui-press,html.pt .ui-press.ui-down,.ui-expand,.ui-expand.ui-open,.ui-roll-digit>i,.ui-reorder-item,.ui-pull-indicator,.ui-coach{
     transition:none!important;animation:none!important;
   }
   html.pt .ui-press.ui-down{--ui-ps:1}
   .ui-expand.ui-open{transform:none}
   .ui-reorder-item.ui-lifting{scale:1}
+  .ui-coach{display:none!important}
 }
 @media (max-width:760px){
+  html.pt .ui-press.ui-down,html.pt a.ui-press.ui-down,html.pt button.ui-press.ui-down{scale:.9}
   .ui-drag-handle{
-    top:8px;right:8px;width:44px;height:44px;opacity:1;
-    border-radius:12px;
+    top:8px;right:8px;width:48px;height:48px;opacity:1;
+    border-radius:14px;
   }
-  .ui-drag-handle svg{width:18px;height:18px}
+  .ui-drag-handle svg{width:20px;height:20px}
   .ui-expand.ui-open{transform:none}
   .ui-expand-cue{
-    width:100%;justify-content:center;
-    margin-top:16px;padding:12px 16px;
+    width:100%;box-sizing:border-box;justify-content:center;
+    margin-top:16px;padding:14px 16px;
     font-size:12px;letter-spacing:.12em;
   }
-  /* keep horizontal playbook swipes working — never block pan on the card body */
+  .ui-roll-digit{width:0.68em;min-width:0.6em}
   .ui-reorder-item{touch-action:pan-x pan-y}
   .playbook-card.ui-reorder-item{touch-action:pan-x}
 }

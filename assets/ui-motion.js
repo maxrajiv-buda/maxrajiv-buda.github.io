@@ -13,7 +13,7 @@
   function on(el, ev, fn, opt) { el.addEventListener(ev, fn, opt || false) }
 
   /* ========================================================================
-   * 01 Button press — sink to 95%, spring back
+   * 01 Button press — sink, spring back
    * ======================================================================== */
   var BTN = 'a.button,button.button,.button,.btn,.button-primary,.button-dark,.btn-solid,.btn-ghost,.thesis-cta,.social-link,.nav-availability,.menu-button';
 
@@ -149,36 +149,54 @@
   }
 
   /* ========================================================================
-   * 03 Rolling number — overlay on top of React text (do not replace children)
+   * 03 Rolling number — solid color overlay (no background-clip:text)
    * ======================================================================== */
-  function rollOverlay(host) {
-    if (!host || host.dataset.uiRoll) return;
-    var raw = (host.textContent || '').trim();
-    if (!/\d/.test(raw)) return;
-    host.dataset.uiRoll = '1';
-    host.classList.add('ui-roll-host');
+  function measureDigitWidth(host, ch) {
+    var probe = D.createElement('span');
+    probe.textContent = ch;
+    probe.setAttribute('data-ptc', '1');
+    probe.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none;font:inherit;letter-spacing:inherit;font-variant-numeric:tabular-nums;';
+    host.appendChild(probe);
+    var w = Math.ceil(probe.getBoundingClientRect().width) || 0;
+    host.removeChild(probe);
+    return w;
+  }
 
-    /* sample color BEFORE we hide the real text (handles gradient / clipped fills) */
+  function figureText(host) {
+    /* ignore our overlay when reading the live figure */
+    var clone = host.cloneNode(true);
+    qsa('.ui-roll', clone).forEach(function (n) { if (n.parentNode) n.parentNode.removeChild(n) });
+    return (clone.textContent || '').replace(/\s+/g, '').trim();
+  }
+
+  function buildOverlay(host, raw) {
     var cs = getComputedStyle(host);
-    var fill = cs.webkitTextFillColor || cs.color;
-    var clipped = (cs.webkitBackgroundClip === 'text' || cs.backgroundClip === 'text' ||
-      fill === 'rgba(0, 0, 0, 0)' || fill === 'transparent');
-    if (clipped) host.classList.add('ui-roll-grad');
-    else host.style.setProperty('--ui-roll-color', cs.color || '#2563eb');
     if (cs.position === 'static') host.style.position = 'relative';
+
+    var old = host.querySelector(':scope > .ui-roll-overlay');
+    if (old) old.parentNode.removeChild(old);
 
     var overlay = D.createElement('span');
     overlay.className = 'ui-roll ui-roll-overlay';
     overlay.setAttribute('aria-hidden', 'true');
     overlay.setAttribute('data-ptc', '1');
+    overlay.dataset.uiRaw = raw;
 
     var digi = 0;
+    var widest = Math.max(
+      measureDigitWidth(host, '0'),
+      measureDigitWidth(host, '8'),
+      Math.round(parseFloat(cs.fontSize) * 0.62) || 12
+    );
+
     for (var i = 0; i < raw.length; i++) {
       var ch = raw[i];
       if (/\d/.test(ch)) {
         var cell = D.createElement('span');
         cell.className = 'ui-roll-digit';
         cell.setAttribute('data-ptc', '1');
+        cell.style.width = widest + 'px';
+        cell.style.minWidth = widest + 'px';
         var strip = D.createElement('i');
         strip.setAttribute('data-ptc', '1');
         for (var n = 0; n <= 9; n++) {
@@ -192,7 +210,7 @@
         land.setAttribute('data-ptc', '1');
         strip.appendChild(land);
         strip.style.setProperty('--from', '0em');
-        strip.style.setProperty('--to', '-10.5em');
+        strip.style.setProperty('--to', '-10em');
         strip.style.setProperty('--delay', (digi * 100) + 'ms');
         cell.appendChild(strip);
         overlay.appendChild(cell);
@@ -207,12 +225,38 @@
     }
 
     host.appendChild(overlay);
+    return overlay;
+  }
+
+  function rollOverlay(host) {
+    if (!host) return;
+    var raw = figureText(host);
+    if (!/\d/.test(raw)) return;
+
+    host.classList.add('ui-roll-host');
+    var existing = host.querySelector(':scope > .ui-roll-overlay');
+    /* rebuild if premium-theme rewrote $1.5M+ → $5B+ after first paint */
+    if (existing && existing.dataset.uiRaw === raw && host.dataset.uiRoll === '1') {
+      if (existing.classList.contains('ui-on')) host.classList.add('ui-roll-ready');
+      return;
+    }
+
+    host.dataset.uiRoll = '1';
+    var overlay = buildOverlay(host, raw);
 
     function arm() {
-      /* only hide original text once overlay has real size — avoids blank stats on mobile */
+      var now = figureText(host);
+      if (now && now !== raw) {
+        raw = now;
+        played = false;
+        overlay = buildOverlay(host, raw);
+        return false;
+      }
       var r = overlay.getBoundingClientRect();
-      if (r.width < 2 || r.height < 2) {
-        host.classList.remove('ui-roll-ready');
+      var parent = host.closest('.proof-stat, .bento-card, .hero-stats') || host;
+      var pOp = parseFloat(getComputedStyle(parent).opacity);
+      if (r.width < 2 || r.height < 2) return false;
+      if (parent.classList.contains('pt-rv') && !parent.classList.contains('pt-in') && pOp < 0.05) {
         return false;
       }
       host.classList.add('ui-roll-ready');
@@ -222,36 +266,44 @@
     var played = false;
     function play(attempt) {
       attempt = attempt || 0;
-      if (played && host.classList.contains('ui-roll-ready')) return;
+      if (played && overlay.classList.contains('ui-on')) {
+        host.classList.add('ui-roll-ready');
+        return;
+      }
       if (!arm()) {
-        if (attempt < 12) setTimeout(function () { play(attempt + 1) }, 80);
+        if (attempt < 50) setTimeout(function () { play(attempt + 1) }, 120);
         return;
       }
       played = true;
+      host.classList.add('ui-roll-ready');
       if (RM) { overlay.classList.add('ui-on'); return }
       overlay.classList.remove('ui-on');
       void overlay.offsetWidth;
-      requestAnimationFrame(function () { overlay.classList.add('ui-on') });
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          overlay.classList.add('ui-on');
+          host.classList.add('ui-roll-ready');
+        });
+      });
     }
 
     if ('IntersectionObserver' in window && !RM) {
       var io = new IntersectionObserver(function (es) {
         es.forEach(function (x) {
-          if (x.isIntersecting) { play(); io.disconnect() }
+          if (x.isIntersecting) play();
         });
-      }, { threshold: 0.15, rootMargin: '40px 0px' });
+      }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
       io.observe(host.closest('.proof-stat, .bento-card, .hero-stats') || host);
       setTimeout(function () {
         var r = host.getBoundingClientRect();
-        if (r.top < innerHeight && r.bottom > 0) play();
-      }, 200);
+        if (r.top < innerHeight * 0.9 && r.bottom > 0) play();
+      }, 500);
     } else {
       play();
     }
   }
 
   function rollingNumbers() {
-    /* only true stat figures — avoid every bold node on the page */
     qsa('.proof-stat > strong, .hero-stats strong, .bento-metric > strong, .bento-card.bento-metric strong').forEach(rollOverlay);
   }
 
@@ -363,7 +415,6 @@
       item._uiTo = item._uiFrom = null;
     }
 
-    /* listeners on the handle only — card body stays scrollable on mobile */
     on(handle, 'pointerdown', onDown);
     on(handle, 'pointermove', onMove);
     on(handle, 'pointerup', onUp);
@@ -410,10 +461,36 @@
     });
   }
 
+  /* ========================================================================
+   * Mobile coach — one-time tip so touch gestures are discoverable
+   * ======================================================================== */
+  function mobileCoach() {
+    if (!COARSE || RM || H.dataset.uiCoach) return;
+    try { if (sessionStorage.getItem('ui-coach-v12') === '1') return } catch (e) {}
+    H.dataset.uiCoach = '1';
+
+    var bar = D.createElement('div');
+    bar.className = 'ui-coach';
+    bar.setAttribute('data-ptc', '1');
+    bar.setAttribute('role', 'status');
+    bar.innerHTML = '<p data-ptc="1"><strong data-ptc="1">On this phone:</strong> tap buttons to press, pull down to refresh stats, drag the ☰ handle, tap Expand on a card.</p><button type="button" aria-label="Dismiss" data-ptc="1">×</button>';
+    D.body.appendChild(bar);
+
+    function hide() {
+      bar.classList.remove('ui-show');
+      try { sessionStorage.setItem('ui-coach-v12', '1') } catch (e) {}
+      setTimeout(function () { if (bar.parentNode) bar.parentNode.removeChild(bar) }, 500);
+    }
+
+    on(bar.querySelector('button'), 'click', hide);
+    setTimeout(function () { bar.classList.add('ui-show') }, 900);
+    setTimeout(hide, 9000);
+  }
+
   /* ---------- boot (debounced, React-safe) ---------- */
   var scheduled = 0, passes = 0;
   function run() {
-    if (passes > 40) return; /* hard stop against pathological re-entry */
+    if (passes > 40) return;
     passes++;
     try {
       wirePress();
@@ -435,8 +512,8 @@
   function start() {
     pullRefresh();
     run();
+    mobileCoach();
     new MutationObserver(function (muts) {
-      /* ignore our own overlay/cue/handle insertions */
       for (var i = 0; i < muts.length; i++) {
         var m = muts[i];
         if (m.type === 'attributes') continue;
@@ -448,14 +525,14 @@
           if (n.nodeType !== 1) return n.nodeType === 3;
           return !n.hasAttribute('data-ptc') && !n.classList.contains('ui-roll') &&
             !n.classList.contains('ui-expand-cue') && !n.classList.contains('ui-drag-handle') &&
-            !n.classList.contains('ui-pull-indicator');
+            !n.classList.contains('ui-pull-indicator') && !n.classList.contains('ui-coach');
         });
         if (foreign) { schedule(); return }
       }
     }).observe(D.body, { childList: true, subtree: true });
     setTimeout(run, 1000);
     setTimeout(run, 2800);
-    setTimeout(function () { passes = 0 }, 4000); /* allow later navigations via SPA soft loads */
+    setTimeout(function () { passes = 0 }, 4000);
   }
 
   if (D.readyState === 'loading') on(D, 'DOMContentLoaded', start);
