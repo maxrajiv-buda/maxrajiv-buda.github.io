@@ -17,24 +17,53 @@
    * ======================================================================== */
   var BTN = 'a.button,button.button,.button,.btn,.button-primary,.button-dark,.btn-solid,.btn-ghost,.thesis-cta,.social-link,.nav-availability,.menu-button';
 
+  function sparkRipple(b, e) {
+    if (RM) return;
+    var r = b.getBoundingClientRect();
+    var x = (e && e.clientX != null ? e.clientX : r.left + r.width / 2) - r.left;
+    var y = (e && e.clientY != null ? e.clientY : r.top + r.height / 2) - r.top;
+    var size = Math.max(r.width, r.height);
+    var ink = D.createElement('span');
+    ink.className = 'ui-ripple';
+    ink.setAttribute('data-ptc', '1');
+    ink.style.width = ink.style.height = size + 'px';
+    ink.style.left = (x - size / 2) + 'px';
+    ink.style.top = (y - size / 2) + 'px';
+    b.appendChild(ink);
+    setTimeout(function () { if (ink.parentNode) ink.parentNode.removeChild(ink) }, 600);
+  }
+
   function wirePress() {
     qsa(BTN).forEach(function (b) {
       if (b.dataset.uiPress) return;
       b.dataset.uiPress = '1';
       b.classList.add('ui-press');
       if (!b.classList.contains('pt-mag')) b.classList.add('ui-press-plain');
+      var cs = getComputedStyle(b);
+      if (cs.position === 'static') b.style.position = 'relative';
 
       function down(e) {
         if (e.button != null && e.button !== 0) return;
+        b.classList.remove('ui-pop');
         b.classList.add('ui-down');
+        sparkRipple(b, e);
       }
-      function up() { b.classList.remove('ui-down') }
+      function up() {
+        if (!b.classList.contains('ui-down')) return;
+        b.classList.remove('ui-down');
+        if (!RM) {
+          b.classList.remove('ui-pop');
+          void b.offsetWidth;
+          b.classList.add('ui-pop');
+          setTimeout(function () { b.classList.remove('ui-pop') }, 560);
+        }
+      }
 
       on(b, 'pointerdown', down);
       on(b, 'pointerup', up);
-      on(b, 'pointercancel', up);
-      on(b, 'pointerleave', up);
-      on(b, 'blur', up);
+      on(b, 'pointercancel', function () { b.classList.remove('ui-down') });
+      on(b, 'pointerleave', function () { b.classList.remove('ui-down') });
+      on(b, 'blur', function () { b.classList.remove('ui-down') });
     });
 
     if (FINE && !RM) {
@@ -283,6 +312,10 @@
         requestAnimationFrame(function () {
           overlay.classList.add('ui-on');
           host.classList.add('ui-roll-ready');
+          host.classList.remove('ui-roll-bump');
+          void host.offsetWidth;
+          host.classList.add('ui-roll-bump');
+          setTimeout(function () { host.classList.remove('ui-roll-bump') }, 600);
         });
       });
     }
@@ -462,29 +495,130 @@
   }
 
   /* ========================================================================
-   * Mobile coach — one-time tip so touch gestures are discoverable
+   * Alive entrance — cards wake with a spring as they enter view
+   * ======================================================================== */
+  function aliveCards() {
+    if (RM) return;
+    var targets = qsa('.proof-stat, .project-card, .principle-card, .capability-card, .playbook-card, .bento-card, article.card');
+    if (!targets.length) return;
+
+    if (!aliveCards._io) {
+      aliveCards._io = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+        es.forEach(function (x) {
+          if (!x.isIntersecting) return;
+          var el = x.target;
+          el.classList.add('ui-awake');
+          el.classList.add('ui-wiggle');
+          setTimeout(function () { el.classList.remove('ui-wiggle') }, 750);
+          aliveCards._io.unobserve(el);
+        });
+      }, { threshold: 0.18, rootMargin: '0px 0px -6% 0px' }) : null;
+    }
+
+    targets.forEach(function (el, i) {
+      if (el.dataset.uiAlive) return;
+      el.dataset.uiAlive = '1';
+      el.classList.add('ui-alive');
+      el.style.setProperty('--ui-alive-d', ((i % 5) * 70) + 'ms');
+      var r = el.getBoundingClientRect();
+      var visible = r.top < innerHeight * 0.92 && r.bottom > 40;
+      if (visible || el.classList.contains('pt-in') || el.classList.contains('is-visible')) {
+        requestAnimationFrame(function () {
+          el.classList.add('ui-awake');
+          el.classList.add('ui-wiggle');
+          setTimeout(function () { el.classList.remove('ui-wiggle') }, 750);
+        });
+      } else if (aliveCards._io) {
+        aliveCards._io.observe(el);
+        setTimeout(function () {
+          if (!el.classList.contains('ui-awake')) el.classList.add('ui-awake');
+        }, 4000);
+      } else {
+        el.classList.add('ui-awake');
+      }
+    });
+  }
+
+  /* ========================================================================
+   * Mobile coach + short auto-demo so the page feels alive immediately
    * ======================================================================== */
   function mobileCoach() {
     if (!COARSE || RM || H.dataset.uiCoach) return;
-    try { if (sessionStorage.getItem('ui-coach-v12') === '1') return } catch (e) {}
+    try { if (sessionStorage.getItem('ui-coach-v16') === '1') return } catch (e) {}
     H.dataset.uiCoach = '1';
 
     var bar = D.createElement('div');
     bar.className = 'ui-coach';
     bar.setAttribute('data-ptc', '1');
     bar.setAttribute('role', 'status');
-    bar.innerHTML = '<p data-ptc="1"><strong data-ptc="1">On this phone:</strong> tap buttons to press, pull down to refresh stats, drag the ☰ handle, tap Expand on a card.</p><button type="button" aria-label="Dismiss" data-ptc="1">×</button>';
+    bar.innerHTML = '<p data-ptc="1"><strong data-ptc="1">It moves:</strong> tap a button, pull to re-roll stats, drag ☰, tap Expand.</p><button type="button" aria-label="Dismiss" data-ptc="1">×</button>';
     D.body.appendChild(bar);
 
     function hide() {
       bar.classList.remove('ui-show');
-      try { sessionStorage.setItem('ui-coach-v12', '1') } catch (e) {}
+      try { sessionStorage.setItem('ui-coach-v16', '1') } catch (e) {}
       setTimeout(function () { if (bar.parentNode) bar.parentNode.removeChild(bar) }, 500);
     }
 
     on(bar.querySelector('button'), 'click', hide);
-    setTimeout(function () { bar.classList.add('ui-show') }, 900);
-    setTimeout(hide, 9000);
+    setTimeout(function () { bar.classList.add('ui-show') }, 700);
+    setTimeout(hide, 8500);
+  }
+
+  function livelyDemo() {
+    if (RM || H.dataset.uiDemo) return;
+    try { if (sessionStorage.getItem('ui-demo-v16') === '1') return } catch (e) {}
+    H.dataset.uiDemo = '1';
+
+    setTimeout(function () {
+      var btn = D.querySelector('a.thesis-cta.ui-press, a.button.ui-press, .button-primary.ui-press');
+      if (btn) {
+        btn.classList.add('ui-down');
+        sparkRipple(btn, null);
+        setTimeout(function () {
+          btn.classList.remove('ui-down');
+          btn.classList.add('ui-pop');
+          setTimeout(function () { btn.classList.remove('ui-pop') }, 560);
+        }, 160);
+      }
+    }, 1100);
+
+    setTimeout(function () {
+      qsa('.ui-expand-cue').slice(0, 3).forEach(function (cue, i) {
+        setTimeout(function () {
+          cue.classList.add('ui-pulse');
+          setTimeout(function () { cue.classList.remove('ui-pulse') }, 4200);
+        }, i * 180);
+      });
+      qsa('.ui-drag-handle').slice(0, 3).forEach(function (h, i) {
+        setTimeout(function () {
+          h.classList.add('ui-nudge');
+          setTimeout(function () { h.classList.remove('ui-nudge') }, 2300);
+        }, 200 + i * 160);
+      });
+    }, 1800);
+
+    setTimeout(function () {
+      var proof = D.querySelector('.proof-stat');
+      if (proof) {
+        try { proof.scrollIntoView({ behavior: 'smooth', block: 'center' }) } catch (e) {}
+      }
+      setTimeout(function () {
+        qsa('.ui-roll').forEach(function (el) {
+          el.classList.remove('ui-on');
+          void el.offsetWidth;
+          el.classList.add('ui-on');
+          var host = el.parentNode;
+          if (host) {
+            host.classList.remove('ui-roll-bump');
+            void host.offsetWidth;
+            host.classList.add('ui-roll-bump');
+            setTimeout(function () { host.classList.remove('ui-roll-bump') }, 600);
+          }
+        });
+        try { sessionStorage.setItem('ui-demo-v16', '1') } catch (e) {}
+      }, 700);
+    }, 3200);
   }
 
   /* ---------- boot (debounced, React-safe) ---------- */
@@ -497,6 +631,7 @@
       rollingNumbers();
       dragReorder();
       expandCards();
+      aliveCards();
     } catch (e) { console.warn('ui-motion', e) }
   }
 
@@ -513,6 +648,7 @@
     pullRefresh();
     run();
     mobileCoach();
+    livelyDemo();
     new MutationObserver(function (muts) {
       for (var i = 0; i < muts.length; i++) {
         var m = muts[i];
@@ -525,7 +661,8 @@
           if (n.nodeType !== 1) return n.nodeType === 3;
           return !n.hasAttribute('data-ptc') && !n.classList.contains('ui-roll') &&
             !n.classList.contains('ui-expand-cue') && !n.classList.contains('ui-drag-handle') &&
-            !n.classList.contains('ui-pull-indicator') && !n.classList.contains('ui-coach');
+            !n.classList.contains('ui-pull-indicator') && !n.classList.contains('ui-coach') &&
+            !n.classList.contains('ui-ripple');
         });
         if (foreign) { schedule(); return }
       }
