@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html data-theme-default="light" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VK Public Posts Fetcher — Rajiv Buda</title>
+<meta name="description" content="A Colab utility by Rajiv Buda that reads recent public wall posts from one VK community through the official API. The token stays in a Colab secret." />
+<link rel="canonical" href="https://rajivbuda.com/projects/vk-posts/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="VK Public Posts Fetcher — Rajiv Buda" />
+<meta property="og:description" content="Reads recent public VK wall posts through the official API. Token in a Colab secret. No private data." />
+<meta property="og:url" content="https://rajivbuda.com/projects/vk-posts/" />
+<meta property="og:image" content="https://rajivbuda.com/assets/og.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="VK Public Posts Fetcher — Rajiv Buda" />
+<meta name="twitter:description" content="Reads recent public VK wall posts through the official API. Token in a Colab secret. No private data." />
+<meta name="twitter:image" content="https://rajivbuda.com/assets/og.jpg" />
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/project-icons.css?v=1" />
+<style>
+  :root { --bg:#000; --ink:#f4f1ea; --muted:#c8c2b8; --line:rgba(244,241,234,.16); --soft:#141414; --signal:#ffe500; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: Figtree, ui-sans-serif, system-ui, sans-serif; line-height: 1.55; }
+  a { color: inherit; }
+  h1, h2 { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; margin: 0; }
+  .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; min-height: 64px; padding: 12px 22px; border-bottom: 1px solid var(--line); }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; }
+  .mark { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 8px; font-family: "Instrument Serif", Georgia, serif; }
+  .nav a.quiet { color: var(--muted); text-decoration: none; font-size: 14px; }
+  .wrap { width: min(920px, calc(100% - 40px)); margin: 0 auto; }
+  header.hero { padding: 64px 0 12px; }
+  .hero-top { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+  .kicker { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin: 0; }
+  h1 { font-size: clamp(2.8rem, 8vw, 4.8rem); line-height: .95; }
+  .lede { font-size: 1.12rem; color: var(--muted); max-width: 40rem; margin: 18px 0 0; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .btn { display: inline-flex; align-items: center; min-height: 46px; padding: 8px 18px; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 600; }
+  .btn-solid { background: #fff; color: #000; }
+  .btn-ghost { border: 1px solid var(--line); }
+  .facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 32px; }
+  .fact { background: var(--soft); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+  .fact b { display: block; font-family: "Instrument Serif", Georgia, serif; font-size: 1.45rem; font-weight: 400; }
+  .fact span { display: block; margin-top: 6px; color: var(--muted); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+  section { padding: 52px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 14px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .card { background: var(--soft); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+  .card h3 { margin: 0; font-size: 16px; font-family: Figtree, sans-serif; font-weight: 600; }
+  .card p { margin: 8px 0 0; color: var(--muted); }
+  .limit { border-left: 2px solid var(--signal); padding: 8px 0 8px 14px; color: var(--muted); margin-top: 18px; }
+  .limit strong { display: block; color: var(--ink); margin-bottom: 4px; }
+  pre { background: #141414; border: 1px solid var(--line); border-radius: 16px; padding: 18px; overflow-x: auto; font-size: 13px; line-height: 1.65; }
+  footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--muted); }
+  footer a { color: var(--ink); }
+  @media (max-width: 700px) { .facts, .grid { grid-template-columns: 1fr; } }
+</style>
+<link rel="stylesheet" href="/assets/premium-theme.css?v=6" data-pt>
+<script defer src="/assets/premium-theme.js?v=12" data-pt></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/"><span class="mark">RB</span> Rajiv Buda</a>
+  <a class="quiet" href="/projects/">All projects</a>
+</nav>
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <span class="px-ico vk lg" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 10h8M8 13h6M8 16h4"/></svg></span>
+      <p class="kicker">Data utility · Official API · CPU</p>
+    </div>
+    <h1>VK public posts</h1>
+    <p class="lede">A short Colab cell that reads recent public wall posts from one VK community through the official API. Built so I can inspect public text before deciding whether it belongs in any later pipeline — not to scrape the web.</p>
+    <div class="actions">
+      <a class="btn btn-solid" href="https://colab.research.google.com/github/maxrajiv-buda/maxrajiv-buda.github.io/blob/main/projects/AI-Projects.ipynb" target="_blank" rel="noopener">Open section 3 in Colab</a>
+      <a class="btn btn-ghost" href="/projects/">All projects</a>
+    </div>
+    <div class="facts">
+      <div class="fact"><b>Official API</b><span>vk.wall.get</span></div>
+      <div class="fact"><b>Public wall</b><span>One community</span></div>
+      <div class="fact"><b>Secret token</b><span>Never in the file</span></div>
+    </div>
+  </div>
+</header>
+<section>
+  <div class="wrap">
+    <h2>Why it exists.</h2>
+    <div class="grid">
+      <article class="card"><h3>See the text before you train</h3><p>Public walls are noisy. This cell prints dates and the first 280 characters so I can judge whether the content is even useful — before anyone talks about a dataset.</p></article>
+      <article class="card"><h3>Stay inside the API</h3><p>It calls <code>wall.get</code> on a public community screen name. No login-as-user flow, no private messages, no access-control bypass.</p></article>
+      <article class="card"><h3>Keep the credential out of git</h3><p>The notebook reads <code>VK_TOKEN</code> from a Colab secret. If the secret is missing, the cell stops. It does not fall back to a hard-coded key.</p></article>
+      <article class="card"><h3>Stop before collection</h3><p>It prints. It does not write a corpus file. A printed post is not a training set until that decision is made separately, with rights checked.</p></article>
+    </div>
+    <p class="limit"><strong>Limit</strong>This is a public-read utility. It is not a crawler, it does not bypass access controls, and a printed post is not evidence that the text may be reused for training.</p>
+  </div>
+</section>
+<section>
+  <div class="wrap">
+    <h2>How to run it.</h2>
+    <div class="grid">
+      <article class="card"><h3>1. Add the secret</h3><p>In Colab, create a secret named <code>VK_TOKEN</code>. The notebook reads it at runtime.</p></article>
+      <article class="card"><h3>2. Pick a public community</h3><p><code>DOMAIN</code> is the screen name. The sample is <code>ru_mash</code>. Change it. Posts with no text are skipped.</p></article>
+      <article class="card"><h3>3. Read ten posts</h3><p>The cell prints date + first 280 characters for each public post returned by the API.</p></article>
+      <article class="card"><h3>4. Decide later</h3><p>If the text looks useful, that is a separate product or research decision — not this cell’s job.</p></article>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="wrap">
+    <h2>The call.</h2>
+    <pre><code>DOMAIN = "ru_mash"  # public community screen name
+COUNT = 10
+token = userdata.get("VK_TOKEN")
+vk = vk_api.VkApi(token=token).get_api()
+posts = vk.wall.get(domain=DOMAIN, count=COUNT)</code></pre>
+  </div>
+</section>
+<footer><div class="wrap"><a href="/projects/">← All projects</a> · <a href="/projects/fishing-cat/">Fishing Cat</a></div></footer>
+</body>
+</html>

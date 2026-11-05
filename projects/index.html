@@ -3,22 +3,23 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AI Projects | Rajiv Buda</title>
-<meta name="description" content="AI projects by Rajiv Buda: HireOnAI, Polar Orca (formerly IRA Dolphine), Fishing Cat AI, a VK data-collection utility and the Account Decision Brief." />
+<title>Projects | Rajiv Buda</title>
+<meta name="description" content="Six pieces of work by Rajiv Buda: HireOnAI, Polar Orca, Fishing Cat, the VK public-posts utility, the Account Decision Brief, and Barsa Re Bhubaneswar." />
 <link rel="canonical" href="https://rajivbuda.com/projects/" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="AI Projects | Rajiv Buda" />
-<meta property="og:description" content="AI projects by Rajiv Buda: HireOnAI, Polar Orca (formerly IRA Dolphine), Fishing Cat AI, a VK data-collection utility and the Account Decision Brief." />
+<meta property="og:title" content="Projects | Rajiv Buda" />
+<meta property="og:description" content="A live career product, two LoRA fine-tunes, a public-data utility, an account decision brief, and a novel — each with a page that states what was built and what it does not prove." />
 <meta property="og:url" content="https://rajivbuda.com/projects/" />
 <meta property="og:image" content="https://rajivbuda.com/assets/og.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="AI Projects | Rajiv Buda" />
-<meta name="twitter:description" content="AI projects by Rajiv Buda: HireOnAI, Polar Orca (formerly IRA Dolphine), Fishing Cat AI, a VK data-collection utility and the Account Decision Brief." />
+<meta name="twitter:title" content="Projects | Rajiv Buda" />
+<meta name="twitter:description" content="A live career product, two LoRA fine-tunes, a public-data utility, an account decision brief, and a novel." />
 <meta name="twitter:image" content="https://rajivbuda.com/assets/og.jpg" />
 <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/project-icons.css?v=1" />
 <style>
   :root { --bg:#000; --ink:#f4f1ea; --muted:#c8c2b8; --line:rgba(244,241,234,.16); --soft:#141414; --signal:#ffe500; }
   * { box-sizing: border-box; }
@@ -28,63 +29,37 @@
   h1, h2 { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; margin: 0; }
   .nav { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; height: 64px; padding: 0 22px; background: #000; border-bottom: 1px solid var(--line); }
   .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; }
-  .mark { width: 34px; height: 34px; display: grid; place-items: center; background: transparent; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; font-family: "Instrument Serif", Georgia, serif; position: relative; }
-  .mark:after { content: ""; position: absolute; top: -3px; right: -3px; width: 8px; height: 8px; border-radius: 99px; background: var(--signal); animation: pulse 2.4s ease-out infinite; }
+  .mark { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 8px; font-family: "Instrument Serif", Georgia, serif; position: relative; }
+  .mark:after { content: ""; position: absolute; top: -3px; right: -3px; width: 8px; height: 8px; border-radius: 99px; background: var(--signal); }
   .nav a.quiet { color: var(--muted); text-decoration: none; font-size: 14px; }
-  .nav a.quiet:hover { color: var(--ink); }
-  .wrap { width: min(920px, calc(100% - 40px)); margin: 0 auto; }
-  header.hero { padding: 72px 0 28px; animation: rise .9s cubic-bezier(.22,1,.36,1) both; }
-  .kicker { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
-  h1 { font-size: clamp(3.2rem, 9vw, 5.6rem); line-height: .9; }
-  h1 span { color: var(--ink); font-style: normal; }
-  .lede { font-size: 1.12rem; color: var(--muted); max-width: 40rem; margin: 18px 0 0; }
+  .wrap { width: min(960px, calc(100% - 40px)); margin: 0 auto; }
+  header.hero { padding: 72px 0 28px; }
+  .kicker { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
+  h1 { font-size: clamp(3rem, 8vw, 5.2rem); line-height: .92; }
+  .lede { font-size: 1.12rem; color: var(--muted); max-width: 42rem; margin: 18px 0 0; }
   .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
-  .btn { display: inline-flex; align-items: center; height: 46px; padding: 0 18px; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 600; transition: transform .3s cubic-bezier(.22,1,.36,1); }
+  .btn { display: inline-flex; align-items: center; height: 46px; padding: 0 18px; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 600; }
   .btn-solid { background: #fff; color: #000; }
-  .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
-  .btn:hover { transform: translateY(-2px); }
-  .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 36px 0 10px; }
-  .stat { background: var(--soft); border: 1px solid var(--line); border-radius: 18px; padding: 18px 14px; animation: rise .8s cubic-bezier(.22,1,.36,1) both; }
-  .stat:nth-child(2) { animation-delay: .06s; } .stat:nth-child(3) { animation-delay: .12s; }
-  .stat:nth-child(4) { animation-delay: .18s; } .stat:nth-child(5) { animation-delay: .24s; }
-  .stat b { display: block; font-family: "Instrument Serif", Georgia, serif; font-size: 1.7rem; font-weight: 400; color: var(--ink); }
-  .stat span { display: block; margin-top: 6px; color: var(--muted); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
-  section { padding: 56px 0; border-top: 1px solid var(--line); }
-  h2 { font-size: clamp(2.1rem, 4.5vw, 3.1rem); margin-bottom: 18px; line-height: 1; }
-  h2 span { color: var(--muted); font-style: normal; }
-  .steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
-  .step { background: var(--soft); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
-  .step small { color: var(--muted); letter-spacing: .12em; font-size: 11px; }
-  .step strong { display: block; margin: 8px 0 6px; }
-  .step p { margin: 0; color: var(--muted); font-size: 14px; }
+  .btn-ghost { border: 1px solid var(--line); }
+  section { padding: 48px 0 64px; border-top: 1px solid var(--line); }
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .card { border: 1px solid var(--line); background: var(--soft); border-radius: 16px; padding: 18px 18px 8px; }
-  .card h3 { margin: 0 0 8px; font-size: 16px; }
+  .card { border: 1px solid var(--line); background: var(--soft); border-radius: 18px; padding: 20px 20px 16px; display: flex; flex-direction: column; min-height: 100%; }
+  .card h3 { margin: 0; font-size: 1.15rem; font-family: Figtree, sans-serif; font-weight: 600; letter-spacing: -0.02em; }
   .card p { margin: 0 0 12px; color: var(--muted); font-size: 15px; }
-  .chat { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: var(--soft); }
-  .chat header { padding: 12px 16px; background: var(--soft); color: var(--muted); font-size: 13px; font-family: ui-monospace, monospace; }
-  .msg { margin: 14px 16px; padding: 12px 14px; border-radius: 14px; max-width: 42rem; }
-  .you { margin-left: auto; background: #ffe500; color: #000; }
-  .bot { background: var(--soft); border: 1px solid var(--line); }
-  .role { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 6px; opacity: .7; }
-  .note { margin: 0 16px 16px; color: var(--muted); font-size: 14px; }
-  pre { background: #141414; color: #f4f1ea; border: 1px solid var(--line); border-radius: 16px; padding: 18px; overflow-x: auto; font-size: 13px; line-height: 1.65; }
-  .limit { background: var(--soft); border: 1px solid var(--line); border-left: 2px solid var(--signal); border-radius: 16px; padding: 18px; margin-top: 16px; color: var(--muted); }
-  .limit strong { display: block; margin-bottom: 6px; color: var(--ink); }
+  .card .stack { margin: 0 0 4px; font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .card .limit-line { margin: 0 0 14px; font-size: 13px; color: #a8a29a; border-left: 2px solid var(--signal); padding-left: 10px; }
+  .card .actions { margin-top: auto; padding-top: 8px; }
+  .card .btn { height: 40px; font-size: 13px; }
   footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
   footer a { color: var(--ink); }
-  @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
-  @keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(30, 74, 115, 0); } }
-  @media (max-width: 800px) {
-    .stats, .steps, .grid { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 760px) {
+    .grid { grid-template-columns: 1fr; }
     .nav a.quiet { display: none; }
+    header.hero { padding-top: 40px; }
   }
-  @media (max-width: 560px) { .stats, .steps { grid-template-columns: 1fr; } }
-  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; } }
 </style>
-<style>.card .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px} .card .kicker{margin:0 0 8px}</style>
 <link rel="stylesheet" href="/assets/premium-theme.css?v=6" data-pt>
-<script defer src="/assets/premium-theme.js?v=6" data-pt></script>
+<script defer src="/assets/premium-theme.js?v=12" data-pt></script>
 </head>
 <body>
 <nav class="nav">
@@ -93,22 +68,104 @@
 </nav>
 <header class="hero">
   <div class="wrap">
-    <p class="kicker">Projects · Model layer</p>
-    <h1>AI <span>Projects</span></h1>
-    <p class="lede">Five projects: a live career product, two LoRA fine-tunes, a data-collection tool and an account decision brief. The three notebook projects run from a single Colab notebook.</p>
+    <p class="kicker">Selected work</p>
+    <h1>Built, checked, <span style="font-style:italic;color:var(--muted)">named.</span></h1>
+    <p class="lede">Six pieces of work. Each page says what shipped, how it was checked, and what the evidence still does not prove.</p>
     <div class="actions">
-      <a class="btn btn-solid" href="https://colab.research.google.com/github/maxrajiv-buda/maxrajiv-buda.github.io/blob/main/projects/AI-Projects.ipynb" target="_blank" rel="noopener">Open notebook in Colab</a>
-      <a class="btn btn-ghost" href="https://github.com/maxrajiv-buda/maxrajiv-buda.github.io/blob/main/projects/AI-Projects.ipynb" target="_blank" rel="noopener">View on GitHub</a>
+      <a class="btn btn-solid" href="https://colab.research.google.com/github/maxrajiv-buda/maxrajiv-buda.github.io/blob/main/projects/AI-Projects.ipynb" target="_blank" rel="noopener">Open the notebook</a>
+      <a class="btn btn-ghost" href="/#contact">Start a conversation</a>
     </div>
   </div>
 </header>
-<section><div class="wrap"><div class="grid">
-<article class="card"><p class="kicker">Live product</p><h3>HireOnAI</h3><p>A career product that matches a résumé to real jobs, explains the score, names the gaps, and tailors the application without inventing experience.</p><p class="kicker">Stack · Product direction · LLM APIs · Python / FastAPI</p><div class="actions"><a class="btn btn-solid" href="https://hireonai.in" target="_blank" rel="noopener">Visit hireonai.in</a> </div></article>
-<article class="card"><p class="kicker">01 · Fine-tune</p><h3>Polar Orca</h3><p class="pt-formerly" data-keep-name>Formerly IRA Dolphine · Built by Rajiv Buda</p><p>A LoRA fine-tune of a 4-bit Qwen2.5-3B-Instruct base with Unsloth, trained on a slice of the FineTome instruction set, with before/after checks and Hub publishing. Apache-2.0.</p><p class="kicker">Stack · Python · Unsloth · TRL · PEFT/LoRA · Hugging Face</p><div class="actions"><a class="btn btn-solid" href="https://colab.research.google.com/github/maxrajiv-buda/maxrajiv-buda.github.io/blob/main/projects/AI-Projects.ipynb" target="_blank" rel="noopener">Open in Colab</a> <a class="btn btn-ghost" href="https://huggingface.co/maxrajiv-buda/polar-orca" target="_blank" rel="noopener">Hugging Face model</a> <a class="btn btn-ghost" href="https://huggingface.co/maxrajiv-buda/polar-orca-GGUF" target="_blank" rel="noopener">GGUF build</a> <a class="btn btn-ghost" href="/projects/polar-orca/" target="_blank" rel="noopener">Project page</a> </div></article>
-<article class="card"><p class="kicker">02 · Custom assistant</p><h3>Fishing Cat AI</h3><p>A small custom assistant named after the fishing cat, Odisha's state animal. Llama-3.2-1B-Instruct in 4-bit, LoRA-trained on a hand-written set of 219 instruction/answer pairs.</p><p class="kicker">Stack · Python · Unsloth · Llama-3.2-1B · TRL SFTTrainer · Google Drive</p><div class="actions"><a class="btn btn-solid" href="https://colab.research.google.com/github/maxrajiv-buda/maxrajiv-buda.github.io/blob/main/projects/AI-Projects.ipynb" target="_blank" rel="noopener">Open in Colab</a> </div></article>
-<article class="card"><p class="kicker">03 · Data utility</p><h3>VK Public Posts Fetcher</h3><p>A data-collection utility that pulls recent public wall posts from a VK community through the official API, with the token kept in a Colab secret.</p><p class="kicker">Stack · Python · vk_api · requests · BeautifulSoup</p><div class="actions"><a class="btn btn-solid" href="https://colab.research.google.com/github/maxrajiv-buda/maxrajiv-buda.github.io/blob/main/projects/AI-Projects.ipynb" target="_blank" rel="noopener">Open in Colab</a> </div></article>
-<article class="card"><p class="kicker">Decision brief</p><h3>Account Decision Brief</h3><p>An account pack goes in. The brief comes out with a decision, sourced evidence, and a refusal to invent a number.</p><div class="actions"><a class="btn btn-solid" href="/projects/account-brief/">Project page</a> </div></article>
-</div></div></section>
+<section>
+  <div class="wrap">
+    <div class="grid">
+
+<article class="card">
+  <div class="px-head">
+    <span class="px-ico hire" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c0-3.1 2.5-5.5 5.5-5.5s5.5 2.4 5.5 5.5"/><path d="M15 9.5l2 2 4-4"/></svg></span>
+    <div><p class="kicker">Live product</p><h3>HireOnAI</h3></div>
+  </div>
+  <p>Matches a résumé to real jobs, explains the score, names the gaps, and drafts the application without inventing experience.</p>
+  <p class="stack">Product · LLM APIs · Python / FastAPI</p>
+  <p class="limit-line">Limit: the model proposes; the candidate owns the truth of the résumé.</p>
+  <div class="actions">
+    <a class="btn btn-solid" href="/projects/hireonai/">Project page</a>
+    <a class="btn btn-ghost" href="https://hireonai.in" target="_blank" rel="noopener">hireonai.in</a>
+  </div>
+</article>
+
+<article class="card">
+  <div class="px-head">
+    <span class="px-ico orca" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 14c3-1 5-4 9-4s6 3 9 4"/><path d="M4 17c2.5-.7 4.5-2.5 8-2.5s5.5 1.8 8 2.5"/><circle cx="16.5" cy="9.5" r="1.2"/><path d="M12 10c1.5-3 4-4.5 7-4"/></svg></span>
+    <div><p class="kicker">01 · Fine-tune</p><h3>Polar Orca</h3></div>
+  </div>
+  <p>A LoRA on 4-bit Qwen2.5-3B-Instruct. Trained on a free T4, published as a 120&nbsp;MB adapter, checked with one held-out prompt.</p>
+  <p class="stack">Unsloth · TRL · PEFT · Hugging Face</p>
+  <p class="limit-line">Limit: one smoke test, not a benchmark win-rate.</p>
+  <div class="actions">
+    <a class="btn btn-solid" href="/projects/polar-orca/">Project page</a>
+    <a class="btn btn-ghost" href="https://huggingface.co/maxrajiv-buda/polar-orca" target="_blank" rel="noopener">Model</a>
+  </div>
+</article>
+
+<article class="card">
+  <div class="px-head">
+    <span class="px-ico cat" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 11l2.5-5 3 3.5L13.5 6l2.5 5"/><path d="M6 12c0 4 2.5 7 6 7s6-3 6-7"/><circle cx="10" cy="13" r=".8" fill="currentColor" stroke="none"/><circle cx="14" cy="13" r=".8" fill="currentColor" stroke="none"/><path d="M11 16.2c.6.5 1.4.5 2 0"/></svg></span>
+    <div><p class="kicker">02 · Custom assistant</p><h3>Fishing Cat</h3></div>
+  </div>
+  <p>Named for Odisha’s state animal. Llama-3.2-1B LoRA on hand-written pairs that teach who built it, where it is from, and how it should speak.</p>
+  <p class="stack">Llama-3.2-1B · Unsloth · 201 pairs · 1 held out</p>
+  <p class="limit-line">Limit: a voice exercise on Drive, not a Hub model to rely on.</p>
+  <div class="actions">
+    <a class="btn btn-solid" href="/projects/fishing-cat/">Project page</a>
+    <a class="btn btn-ghost" href="https://colab.research.google.com/github/maxrajiv-buda/maxrajiv-buda.github.io/blob/main/projects/AI-Projects.ipynb" target="_blank" rel="noopener">Colab</a>
+  </div>
+</article>
+
+<article class="card">
+  <div class="px-head">
+    <span class="px-ico vk" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M8 10h8M8 13h6M8 16h4"/></svg></span>
+    <div><p class="kicker">03 · Data utility</p><h3>VK public posts</h3></div>
+  </div>
+  <p>Reads recent public wall posts from one VK community through the official API. Token stays in a Colab secret. No private data.</p>
+  <p class="stack">vk_api · Colab secret · public wall only</p>
+  <p class="limit-line">Limit: a first look at public text, not a scraped training set.</p>
+  <div class="actions">
+    <a class="btn btn-solid" href="/projects/vk-posts/">Project page</a>
+    <a class="btn btn-ghost" href="https://colab.research.google.com/github/maxrajiv-buda/maxrajiv-buda.github.io/blob/main/projects/AI-Projects.ipynb" target="_blank" rel="noopener">Colab</a>
+  </div>
+</article>
+
+<article class="card">
+  <div class="px-head">
+    <span class="px-ico brief" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5h10v14H8z"/><path d="M6 7h2M6 11h2M6 15h2"/><path d="M11 9h5M11 13h4"/><path d="M11 17l1.5 1.5L16 15"/></svg></span>
+    <div><p class="kicker">Decision brief</p><h3>Account Decision Brief</h3></div>
+  </div>
+  <p>An account pack goes in. The brief comes out with a decision, sourced evidence, and a refusal to invent a number.</p>
+  <p class="stack">Working sample · sourced claims only</p>
+  <p class="limit-line">Limit: a sample that recomputes when a line leaves the pack.</p>
+  <div class="actions">
+    <a class="btn btn-solid" href="/projects/account-brief/">Try the sample</a>
+  </div>
+</article>
+
+<article class="card">
+  <div class="px-head">
+    <span class="px-ico book" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5C7 4.5 10 5 12 7c2-2 5-2.5 8-1.5V19c-3-1-6-.5-8 1.5-2-2-5-2.5-8-1.5z"/><path d="M12 7v13.5"/></svg></span>
+    <div><p class="kicker">Fiction</p><h3>Barsa Re Bhubaneswar</h3></div>
+  </div>
+  <p>A monsoon novel of Bhubaneswar — family pressure, first love, and clocks that keep ticking when the room goes quiet.</p>
+  <p class="stack">22 chapters · trailer on the page</p>
+  <p class="limit-line">Limit: sample chapters on the site; full release still ahead.</p>
+  <div class="actions">
+    <a class="btn btn-solid" href="/barsa-re-bhubaneswar/">Read the page</a>
+  </div>
+</article>
+
+    </div>
+  </div>
+</section>
 <footer><div class="wrap"><a href="/">← Back to rajivbuda.com</a></div></footer>
 </body>
 </html>

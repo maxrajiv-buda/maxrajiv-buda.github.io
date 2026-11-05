@@ -4,12 +4,12 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Polar Orca — Fine-tuned LLM by Rajiv Buda</title>
-<meta name="description" content="Polar Orca (formerly IRA Dolphine) is a LoRA fine-tune of Qwen2.5-3B, built by Rajiv Buda to turn knowledge into opportunity, for everyone, everywhere." />
+<meta name="description" content="Polar Orca is a LoRA fine-tune of Qwen2.5-3B by Rajiv Buda: short practical advice, trained on a free T4, published as a 120 MB adapter, checked with one held-out prompt." />
 <link rel="canonical" href="https://rajivbuda.com/projects/polar-orca/" />
 <meta property="og:type" content="article" />
 <meta property="og:site_name" content="Rajiv Buda" />
 <meta property="og:title" content="Polar Orca — built by Rajiv Buda" />
-<meta property="og:description" content="I'm Polar Orca, built by Rajiv Buda to turn knowledge into opportunity, for everyone, everywhere. A Qwen2.5-3B LoRA fine-tune, formerly IRA Dolphine." />
+<meta property="og:description" content="A Qwen2.5-3B LoRA for short practical advice. Free T4 training, 120 MB adapter, one held-out check. Formerly IRA Dolphine." />
 <meta property="og:url" content="https://rajivbuda.com/projects/polar-orca/" />
 <meta property="og:image" content="https://rajivbuda.com/assets/polar-orca/polar-orca-og.jpg" />
 <meta property="og:image:width" content="1200" />
@@ -17,7 +17,7 @@
 <meta property="og:image:alt" content="Polar Orca logo" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Polar Orca — built by Rajiv Buda" />
-<meta name="twitter:description" content="I'm Polar Orca, built by Rajiv Buda to turn knowledge into opportunity, for everyone, everywhere. A Qwen2.5-3B LoRA fine-tune, formerly IRA Dolphine." />
+<meta name="twitter:description" content="A Qwen2.5-3B LoRA for short practical advice. Free T4 training, 120 MB adapter, one held-out check." />
 <meta name="twitter:image" content="https://rajivbuda.com/assets/polar-orca/polar-orca-og.jpg" />
 <meta name="theme-color" content="#6f7cff" />
 <link rel="icon" href="/assets/polar-orca/favicon.ico" sizes="any" />
@@ -110,7 +110,6 @@
   h1.po-title span { background: linear-gradient(90deg, #5b6cff, #a77bff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
   .vision { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
   .vision .v { border: 1px solid var(--line); background: var(--soft); border-radius: 16px; padding: 18px 16px; }
-  .vision .v i { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; font-style: normal; font-size: 17px; background: rgba(111,124,255,.12); margin-bottom: 10px; }
   .vision .v strong { display: block; margin-bottom: 6px; }
   .vision .v p { margin: 0; color: var(--muted); font-size: 14px; }
   @media (max-width: 900px) { .vision { grid-template-columns: 1fr 1fr; } }
@@ -118,23 +117,24 @@
   @media (max-width: 560px) { .vision { grid-template-columns: 1fr; } header.hero { padding-top: 32px; } }
   @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; } }
 </style>
+<link rel="stylesheet" href="/assets/project-icons.css?v=1" />
 <link rel="stylesheet" href="/assets/premium-theme.css?v=6" data-pt>
-<script defer src="/assets/premium-theme.js?v=6" data-pt></script>
+<script defer src="/assets/premium-theme.js?v=12" data-pt></script>
 </head>
 <body>
 <nav class="nav">
   <a class="brand" href="/"><span class="mark">RB</span> Rajiv Buda</a>
-  <a class="quiet" href="/projects/">All AI projects</a>
+  <a class="quiet" href="/projects/">All projects</a>
 </nav>
 <header class="hero">
   <div class="wrap">
     <div class="po-hero">
       <div>
-        <p class="kicker">Project 02 · Model layer · Shipped</p>
+        <p class="kicker">Project 01 · Model layer · Shipped</p>
         <h1 class="po-title">Polar <span>Orca</span></h1>
         <p class="po-formerly" data-keep-name>Formerly <b>IRA Dolphine</b> · Built by Rajiv Buda</p>
-        <p class="po-mission">I'm Polar Orca, built by Rajiv Buda to turn knowledge into opportunity, for everyone, everywhere.</p>
-        <p class="lede">A LoRA fine-tune of Qwen2.5-3B for short, practical advice. Trained on a free Colab T4, published as a 120&nbsp;MB adapter, and written up with the limit in plain sight: one held-out prompt, not a benchmark.</p>
+        <p class="po-mission">Short, practical advice from a model I can actually train, check, and publish — on free compute.</p>
+        <p class="lede">A LoRA fine-tune of Qwen2.5-3B. Trained on a free Colab T4, published as a 120&nbsp;MB adapter, and written up with the limit in plain sight: one held-out prompt, not a benchmark.</p>
         <div class="actions">
           <a class="btn btn-solid" href="https://huggingface.co/maxrajiv-buda/polar-orca" target="_blank" rel="noopener">Hugging Face model</a>
           <a class="btn btn-ghost" href="https://github.com/maxrajiv-buda/polar-orca" target="_blank" rel="noopener">Model card on GitHub</a>
@@ -160,11 +160,11 @@
   <div class="wrap">
     <h2>What Polar Orca <span>stands for.</span></h2>
     <div class="vision">
-      <div class="v"><i>🌍</i><strong>Opportunity for everyone</strong><p>Useful knowledge should not depend on where you were born or what you can pay.</p></div>
-      <div class="v"><i>🌉</i><strong>Bridges between people</strong><p>Connect people to ideas, to work, and to each other, across languages and borders.</p></div>
-      <div class="v"><i>🤝</i><strong>Honest and humble</strong><p>Say what was tested and what was not. No claims the evidence cannot carry.</p></div>
-      <div class="v"><i>📚</i><strong>Always learning</strong><p>Each version is a step. Retrain, re-check, and publish what changed.</p></div>
-      <div class="v"><i>🐋</i><strong>Built by one person, for many</strong><p>Built by Rajiv Buda on free tools, so anyone can reproduce it.</p></div>
+      <div class="v"><span class="px-vico" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.8 3.8 5.8 3.8 9S14.5 18.2 12 21c-2.5-2.8-3.8-5.8-3.8-9S9.5 5.8 12 3z"/></svg></span><strong>Open to reproduce</strong><p>Anyone with a free Colab T4 can reload the adapter from the Hub and run the same held-out check.</p></div>
+      <div class="v"><span class="px-vico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 17V7l8 5 8-5v10"/><path d="M4 7l8 5 8-5"/></svg></span><strong>Practical, not theatrical</strong><p>Short strategic answers. No claim the smoke test cannot carry.</p></div>
+      <div class="v"><span class="px-vico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l9 4v6c0 5-3.8 8.5-9 10-5.2-1.5-9-5-9-10V7z"/><path d="M9 12l2 2 4-4"/></svg></span><strong>Honest about the limit</strong><p>Say what was tested and what was not. One held-out prompt is a check, not a benchmark.</p></div>
+      <div class="v"><span class="px-vico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V5h6v14M14 19V5h6v14"/><path d="M10 12h4"/></svg></span><strong>Versioned learning</strong><p>Each run is a step. Retrain, re-check, publish what changed.</p></div>
+      <div class="v"><span class="px-vico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 14c3-1 5-4 9-4s6 3 9 4"/><path d="M4 17c2.5-.7 4.5-2.5 8-2.5s5.5 1.8 8 2.5"/><circle cx="16.5" cy="9.5" r="1.2"/></svg></span><strong>Built by one, for many</strong><p>Built by Rajiv Buda on free tools so the workflow itself is the artifact.</p></div>
     </div>
   </div>
 </section>
