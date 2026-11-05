@@ -41,13 +41,22 @@
  var LU={'lucide-network':'node','lucide-sparkles':'spark','lucide-check':'tick','lucide-quote':'quill','lucide-brain-circuit':'chip','lucide-workflow':'flow','lucide-database':'data','lucide-shield-check':'shield','lucide-cloud-cog':'cloud','lucide-braces':'braces','lucide-radio-tower':'signal','lucide-layers3':'layers','lucide-users':'people','lucide-radio':'signal','lucide-scan-line':'scan'};
  function swapLucide(root){ [].forEach.call(root.querySelectorAll('svg.lucide:not([data-pt])'),function(s){
    s.setAttribute('data-pt','1'); if(s.closest('.map-core')){s.setAttribute('viewBox','0 0 32 32');s.innerHTML=I.facet;s.classList.add('pt-ico');return} for(var k in LU){ if(s.classList.contains(k)){ s.setAttribute('viewBox','0 0 32 32'); s.innerHTML=I[LU[k]]; s.classList.add('pt-ico'); break; } } }); }
- var GROUPS=[['.capability-card',['chip','braces','flow','data','shield','cloud']],
-  ['.playbook-card',['key','compass','people','flow','crown','target']],['.recruiter-points>*',['bridge','layers','spark']],['.talk-list>*',['globe','facet','people']],['.card',['spark','facet','orbit','chat','vault','node','target','layers']],['.step',['data','bolt','chip','scan','tick']]];
- function badges(){ GROUPS.forEach(function(g){ [].forEach.call(D.querySelectorAll(g[0]),function(el,i){ if(el.querySelector(':scope>.pt-badge'))return;
-   if(el.matches('.talk-list>*,.recruiter-points>*,.step'))return; var b=D.createElement('span');b.className='pt-badge';b.innerHTML=svg(g[1][i%g[1].length]);el.insertBefore(b,el.firstChild);});});
-  [].forEach.call(D.querySelectorAll('.project-art'),function(a,i){ if(a.querySelector('.pt-art'))return; var ART=['spark','orbit','node','layers','scan','target']; var w=D.createElement('span');w.className='pt-art';w.innerHTML=svg(ART[i%6]);a.appendChild(w); });
-  var PI=['vault','globe','rise','shield','target','people'];
-  if(0)[].forEach.call(D.querySelectorAll('.proof-stat'),function(el,i){ if(el.querySelector('.pt-badge-sm'))return; var b=D.createElement('span');b.className='pt-badge-sm';b.innerHTML=svg(el.classList.contains('pt-feature')?'vault':PI[(i+1)%PI.length]);el.insertBefore(b,el.firstChild);}); }
+ /* Meaning-matched marks only — no rotating decorative badges on every card */
+ var BY_TITLE={
+  'Customer signal loops':'signal','Explainable by default':'lens','The next build':'rise',
+  'HireOnAI':'target','Polar Orca':'orbit','Account Decision Brief':'vault','Fishing Cat':'spark','Fishing Cat AI':'spark',
+  'VK public posts':'data','VK Public Posts Fetcher':'data','All projects':'layers','View all AI projects':'layers'
+ };
+ function badges(){
+  [].forEach.call(D.querySelectorAll('.capability-card,.playbook-card,.principle-card,article.card'),function(el){
+   if(el.querySelector(':scope>.pt-badge'))return;
+   if(el.matches('.talk-list>*,.recruiter-points>*,.step'))return;
+   var h=el.querySelector('h3,h2'); var key=h&&BY_TITLE[h.textContent.trim()];
+   if(!key)return;
+   var b=D.createElement('span');b.className='pt-badge';b.innerHTML=svg(key);el.insertBefore(b,el.firstChild);
+  });
+  [].forEach.call(D.querySelectorAll('.project-art'),function(a,i){ if(a.querySelector('.pt-art,.pt-art3,.pt-orca'))return; var ART=['spark','orbit','node','layers','scan','target']; var w=D.createElement('span');w.className='pt-art';w.innerHTML=svg(ART[i%6]);a.appendChild(w); });
+  if(0){} }
  /* --- content fixes (mutate text nodes in place so React keeps ownership) --- */
  function walk(root,fn){var w=D.createTreeWalker(root,NodeFilter.SHOW_TEXT),n;while(n=w.nextNode())fn(n)}
  function fixText(){
@@ -107,7 +116,7 @@
    if(h&&h.textContent.trim()!=='Polar Orca')st(h,'Polar Orca');
    if(h&&!c.querySelector('.pt-formerly')){var f=D.createElement('p');f.className='pt-formerly';f.textContent='Formerly IRA Dolphine \u00b7 Built by Rajiv Buda';mark(f);h.parentNode.insertBefore(f,h.nextSibling)}
    if(c.getAttribute('href')!=='/projects/polar-orca/'){c.setAttribute('href','/projects/polar-orca/');c.removeAttribute('target');c.removeAttribute('rel')}});
-  [].forEach.call(D.querySelectorAll('article.card'),function(c){var h=c.querySelector('h3');if(!h||c.querySelector('.pt-plogo'))return;var t=h.textContent.trim(),el;
+  [].forEach.call(D.querySelectorAll('article.card'),function(c){var h=c.querySelector('h3');if(!h||c.querySelector('.pt-plogo,.px-ico,.px-head'))return;var t=h.textContent.trim(),el;
    if(/^HireOnAI$/i.test(t)){el=D.createElement('span');el.className='pt-plogo hire'}
    else if(/^(Polar Orca|IRA[- ]Dolphine?)$/i.test(t)){el=D.createElement('span');el.className='pt-plogo orca';el.appendChild(orca());c.classList.add('pt-orca-card')}
    if(el)c.insertBefore(mark(el),c.firstChild)});
@@ -217,9 +226,9 @@
  var BC={brief:'#34e6a0',loops:'#ff5fa8',pattern:'#6f7cff',next:'#f472b6',cat:'#fbbf24',vk:'#3b8cff'};
  
  var COLAB='https://colab.research.google.com/github/maxrajiv-buda/maxrajiv-buda.github.io/blob/main/projects/AI-Projects.ipynb';
- var REP={lime:['03','CUSTOM ASSISTANT','Fishing Cat AI',"A small custom assistant named after the fishing cat, Odisha's state animal. Llama-3.2-1B-Instruct in 4-bit, LoRA-trained on a hand-written set of 219 instruction/answer pairs.",['Python','Unsloth','Llama-3.2-1B','TRL SFTTrainer','Google Drive'],COLAB],
-  violet:['04','DATA UTILITY','VK Public Posts Fetcher','A data-collection utility that pulls recent public wall posts from a VK community through the official API, with the token kept in a Colab secret.',['Python','vk_api','requests','BeautifulSoup'],COLAB],
-  sand:['05','AI PROJECTS','View all AI projects','Five projects: a live career product, two LoRA fine-tunes, a data-collection tool and an account decision brief. The three notebook projects run from a single Colab notebook.',['HireOnAI','Polar Orca','Fishing Cat AI','VK Fetcher'],'/projects/']};
+ var REP={lime:['03','CUSTOM ASSISTANT','Fishing Cat',"Named for Odisha's state animal. Llama-3.2-1B LoRA on 201 hand-written pairs, with one riddle held out of training.",['Llama-3.2-1B','Unsloth','201 pairs','1 held out'],'/projects/fishing-cat/'],
+  violet:['04','DATA UTILITY','VK public posts','Reads recent public wall posts from one VK community through the official API. Token stays in a Colab secret. No private data.',['vk_api','public wall','Colab secret'],'/projects/vk-posts/'],
+  sand:['05','CATALOG','All projects','Six pieces of work — each page states what shipped, how it was checked, and what the evidence still does not prove.',['HireOnAI','Polar Orca','Fishing Cat','Brief'],'/projects/']};
  function setText(el,txt){if(!el)return;var done=false;[].forEach.call(el.childNodes,function(n){if(n.nodeType===3){if(!done&&n.nodeValue.trim()){n.nodeValue=txt;done=true}else if(done)n.nodeValue=''}});if(!done)el.insertBefore(D.createTextNode(txt),el.firstChild)}
  function replaceHome(){for(var tone in REP){var c=D.querySelector('.project-card.'+tone);if(!c||c.dataset.pt3r)continue;var r=REP[tone];c.dataset.pt3r=1;
    var top=c.querySelectorAll('.project-top span');setText(top[0],r[0]);setText(top[1],r[1]);setText(c.querySelector('h3'),r[2]);setText(c.querySelector('.project-body p'),r[3]);
@@ -228,7 +237,7 @@
   var ink=D.querySelector('.project-card.ink');if(ink)ink.style.display='none';}
  function run(){replaceHome();
   for(var t in HOME)[].forEach.call(D.querySelectorAll('.project-card.'+t+' .project-art'),function(a){if(a.querySelector('.pt-art3'))return;a.appendChild(art(HOME[t]));a.classList.add('pt-has3');a.closest('.project-card').style.setProperty('--pc',BC[HOME[t]]);a.closest('.project-card').classList.add('pt-c3')});
-  [].forEach.call(D.querySelectorAll('article.card'),function(c){var h=c.querySelector('h3'),k=h&&PG[h.textContent.trim()];if(!k||c.querySelector('.pt-plogo'))return;var el=D.createElement('span');el.className='pt-plogo p3';el.setAttribute('data-ptc','1');el.appendChild(art(k));c.insertBefore(el,c.firstChild);c.style.setProperty('--pc',BC[k]);c.classList.add('pt-c3')});
+  [].forEach.call(D.querySelectorAll('article.card'),function(c){var h=c.querySelector('h3'),k=h&&PG[h.textContent.trim()];if(!k||c.querySelector('.pt-plogo,.px-ico,.px-head'))return;var el=D.createElement('span');el.className='pt-plogo p3';el.setAttribute('data-ptc','1');el.appendChild(art(k));c.insertBefore(el,c.firstChild);c.style.setProperty('--pc',BC[k]);c.classList.add('pt-c3')});
  }
  var t;function go(){run();new MutationObserver(function(){clearTimeout(t);t=setTimeout(run,200)}).observe(D.body,{childList:true,subtree:true});setTimeout(run,1000);setTimeout(run,2700)}
  if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',go);else go();
@@ -240,6 +249,44 @@ function fix(){var w=D.createTreeWalker(D.body,NodeFilter.SHOW_TEXT),n,v;while(n
  [].forEach.call(D.querySelectorAll('a[href*="/projects/ira-dolphin"]'),function(a){a.setAttribute('href',a.getAttribute('href').replace(/\/projects\/ira-dolphin\/?/,'/projects/polar-orca/'))})}
 function go(){fix();var t;new MutationObserver(function(){clearTimeout(t);t=setTimeout(fix,100)}).observe(D.body,{childList:true,subtree:true,characterData:true})}
 if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',go);else go()})();
+/* v9: sharper homepage words — replace generic lines with concrete ones */
+(function(){
+ var D=document;
+ /* Short fragments so split text nodes (hero lines, spans) still match */
+ var SWAP=[
+  ['Lead the room.','Own the customer.'],
+  ['Ship the product.','Ship the system.'],
+  ['combines customer ownership, operational scale, and hands-on AI building to move ambitious teams from strategy to adoption.','brings enterprise customer ownership, operating scale, and hands-on AI building into one seat. Strategy only counts when a team can run it.'],
+  ['AI earns its place when it removes friction, improves decisions, or creates measurable value.','AI earns the slot when it removes a real friction, improves a decision, or moves a number the business already tracks.'],
+  ['customers trust it, teams can operate it, and the business can measure the outcome.','customers trust it, operators can run it, and the outcome shows up in the operating rhythm.'],
+  ['Six signals from the work: live products, model experiments, and the systems that turn capability into outcomes.','Selected work: a live career product, two LoRA fine-tunes, a public-data utility, an account brief, and a novel.'],
+  ['build the next useful thing.','decide what to build from the friction.'],
+  ['Credibility is what remains when the deck is gone.','Credibility is what remains when the slide deck leaves the room.'],
+  ['create a new kind of leadership leverage.','meet — and something ships.'],
+  ['turning customer friction into product insight, executive alignment, and a rhythm that teams can actually run.','turning customer friction into a product insight, an executive decision, and a rhythm the team can run next week.'],
+  ['not just a confident answer.','not a confident guess.']
+ ];
+ function walk(){
+  var w=D.createTreeWalker(D.body,NodeFilter.SHOW_TEXT),n,v,i;
+  while(n=w.nextNode()){
+   if(!n.nodeValue||!n.nodeValue.trim())continue;
+   if(n.parentNode&&n.parentNode.closest&&n.parentNode.closest('script,style,code,pre,.pt-formerly,[data-keep-name]'))continue;
+   v=n.nodeValue;
+   for(i=0;i<SWAP.length;i++){ if(v.indexOf(SWAP[i][0])>-1) v=v.split(SWAP[i][0]).join(SWAP[i][1]); }
+   if(v!==n.nodeValue)n.nodeValue=v;
+  }
+  /* HireOnAI / Polar Orca / Account Brief home cards — point at project pages when present */
+  [].forEach.call(D.querySelectorAll('.project-card'),function(c){
+   var h=c.querySelector('h3'); if(!h)return; var t=h.textContent.trim();
+   if(/^HireOnAI$/i.test(t)){ setTextBody(c,'Matches a résumé to real jobs, explains the score, names the gaps, and drafts the application without inventing experience.'); c.setAttribute('href','/projects/hireonai/'); c.removeAttribute('target'); c.removeAttribute('rel'); }
+   if(/^Polar Orca$/i.test(t)){ setTextBody(c,'A LoRA on 4-bit Qwen2.5-3B. Free T4 train, 120 MB adapter, one held-out check — not a benchmark win-rate.'); }
+   if(/Account Decision Brief/i.test(t)){ setTextBody(c,'An account pack goes in. A decision, sourced evidence, and a refusal to invent a number come out.'); }
+  });
+ }
+ function setTextBody(card,txt){ var p=card.querySelector('.project-body p, p'); if(!p)return; var done=false; [].forEach.call(p.childNodes,function(n){ if(n.nodeType===3){ if(!done&&n.nodeValue.trim()){ n.nodeValue=txt; done=true } else if(done)n.nodeValue='' } }); if(!done)p.textContent=txt; }
+ function go(){ walk(); var t; new MutationObserver(function(){ clearTimeout(t); t=setTimeout(walk,160) }).observe(D.body,{childList:true,subtree:true,characterData:true}); setTimeout(walk,900); setTimeout(walk,2600) }
+ if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',go);else go();
+})();
 /* language selector -> Google Website Translate (googtrans cookie, persists across pages) */
 (function(){var M={en:'',ja:'ja',zh:'zh-CN',fr:'fr',de:'de',ko:'ko'},D=location.hostname;
 function ck(){var m=document.cookie.match(/(?:^|;\s*)googtrans=\/en\/([^;]+)/);return m?decodeURIComponent(m[1]):''}

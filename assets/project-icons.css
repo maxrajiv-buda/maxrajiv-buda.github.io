@@ -1,0 +1,38 @@
+/* Shared project marks — one meaning per icon, no emoji */
+.px-ico{
+  display:inline-grid;place-items:center;flex:none;
+  width:44px;height:44px;border-radius:12px;
+  border:1px solid rgba(244,241,234,.16);
+  background:rgba(244,241,234,.04);
+  color:var(--px-c,#ffe500);
+}
+.px-ico svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.px-ico.hire{--px-c:#34d399;background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.28)}
+.px-ico.orca{--px-c:#8b9cff;background:rgba(111,124,255,.12);border-color:rgba(111,124,255,.32)}
+.px-ico.cat{--px-c:#fbbf24;background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.3)}
+.px-ico.vk{--px-c:#3b8cff;background:rgba(59,140,255,.1);border-color:rgba(59,140,255,.3)}
+.px-ico.brief{--px-c:#2dd4bf;background:rgba(45,212,191,.1);border-color:rgba(45,212,191,.3)}
+.px-ico.book{--px-c:#f472b6;background:rgba(244,114,182,.1);border-color:rgba(244,114,182,.28)}
+.px-ico.lg{width:56px;height:56px;border-radius:16px}
+.px-ico.lg svg{width:28px;height:28px}
+.px-ico.sm{width:34px;height:34px;border-radius:10px}
+.px-ico.sm svg{width:17px;height:17px}
+
+/* Vision / principle marks on Polar Orca */
+.px-vico{
+  display:grid;place-items:center;width:34px;height:34px;border-radius:10px;
+  background:rgba(111,124,255,.12);color:#9aa6ff;margin-bottom:10px;
+}
+.px-vico svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+/* Catalog card icon row */
+.card .px-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:10px}
+.card .px-head h3{margin:0}
+.card .px-head .kicker{margin:0 0 4px}
+
+html[data-theme=light] .px-ico,
+html:not([data-theme]) .px-ico{
+  border-color:rgba(17,17,20,.08);
+  background:#fff;
+  box-shadow:0 1px 2px rgba(17,17,20,.04);
+}

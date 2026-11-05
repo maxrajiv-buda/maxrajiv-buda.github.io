@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html data-theme-default="light" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HireOnAI — Rajiv Buda</title>
+<meta name="description" content="HireOnAI matches a résumé to real jobs, explains the score, names the gaps, and drafts the application without inventing experience. Built by Rajiv Buda." />
+<link rel="canonical" href="https://rajivbuda.com/projects/hireonai/" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="HireOnAI — built by Rajiv Buda" />
+<meta property="og:description" content="A live career product: match, explain, name the gaps, draft the application — without inventing experience." />
+<meta property="og:url" content="https://rajivbuda.com/projects/hireonai/" />
+<meta property="og:image" content="https://rajivbuda.com/assets/og.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="HireOnAI — built by Rajiv Buda" />
+<meta name="twitter:description" content="A live career product: match, explain, name the gaps, draft the application — without inventing experience." />
+<meta name="twitter:image" content="https://rajivbuda.com/assets/og.jpg" />
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/project-icons.css?v=1" />
+<style>
+  :root { --bg:#000; --ink:#f4f1ea; --muted:#c8c2b8; --line:rgba(244,241,234,.16); --soft:#141414; --signal:#ffe500; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: Figtree, ui-sans-serif, system-ui, sans-serif; line-height: 1.55; }
+  a { color: inherit; }
+  h1, h2 { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; margin: 0; }
+  .nav { display: flex; align-items: center; justify-content: space-between; min-height: 64px; padding: 12px 22px; border-bottom: 1px solid var(--line); }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; }
+  .mark { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 8px; font-family: "Instrument Serif", Georgia, serif; }
+  .nav a.quiet { color: var(--muted); text-decoration: none; font-size: 14px; }
+  .wrap { width: min(920px, calc(100% - 40px)); margin: 0 auto; }
+  header.hero { padding: 64px 0 20px; }
+  .hero-top { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+  .kicker { font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin: 0; }
+  h1 { font-size: clamp(3rem, 8vw, 5rem); line-height: .92; }
+  .lede { font-size: 1.12rem; color: var(--muted); max-width: 40rem; margin: 18px 0 0; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+  .btn { display: inline-flex; align-items: center; min-height: 46px; padding: 8px 18px; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 600; }
+  .btn-solid { background: #fff; color: #000; }
+  .btn-ghost { border: 1px solid var(--line); }
+  .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 32px; }
+  .fact { background: var(--soft); border: 1px solid var(--line); border-radius: 16px; padding: 16px; }
+  .fact b { display: block; font-family: "Instrument Serif", Georgia, serif; font-size: 1.35rem; font-weight: 400; }
+  .fact span { display: block; margin-top: 6px; color: var(--muted); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+  section { padding: 52px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 16px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .card { background: var(--soft); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+  .card h3 { margin: 0 0 8px; font-size: 16px; font-family: Figtree, sans-serif; font-weight: 600; }
+  .card p { margin: 0; color: var(--muted); }
+  .chat { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: var(--soft); }
+  .chat header { padding: 12px 16px; color: var(--muted); font-size: 13px; font-family: ui-monospace, monospace; border-bottom: 1px solid var(--line); }
+  .msg { margin: 14px 16px; padding: 12px 14px; border-radius: 14px; max-width: 42rem; }
+  .you { margin-left: auto; background: #ffe500; color: #000; }
+  .bot { background: #1a1a1a; border: 1px solid var(--line); }
+  .role { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 6px; opacity: .7; }
+  .limit { border-left: 2px solid var(--signal); padding: 8px 0 8px 14px; color: var(--muted); margin-top: 18px; }
+  .limit strong { display: block; color: var(--ink); margin-bottom: 4px; }
+  footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
+  footer a { color: var(--ink); }
+  @media (max-width: 760px) { .facts, .grid { grid-template-columns: 1fr; } header.hero { padding-top: 36px; } }
+</style>
+<link rel="stylesheet" href="/assets/premium-theme.css?v=6" data-pt>
+<script defer src="/assets/premium-theme.js?v=11" data-pt></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/"><span class="mark">RB</span> Rajiv Buda</a>
+  <a class="quiet" href="/projects/">All projects</a>
+</nav>
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <span class="px-ico hire lg" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c0-3.1 2.5-5.5 5.5-5.5s5.5 2.4 5.5 5.5"/><path d="M15 9.5l2 2 4-4"/></svg></span>
+      <p class="kicker">Live product · Career AI</p>
+    </div>
+    <h1>HireOnAI</h1>
+    <p class="lede">A career product that matches a résumé to real jobs, explains the score, names the gaps, and drafts the application — without inventing experience the candidate does not have.</p>
+    <div class="actions">
+      <a class="btn btn-solid" href="https://hireonai.in" target="_blank" rel="noopener">Open hireonai.in</a>
+      <a class="btn btn-ghost" href="/projects/">All projects</a>
+    </div>
+    <div class="facts">
+      <div class="fact"><b>Match</b><span>Résumé → roles</span></div>
+      <div class="fact"><b>Explain</b><span>Why the score</span></div>
+      <div class="fact"><b>Gaps</b><span>Named, not hidden</span></div>
+      <div class="fact"><b>Draft</b><span>No invented work</span></div>
+    </div>
+  </div>
+</header>
+<section>
+  <div class="wrap">
+    <h2>The loop.</h2>
+    <div class="grid">
+      <article class="card"><h3>1. Read the résumé as evidence</h3><p>Skills and roles are treated as claims to check against a job, not as keywords to inflate.</p></article>
+      <article class="card"><h3>2. Score with a reason</h3><p>A match score without a reason is theatre. HireOnAI has to say why the number moved.</p></article>
+      <article class="card"><h3>3. Name the gaps</h3><p>Missing experience is listed. The product does not paper over it with confident prose.</p></article>
+      <article class="card"><h3>4. Draft, don’t invent</h3><p>Application text can be tailored. It cannot invent a company, a title, or a skill that is not on the page.</p></article>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="wrap">
+    <h2>What “honest” looks like.</h2>
+    <div class="chat">
+      <header>Product rule · paraphrase of the live loop</header>
+      <div class="msg you"><span class="role">Job</span>Senior AE, enterprise SaaS · requires 5+ years closing $100k+ deals and a CRM hygiene habit.</div>
+      <div class="msg bot"><span class="role">HireOnAI</span><b>Match: strong on ownership, weak on CRM depth.</b><br>The résumé shows multi-year enterprise closes. It does not show a named CRM operating rhythm. Gap to name in the draft: CRM hygiene and forecasting cadence — do not invent Salesforce admin work that is not listed.</div>
+    </div>
+    <p class="limit"><strong>Limit</strong>HireOnAI is a live product under active iteration. This page describes the product rule, not a frozen model card. The candidate still owns the truth of every line.</p>
+  </div>
+</section>
+<footer><div class="wrap"><a href="/projects/">← All projects</a> · <a href="https://hireonai.in" target="_blank" rel="noopener">hireonai.in</a></div></footer>
+</body>
+</html>
