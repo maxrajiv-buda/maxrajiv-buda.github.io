@@ -49,7 +49,7 @@
  };
  function badges(){
   [].forEach.call(D.querySelectorAll('.capability-card,.playbook-card,.principle-card,article.card'),function(el){
-   if(el.querySelector(':scope>.pt-badge'))return;
+   if(el.querySelector(':scope>.pt-badge,.px-ico,.px-head'))return;
    if(el.matches('.talk-list>*,.recruiter-points>*,.step'))return;
    var h=el.querySelector('h3,h2'); var key=h&&BY_TITLE[h.textContent.trim()];
    if(!key)return;
