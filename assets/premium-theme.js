@@ -297,3 +297,39 @@ new MutationObserver(function(){document.body.style.top&&(document.body.style.to
   var t;function go(){run();new MutationObserver(function(){clearTimeout(t);t=setTimeout(run,180)}).observe(D.body,{childList:true,subtree:true});setTimeout(run,700)}
   if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',go);else go();
 })();
+
+/* portfolio v10: align homepage narrative to founder / CEO story */
+(function(){
+ var D=document;
+ function text(el,value){if(el)el.textContent=value}
+ function tuneHero(){
+   var hero=D.querySelector('section.hero,.hero-section,.hero,[class*="hero"]'); if(!hero)return;
+   var h=hero.querySelector('h1'); if(h&&!h.dataset.rbFounder){h.dataset.rbFounder='1';h.textContent='I build customer systems, AI products and the company behind them.'}
+   var p=hero.querySelector('p'); if(p&&!p.dataset.rbFounder){p.dataset.rbFounder='1';p.textContent='Enterprise customer-operations leader turned hands-on founder — building Budacrest and a portfolio of focused AI products.'}
+   var kicker=hero.querySelector('.eyebrow,.kicker,[class*="eyebrow"],[class*="kicker"]');
+   if(kicker&&!kicker.dataset.rbFounder){kicker.dataset.rbFounder='1';kicker.textContent='RAJIV BUDA · FOUNDER / OPERATOR / BUILDER'}
+ }
+ function nav(){
+   [].forEach.call(D.querySelectorAll('nav a,header a'),function(a){
+     var t=(a.textContent||'').trim().toLowerCase();
+     if(t==='projects'||t==='work'){a.textContent='Building';a.setAttribute('href','#rb-core-work')}
+   });
+ }
+ function legacy(){
+   /* The old AI-card gallery remains useful evidence, but it is now explicitly R&D rather than the primary story. */
+   var cards=D.querySelectorAll('.project-card'); if(!cards.length)return;
+   var host=cards[0].closest('section'); if(!host||host.id==='rb-core-work')return;
+   host.classList.add('rb-lab-section');
+   var heading=host.querySelector('h2');
+   if(heading&&!heading.dataset.rbLab){heading.dataset.rbLab='1';heading.textContent='Earlier experiments & R&D'}
+   var lead=heading&&heading.parentElement&&heading.parentElement.querySelector('p');
+   if(lead&&!lead.dataset.rbLab){lead.dataset.rbLab='1';lead.textContent='Selected prototypes and model experiments that sharpened the technical foundation behind the products I’m building now.'}
+ }
+ function founderLink(){
+   var s=D.getElementById('rb-core-work'); if(!s)return;
+   s.setAttribute('aria-label','Budacrest and products built by Rajiv Buda');
+ }
+ function run(){tuneHero();nav();legacy();founderLink()}
+ var timer;function go(){run();new MutationObserver(function(){clearTimeout(timer);timer=setTimeout(run,220)}).observe(D.body,{childList:true,subtree:true});setTimeout(run,900);setTimeout(run,2400)}
+ if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',go);else go();
+})();
