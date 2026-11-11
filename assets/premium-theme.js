@@ -332,3 +332,61 @@ new MutationObserver(function(){document.body.style.top&&(document.body.style.to
  var timer;function go(){run();new MutationObserver(function(){clearTimeout(timer);timer=setTimeout(run,220)}).observe(D.body,{childList:true,subtree:true});setTimeout(run,900);setTimeout(run,2400)}
  if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',go);else go();
 })();
+
+/* portfolio v13 — editorial story, language and icon cleanup */
+(function(){
+ const D=document;
+ function setText(el,txt){if(el&&el.textContent.trim()!==txt)el.textContent=txt}
+ function byHeading(selector,re){
+   return [].find.call(D.querySelectorAll(selector),e=>re.test((e.textContent||'').trim()));
+ }
+ function story(){
+   const hero=D.querySelector('.hero-section');
+   if(hero){
+     const h=hero.querySelector('h1'), intro=hero.querySelector('.hero-intro')||hero.querySelector('.hero-copy p');
+     setText(h,'I turn customer problems into products that move work forward.');
+     setText(intro,'I’m Rajiv Buda — an enterprise customer-operations leader and founder of Budacrest, building focused AI products from problems I have seen firsthand.');
+     const eyebrow=hero.querySelector('.eyebrow'); if(eyebrow)setText(eyebrow,'RAJIV BUDA · FOUNDER & CUSTOMER OPERATIONS LEADER');
+   }
+   const about=D.querySelector('.about-section');
+   if(about){
+     const h=about.querySelector('h2'),p=about.querySelector('.about-intro p');
+     if(h)h.innerHTML='Experience built the foundation.<br><em>Building became the next chapter.</em>';
+     setText(p,'Years of owning customers, escalations, service operations and growth taught me where enterprise work slows down. Today I use that operating context to design simpler AI products.');
+     const k=about.querySelector('.section-kicker'); if(k)setText(k,'01  ·  FROM OPERATOR TO BUILDER');
+   }
+   const thesis=D.querySelector('.thesis-section');
+   if(thesis){
+     const h=thesis.querySelector('h2'),p=thesis.querySelector('.thesis-heading p');
+     if(h)h.innerHTML='The principle is simple:<br><em>less noise, better decisions.</em>';
+     setText(p,'AI should reduce the work around the work. It should surface what matters, prepare the next move and keep people in control when actions have consequences.');
+     const k=thesis.querySelector('.section-kicker'); if(k)setText(k,'02  ·  HOW I BUILD');
+   }
+   const work=D.querySelector('.work-section');
+   if(work){
+     const h=work.querySelector('.section-heading-row h2'),p=work.querySelector('.section-heading-row p'),k=work.querySelector('.section-kicker');
+     if(h&&!work.classList.contains('rb-lab-section'))h.innerHTML='Products, systems<br><em>and experiments.</em>';
+     if(p&&!work.classList.contains('rb-lab-section'))setText(p,'A portfolio shaped by customer operations, AI orchestration and the belief that useful software should create action — not more administration.');
+     if(k)setText(k,'03  ·  WHAT I BUILD');
+   }
+   const exp=D.querySelector('.experience-section');
+   if(exp){const k=exp.querySelector('.section-kicker');if(k)setText(k,'04  ·  OPERATING EXPERIENCE')}
+   const proof=D.querySelector('.proof-section');
+   if(proof){const k=proof.querySelector('.section-kicker');if(k)setText(k,'05  ·  SCALE & OUTCOMES')}
+ }
+ function iconCleanup(){
+   /* Icons are navigation aids, not decoration: remove generated badges from content cards. */
+   [].forEach.call(D.querySelectorAll('.pt-badge,.pt-badge-sm,.pt-art'),e=>e.remove());
+   [].forEach.call(D.querySelectorAll('.principle-card svg'),(e,i)=>{
+     e.setAttribute('aria-hidden','true'); e.style.opacity='.72';
+   });
+ }
+ function language(){
+   const sel=D.querySelector('.language-select select');
+   if(sel){sel.setAttribute('aria-label','Language');sel.setAttribute('title','Choose language')}
+ }
+ function run(){story();iconCleanup();language()}
+ let busy=false,t;
+ function start(){run();new MutationObserver(()=>{if(busy)return;clearTimeout(t);t=setTimeout(()=>{busy=true;run();setTimeout(()=>busy=false,0)},220)}).observe(D.body,{childList:true,subtree:true});setTimeout(run,1000)}
+ if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',start);else start();
+})();
