@@ -145,3 +145,41 @@ html[data-theme=dark] .rb-core-work,html.pt[data-theme=dark] .rb-core-work{backg
  html.pt .hero-section .hero-copy{padding-left:20px!important;padding-right:20px!important}
  html.pt .hero-section .hero-copy h1{font-size:39px!important}
 }
+
+
+/* v13 — editorial rhythm and responsive hierarchy */
+html.pt .section-kicker{font-weight:600!important;letter-spacing:.16em!important}
+html.pt .pt-badge,html.pt .pt-badge-sm,html.pt .pt-art{display:none!important}
+html.pt .about-intro h2,html.pt .section-heading-row h2,html.pt .thesis-heading h2{max-width:12ch}
+html.pt .about-intro p,html.pt .section-heading-row p,html.pt .thesis-heading p{max-width:43ch;font-size:16px;line-height:1.65}
+html.pt .principle-card svg{width:24px;height:24px;stroke-width:1.5}
+html.pt .project-card{border-radius:8px!important}
+html.pt .project-body h3{font-weight:500!important}
+html.pt .tag-row span{font-size:10px!important;padding:7px 9px!important}
+html.pt .rb-product h3,html.pt .rb-company-copy h3{font-weight:600}
+@media(max-width:720px){
+ html.pt .section-pad{padding:72px 20px!important}
+ html.pt .about-intro,html.pt .section-heading-row,html.pt .thesis-heading{display:block!important;margin-top:38px!important}
+ html.pt .about-intro h2,html.pt .section-heading-row h2,html.pt .thesis-heading h2{
+   max-width:10.5em!important;font-size:clamp(38px,10.8vw,48px)!important;
+   line-height:1.01!important;letter-spacing:-.05em!important;margin:0 0 26px!important
+ }
+ html.pt .about-intro p,html.pt .section-heading-row p,html.pt .thesis-heading p{
+   max-width:31em!important;font-size:16px!important;line-height:1.62!important;margin:0!important
+ }
+ html.pt .section-kicker{font-size:9px!important;line-height:1.4!important;letter-spacing:.14em!important;gap:9px!important}
+ html.pt .bento-grid{margin-top:44px!important}
+ html.pt .principles-grid{margin-top:48px!important}
+ html.pt .principle-card{min-height:0!important;padding-top:26px!important;padding-bottom:30px!important}
+ html.pt .principle-card h3{margin-top:36px!important;font-size:22px!important}
+ html.pt .project-grid{margin-top:42px!important;gap:12px!important}
+ html.pt .project-card{min-height:0!important}
+ html.pt .project-art{height:155px!important}
+ html.pt .project-body{padding:20px!important}
+ html.pt .project-body h3{font-size:24px!important}
+ html.pt .timeline{margin-top:48px!important}
+ html.pt .proof-grid{margin-top:48px!important;padding-bottom:60px!important}
+ html.pt .talks-row{margin-top:60px!important}
+ html.pt .rb-core-head{margin-bottom:34px!important}
+ html.pt .rb-company{margin-top:0!important}
+}
