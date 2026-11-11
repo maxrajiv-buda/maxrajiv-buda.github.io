@@ -213,13 +213,12 @@
   var id='g'+k+Math.random().toString(36).slice(2,6);
   e.innerHTML='<span class="ig" style="background:conic-gradient(from 0deg,'+p[4]+','+p[5]+','+p[4]+')"></span><svg viewBox="0 0 400 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="'+id+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+p[6]+'"/><stop offset="1" stop-color="'+p[7]+'"/></linearGradient></defs>'+p[8].replace(/url\(#G\)/g,'url(#'+id+')')+'</svg><span class="sh"></span>';
   e.setAttribute('data-ptc','1');[].forEach.call(e.querySelectorAll('*'),function(x){x.setAttribute('data-ptc','1')});return e}
- var HOME={lime:'cat',violet:'vk',sand:'pattern'},PG={'Account Decision Brief':'brief','Fishing Cat AI':'cat','VK Public Posts Fetcher':'vk'};
+ var HOME={lime:'cat',sand:'pattern'},PG={'Fishing Cat AI':'cat'};
  var BC={brief:'#34e6a0',loops:'#ff5fa8',pattern:'#6f7cff',next:'#f472b6',cat:'#fbbf24',vk:'#3b8cff'};
  
  var COLAB='https://colab.research.google.com/github/maxrajiv-buda/maxrajiv-buda.github.io/blob/main/projects/AI-Projects.ipynb';
  var REP={lime:['03','CUSTOM ASSISTANT','Fishing Cat AI',"A small custom assistant named after the fishing cat, Odisha's state animal. Llama-3.2-1B-Instruct in 4-bit, LoRA-trained on a hand-written set of 219 instruction/answer pairs.",['Python','Unsloth','Llama-3.2-1B','TRL SFTTrainer','Google Drive'],COLAB],
-  violet:['04','DATA UTILITY','VK Public Posts Fetcher','A data-collection utility that pulls recent public wall posts from a VK community through the official API, with the token kept in a Colab secret.',['Python','vk_api','requests','BeautifulSoup'],COLAB],
-  sand:['05','AI PROJECTS','View all AI projects','Five projects: a live career product, two LoRA fine-tunes, a data-collection tool and an account decision brief. The three notebook projects run from a single Colab notebook.',['HireOnAI','Polar Orca','Fishing Cat AI','VK Fetcher'],'/projects/']};
+  sand:['04','AI R&D','Earlier AI experiments','Selected model experiments that informed the products now being built under Budacrest.',['HireOnAI','Polar Orca','Fishing Cat AI'],'/projects/']};
  function setText(el,txt){if(!el)return;var done=false;[].forEach.call(el.childNodes,function(n){if(n.nodeType===3){if(!done&&n.nodeValue.trim()){n.nodeValue=txt;done=true}else if(done)n.nodeValue=''}});if(!done)el.insertBefore(D.createTextNode(txt),el.firstChild)}
  function replaceHome(){for(var tone in REP){var c=D.querySelector('.project-card.'+tone);if(!c||c.dataset.pt3r)continue;var r=REP[tone];c.dataset.pt3r=1;
    var top=c.querySelectorAll('.project-top span');setText(top[0],r[0]);setText(top[1],r[1]);setText(c.querySelector('h3'),r[2]);setText(c.querySelector('.project-body p'),r[3]);
