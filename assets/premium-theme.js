@@ -390,3 +390,37 @@ new MutationObserver(function(){document.body.style.top&&(document.body.style.to
  function start(){run();new MutationObserver(()=>{if(busy)return;clearTimeout(t);t=setTimeout(()=>{busy=true;run();setTimeout(()=>busy=false,0)},220)}).observe(D.body,{childList:true,subtree:true});setTimeout(run,1000)}
  if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',start);else start();
 })();
+
+/* portfolio v14 — complete build portfolio from connected GitHub repositories */
+(function(){
+ const D=document;
+ const projects=[
+  ['SALES INTELLIGENCE','Quaytrail','Multi-client, action-first CRM for accounts, projects, opportunities, follow-ups and forecast signals.','CRM · Forecasting · B2B','private'],
+  ['FOOD & COMMERCE','Cravo','Mobile-first food delivery and quick-commerce product with discovery, checkout, fulfilment operations, delivery roles and payment/OTP scaffolding.','Expo · React Native · Commerce','private'],
+  ['RELATIONSHIPS','LockIn','Values-first dating product built around compatibility, intentional courtship, safety tools and an AI wingman — not endless swiping.','Dating · Safety · AI','private'],
+  ['INTERVIEW INTELLIGENCE','Cue','Windows interview sidecar that transcribes selected audio locally and prepares concise, profile-grounded answer suggestions.','Whisper · Local AI · Desktop','private'],
+  ['MODEL R&D','Polar Orca','A small Qwen-based LoRA experiment exploring practical, accessible strategic guidance with transparent limits.','LLM · LoRA · Open source','/projects/polar-orca/'],
+  ['PERSONAL AI','Juniper','Persistent personal AI companion and orchestrator with deliberate memory, adaptive routines, daily briefings and specialist-agent coordination.','Agents · Memory · Orchestration','private'],
+  ['CAREER INTELLIGENCE','HireOnAI','Career product for opportunity matching, explained fit, skill-gap coaching and stronger applications without inventing experience.','Career AI · Matching · Coaching','https://hireonai.in']
+ ];
+ function card(p){
+   const link=p[4][0]==='/'||p[4].indexOf('http')===0;
+   const tag=link?'a':'article', href=link?' href="'+p[4]+'"':'';
+   return '<'+tag+' class="rb-build-card"'+href+'>'+
+    '<div class="rb-build-meta"><span>'+p[0]+'</span><b>'+(link?'↗':'BUILD')+'</b></div>'+
+    '<h3>'+p[1]+'</h3><p>'+p[2]+'</p>'+
+    '<small>'+p[3]+'</small></'+tag+'>';
+ }
+ function build(){
+   const host=D.getElementById('rb-core-work'); if(!host||D.getElementById('rb-build-portfolio'))return;
+   const inner=host.querySelector('.rb-core-inner'); if(!inner)return;
+   const s=D.createElement('div');s.id='rb-build-portfolio';s.className='rb-build-portfolio';
+   s.innerHTML='<div class="rb-portfolio-label"><span>PRODUCT & R&D PORTFOLIO</span><i></i></div>'+
+    '<div class="rb-build-intro"><h3>More than one idea.<br>A growing body of work.</h3><p>These builds span customer operations, commerce, relationships, career intelligence, local AI and personal agents. Some are active products; others are prototypes or R&D. I keep that distinction explicit.</p></div>'+
+    '<div class="rb-build-grid">'+projects.map(card).join('')+'</div>'+
+    '<p class="rb-repo-note">Also in the workspace: the Rajiv Buda portfolio/brand systems, Buda Crest company-planning repository and teaching experiments. They support the work above rather than being presented as standalone products.</p>';
+   const note=inner.querySelector('.rb-founder-note'); if(note)inner.insertBefore(s,note);else inner.appendChild(s);
+ }
+ let t;function start(){build();new MutationObserver(()=>{clearTimeout(t);t=setTimeout(build,250)}).observe(D.body,{childList:true,subtree:true});setTimeout(build,900)}
+ if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',start);else start();
+})();
