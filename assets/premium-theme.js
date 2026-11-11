@@ -256,3 +256,41 @@ if(cur){var d=document.createElement('div');d.id='pt-gt';(document.body||documen
 sync();setTimeout(sync,800);setTimeout(sync,2500);
 new MutationObserver(function(){document.body.style.top&&(document.body.style.top='0px')}).observe(document.body,{attributes:true,attributeFilter:['style']});
 })();
+
+/* portfolio v8: Budacrest / CRM / Juniper focus; retire VK */
+(function(){
+  var D=document;
+  function retireVK(){
+    [].forEach.call(D.querySelectorAll('a'),function(a){
+      var s=((a.textContent||'')+' '+(a.getAttribute('href')||'')).toLowerCase();
+      if(/\bvk\b|vk\.com/.test(s)){
+        var card=a.closest('.project-card,article.card,.card,li');
+        (card||a).style.display='none';
+      }
+    });
+    var w=D.createTreeWalker(D.body,NodeFilter.SHOW_TEXT),n,kill=[];
+    while(n=w.nextNode()){
+      if(/\bvk\b|vk\.com/i.test(n.nodeValue||'')){
+        var el=n.parentElement;
+        if(el&&!el.closest('script,style')&&!el.closest('#rb-core-work')) kill.push(el.closest('.project-card,article.card,.card,li')||el);
+      }
+    }
+    kill.forEach(function(el){el.style.display='none'});
+  }
+  function build(){
+    if(D.getElementById('rb-core-work'))return;
+    var root=D.querySelector('#root'); if(!root)return;
+    var section=D.createElement('section');
+    section.id='rb-core-work'; section.className='rb-core-work';
+    section.innerHTML='<div class="rb-core-inner"><div class="rb-core-kicker">BUILDING NOW</div><div class="rb-core-head"><h2>Three systems I’m building for the next chapter.</h2><p>Company building, customer intelligence and a personal AI operating layer — designed as working products, not portfolio demos.</p></div><div class="rb-core-grid">'+
+      '<article class="rb-core-card"><div class="rb-core-num">01</div><div class="rb-core-status">COMPANY</div><h3>Budacrest</h3><p>The operating company behind my product and market-building work — turning research, customer discovery and execution into repeatable businesses.</p><div class="rb-core-tags"><span>Company Building</span><span>AI</span><span>Go-to-Market</span></div></article>'+
+      '<article class="rb-core-card"><div class="rb-core-num">02</div><div class="rb-core-status">PRODUCT</div><h3>Zero-Noise CRM</h3><p>An action-first CRM built to reduce administrative noise: attention engine, next-best action, deal momentum and approval-first AI.</p><div class="rb-core-tags"><span>CRM</span><span>Customer Intelligence</span><span>AI Agents</span></div></article>'+
+      '<article class="rb-core-card"><div class="rb-core-num">03</div><div class="rb-core-status">AGENT</div><h3>Juniper</h3><p>A persistent personal AI agent and orchestrator — memory, daily briefings, specialist agents, adaptive routines and human approval for consequential actions.</p><div class="rb-core-tags"><span>Personal AI</span><span>Orchestration</span><span>Memory</span></div></article>'+
+      '</div></div>';
+    var contact=D.querySelector('#contact,section[id*="contact"],footer');
+    if(contact&&contact.parentNode) contact.parentNode.insertBefore(section,contact); else root.appendChild(section);
+  }
+  function run(){retireVK();build()}
+  var t;function go(){run();new MutationObserver(function(){clearTimeout(t);t=setTimeout(run,180)}).observe(D.body,{childList:true,subtree:true});setTimeout(run,700)}
+  if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',go);else go();
+})();
