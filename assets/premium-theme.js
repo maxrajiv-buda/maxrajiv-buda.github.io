@@ -396,10 +396,7 @@ new MutationObserver(function(){document.body.style.top&&(document.body.style.to
  const D=document;
  const projects=[
   ['SALES INTELLIGENCE','Quaytrail','Multi-client, action-first CRM for accounts, projects, opportunities, follow-ups and forecast signals.','CRM · Forecasting · B2B','private'],
-  ['FOOD & COMMERCE','Cravo','Mobile-first food delivery and quick-commerce product with discovery, checkout, fulfilment operations, delivery roles and payment/OTP scaffolding.','Expo · React Native · Commerce','private'],
-  ['RELATIONSHIPS','LockIn','Values-first dating product built around compatibility, intentional courtship, safety tools and an AI wingman — not endless swiping.','Dating · Safety · AI','private'],
-  ['INTERVIEW INTELLIGENCE','Cue','Windows interview sidecar that transcribes selected audio locally and prepares concise, profile-grounded answer suggestions.','Whisper · Local AI · Desktop','private'],
-  ['MODEL R&D','Polar Orca','A small Qwen-based LoRA experiment exploring practical, accessible strategic guidance with transparent limits.','LLM · LoRA · Open source','/projects/polar-orca/'],
+  ['FOOD & COMMERCE','Cravo','Mobile-first food delivery and quick-commerce product with discovery, checkout, fulfilment operations, delivery roles and payment/OTP scaffolding.','Expo · React Native · Commerce','private'],  ['MODEL R&D','Polar Orca','A small Qwen-based LoRA experiment exploring practical, accessible strategic guidance with transparent limits.','LLM · LoRA · Open source','/projects/polar-orca/'],
   ['PERSONAL AI','Juniper','Persistent personal AI companion and orchestrator with deliberate memory, adaptive routines, daily briefings and specialist-agent coordination.','Agents · Memory · Orchestration','private'],
   ['CAREER INTELLIGENCE','HireOnAI','Career product for opportunity matching, explained fit, skill-gap coaching and stronger applications without inventing experience.','Career AI · Matching · Coaching','https://hireonai.in']
  ];
